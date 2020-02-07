@@ -1,11 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity()
 export class Job {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column('varchar', {length: 200})
+    @Column('varchar', { length: 200 })
     name: string;
 
     @Column('text')

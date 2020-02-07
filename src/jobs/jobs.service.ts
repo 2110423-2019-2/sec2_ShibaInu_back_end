@@ -20,7 +20,7 @@ export class JobsService {
     }
 
     async createNewJob(createJobDto: CreateJobDto) {
-        createJobDto.createdTime = new Date()
+        createJobDto.createdTime = new Date();
         return this.jobRepository.insert(createJobDto);
     }
 
