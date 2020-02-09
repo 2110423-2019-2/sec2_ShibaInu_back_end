@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { JobsModule } from './jobs/jobs.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
+require('dotenv').config()
+
 @Module({
     imports: [
         JobsModule,

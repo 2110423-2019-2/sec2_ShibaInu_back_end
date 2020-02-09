@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { User } from "./user.entity";
 
 @Entity()
 export class Job {
@@ -16,4 +17,7 @@ export class Job {
 
     @Column('decimal', { precision: 15, scale: 2 })
     payout: number;
+
+	@ManyToOne(type => User, user => user.jobs)
+    client: User;
 }
