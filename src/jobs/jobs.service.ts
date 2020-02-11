@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Job } from 'src/entities/jobs.entity';
+import { Job } from 'src/entities/job.entity';
 import { Repository } from 'typeorm';
 import { CreateJobDto } from './jobs.dto';
 
@@ -15,8 +15,8 @@ export class JobsService {
         return this.jobRepository.find();
     }
 
-    async getJobById(id: number): Promise<Job> {
-        return this.jobRepository.findOne(id);
+    async getJobById(jobId: number): Promise<Job> {
+        return this.jobRepository.findOne(jobId);
     }
 
     async createNewJob(createJobDto: CreateJobDto) {
@@ -24,8 +24,8 @@ export class JobsService {
         return this.jobRepository.insert(createJobDto);
     }
 
-    async editJob(id: string, createJobDto: CreateJobDto) {
+    async editJob(jobId: number, createJobDto: CreateJobDto) {
         createJobDto.createdTime = null;
-        return this.jobRepository.update(id, createJobDto);
+        return this.jobRepository.update(jobId, createJobDto);
     }
 }
