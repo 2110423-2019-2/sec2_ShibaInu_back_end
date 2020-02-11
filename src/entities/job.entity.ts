@@ -24,6 +24,6 @@ export class Job {
     @Column('timestamp')
     createdTime: Date;
 
-	@ManyToOne(type => User, client => client.jobs)
+	@ManyToOne(type => User, user => user.jobs)
     client: User;
 }
