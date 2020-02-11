@@ -1,15 +1,22 @@
 export class CreateUserDto {
-    name: string;
-    surname: string;
+    firstName: string;
+    lastName: string;
     phone: string;
     email: string;
     username: string;
     password: string;
-    education: string;
+    education?: string;
     createdTime?: Date;
-    isVerified: boolean;
-    identificationCard: string;
-    identificationNumber: string;
-    isVisible: boolean;
-	description: string;
+    isVerified?: boolean;
+    identificationCardPic?: string;
+    identificationCardWithFacePic?: string;
+    identificationNumber?: string;
+    isVisible?: boolean;
+    about?: string;
+    location?: string;
+    profilePicture?: string;
+    dateOfBirth?: Date;
+    website?: string;
+    experience?: string;
+    resume?: string;
 }
