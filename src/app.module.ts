@@ -10,7 +10,7 @@ require('dotenv').config()
 @Module({
     imports: [
         JobsModule,
-		UsersModule,
+        UsersModule,
         TypeOrmModule.forRootAsync({
             useFactory: () => ({
                 type: 'mysql',

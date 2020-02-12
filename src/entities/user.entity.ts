@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Job } from "./job.entity";
-import { User_Skill } from './user_skill.entity';
 
 @Entity()
 export class User {
@@ -67,7 +66,7 @@ export class User {
     @Column('text')
     resume: string;
 
-    @OneToMany(type => User_Skill, user_skill => user_skill.user) // note: we will create author property in the Photo class below
+    @Column("simple-array")
     skills: string[];
 
 	@OneToMany(type => Job, job => job.client) // note: we will create author property in the Photo class below

@@ -4,7 +4,7 @@ import { User } from "./user.entity";
 @Entity()
 export class Job {
     @PrimaryGeneratedColumn()
-    id: number;
+    jobId: number;
     
     @Column('varchar', { length: 150 })
     jobName: string;

@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './users.dto';
+import { CreateUserDto, EditUserDto } from './users.dto';
 
 @Injectable()
 export class UsersService {
@@ -24,5 +24,10 @@ export class UsersService {
         createUserDto.isVerified = false;
         createUserDto.isVisible = true;
         return this.userRepository.insert(createUserDto);
+    }
+
+    async editUser(editUserDto: EditUserDto) {
+        //editUserDto.userId=userId;
+        return this.userRepository.save(editUserDto);
     }
 }
