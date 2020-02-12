@@ -4,19 +4,25 @@ import { User } from "./user.entity";
 @Entity()
 export class Job {
     @PrimaryGeneratedColumn()
-    id: number;
+    jobId: number;
 
-    @Column('varchar', { length: 200 })
-    name: string;
+    @Column('varchar', { length: 150 })
+    jobName: string;
 
     @Column('text')
-    description: string;
+    jobDescription: string;
+
+    @Column('text')
+    jobPicture: string;
+
+    @Column('integer')
+    estimatedDuration: number;
+
+    @Column('decimal', { precision: 15, scale: 2 })
+    estimatedWage: number;
 
     @Column('timestamp')
     createdTime: Date;
-
-    @Column('decimal', { precision: 15, scale: 2 })
-    payout: number;
 
 	@ManyToOne(type => User, user => user.jobs)
     client: User;
