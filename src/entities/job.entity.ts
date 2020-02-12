@@ -16,10 +16,10 @@ export class Job {
     jobPicture: string;
 
     @Column('integer')
-    EstimatedDuration: number;
+    estimatedDuration: number;
 
     @Column('decimal', { precision: 15, scale: 2 })
-    EstimatedWage: number;
+    estimatedWage: number;
 
     @Column('timestamp')
     createdTime: Date;
