@@ -70,7 +70,7 @@ export class User {
     @OneToMany(type => User_Skill, user_skill => user_skill.user) // note: we will create author property in the Photo class below
     skills: string[];
 
-	@OneToMany(type => Job, job => job.user) // note: we will create author property in the Photo class below
+	@OneToMany(type => Job, job => job.client) // note: we will create author property in the Photo class below
     jobs: Job[];
 
 }
