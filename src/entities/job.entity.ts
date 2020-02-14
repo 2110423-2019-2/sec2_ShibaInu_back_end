@@ -7,13 +7,13 @@ export class Job {
     jobId: number;
     
     @Column('varchar', { length: 150 })
-    jobName: string;
+    name: string;
 
     @Column('text')
-    jobDescription: string;
+    description: string;
 
     @Column('text')
-    jobPicture: string;
+    picture: string;
 
     @Column('integer')
     estimatedDuration: number;

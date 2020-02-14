@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Patch } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, EditUserDto } from './users.dto';
+import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
 
 @Controller('users')
 export class UsersController {
@@ -9,6 +9,11 @@ export class UsersController {
     @Get()
     async getAllUsers() {
 		return this.userService.getAllUsers();
+    }
+
+    @Get('login')
+    async getUserId(@Body() userNamePasswordDto: UserNamePasswordDto) {
+        return this.userService.getUserId(userNamePasswordDto);
     }
 
     @Get(':userId')
@@ -21,8 +26,9 @@ export class UsersController {
         return this.userService.createNewUser(createUserDto);
     }
 
-    @Patch()
-    async editUser(@Body() editUserDto: EditUserDto) {
+    @Patch(':userId')
+    async editUser(@Param('userId') userId:number, @Body() editUserDto: EditUserDto) {
+        editUserDto.userId=Number(userId);
         return this.userService.editUser(editUserDto);
     }
 }
