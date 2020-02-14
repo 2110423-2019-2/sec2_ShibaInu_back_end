@@ -7,7 +7,7 @@ export class CreateJobDto {
     picture: string;
     estimatedDuration: number;
     estimatedWage: number;
-    caergory: Catergory;
+    catergory: Catergory;
     status?: Status;
     createdTime?: Date;
     client: User;
