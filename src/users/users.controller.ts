@@ -21,6 +21,11 @@ export class UsersController {
         return this.userService.getUserById(userId);
     }
 
+    @Get('money/:userId')
+    async getMoneyById(@Param('userId') userId: number) {
+        return this.userService.getMoneyById(userId);
+    }
+
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {
         return this.userService.createNewUser(createUserDto);

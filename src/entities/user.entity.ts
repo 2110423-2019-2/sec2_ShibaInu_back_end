@@ -69,6 +69,9 @@ export class User {
     @Column("simple-array")
     skills: string[];
 
+    @Column("integer")
+    money: number;
+
 	@OneToMany(type => Job, job => job.client) // note: we will create author property in the Photo class below
     jobs: Job[];
 
