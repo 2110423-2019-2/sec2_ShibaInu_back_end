@@ -11,9 +11,9 @@ export class JobsController {
         return this.jobService.getAllJobs();
     }
 
-    @Get(':id')
-    async getJobById(@Param('id') id: number) {
-        return this.jobService.getJobById(id);
+    @Get(':jobId')
+    async getJobById(@Param('jobId') jobId: number) {
+        return this.jobService.getJobById(jobId);
     }
 
     @Post()
