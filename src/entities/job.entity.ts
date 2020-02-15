@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { User } from "./user.entity";
-import { JobReqSkill } from './jobReqSkill.entity';
-import { JobOptSkill } from "./JobOptSkill.entity";
+//import { JobReqSkill } from './jobReqSkill.entity';
+//import { JobOptSkill } from "./JobOptSkill.entity";
 
 export enum Status {
     OPEN = "open",
@@ -49,6 +49,11 @@ export class Job {
 
 	@ManyToOne(type => User, user => user.jobs)
     client: User;
+
+    @ManyToMany(type => User, user => user.interestedJobs)
+    @JoinTable()
+    interestedFreelancer: User[];
+
 
     // @OneToMany(type => JobReqSkill, jobReqSkill => jobReqSkill.skill)
     // requiredSkills: JobReqSkill[];
