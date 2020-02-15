@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
+import bcrypt = require('bcrypt');
 
 @Injectable()
 export class UsersService {
@@ -70,11 +71,23 @@ export class UsersService {
         });
     }
 
+    async getUserByUsername(username: string): Promise<User> {
+        return this.userRepository.findOne({username});
+    }
+
     async createNewUser(createUserDto: CreateUserDto) {
+        const hashedPass = await bcrypt.hash(createUserDto.password, 10);
+        createUserDto.password = hashedPass;
+
         createUserDto.createdTime = new Date();
         createUserDto.isVerified = false;
         createUserDto.isVisible = true;
         createUserDto.money = 0;
+
+        if (this.getUserByUsername(createUserDto.username)) {
+            throw new BadRequestException(`This username has been used.`)
+        }
+
         return this.userRepository.insert(createUserDto);
     }
 

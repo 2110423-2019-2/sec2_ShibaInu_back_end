@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
 import { Job } from "./job.entity";
 
 export enum InterestedCategory {
@@ -85,5 +85,8 @@ export class User {
 
 	@OneToMany(type => Job, job => job.client) // note: we will create author property in the Photo class below
     jobs: Job[];
+
+    @ManyToMany(type => Job, job => job.interestedFreelancer)
+    interestedJobs: Job[];
 
 }
