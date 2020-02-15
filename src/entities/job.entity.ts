@@ -22,7 +22,7 @@ export enum Catergory {
 export class Job {
     @PrimaryGeneratedColumn()
     jobId: number;
-
+    
     @Column('varchar', { length: 150 })
     name: string;
 

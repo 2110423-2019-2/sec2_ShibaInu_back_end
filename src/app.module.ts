@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { JobsModule } from './jobs/jobs.module';
 import { UsersModule} from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { NotificationController } from './notification/notification.controller';
 import { AuthModule } from './auth/auth.module';
 
 require('dotenv').config()
@@ -11,7 +12,7 @@ require('dotenv').config()
 @Module({
     imports: [
         JobsModule,
-		UsersModule,
+        UsersModule,
         TypeOrmModule.forRootAsync({
             useFactory: () => ({
                 type: 'mysql',
@@ -26,7 +27,7 @@ require('dotenv').config()
         }),
         AuthModule,
     ],
-    controllers: [AppController],
+    controllers: [AppController, NotificationController],
     providers: [AppService],
 })
 export class AppModule {}
