@@ -33,16 +33,17 @@ export class UsersService {
             "experience",
             "resume",
             "skills",
-            "money"] 
+            "money",
+            "interestedCategories"] 
         });
     }
 
     async getUserById(userId: number): Promise<User> {
-        let user = this.userRepository.findOne(userId);
         return this.userRepository.findOne(userId);
     }
 
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
+        console.log(userNamePasswordDto);
         return this.userRepository.find({
             where:  {
                 username : userNamePasswordDto.username,
@@ -54,6 +55,15 @@ export class UsersService {
     async getMoneyById(userId: number): Promise<User> {
         return this.userRepository.findOne({
             select: ["money"],
+            where:  {
+                userId : userId
+            }
+        });
+    }
+
+    async getInterestedCategoriesById(userId: number): Promise<User> {
+        return this.userRepository.findOne({
+            select: ["interestedCategories"],
             where:  {
                 userId : userId
             }

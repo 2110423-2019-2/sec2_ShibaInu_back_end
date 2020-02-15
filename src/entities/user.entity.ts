@@ -1,6 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Job } from "./job.entity";
 
+export enum InterestedCategory {
+    game = "game",
+    software = "software",
+    mobileApp = "mobileApp",
+    website = "website",
+    other = "other"
+};
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -71,6 +79,9 @@ export class User {
 
     @Column("integer")
     money: number;
+
+    @Column("enum",{enum : InterestedCategory, default: InterestedCategory.other})
+    interestedCategories: InterestedCategory;
 
 	@OneToMany(type => Job, job => job.client) // note: we will create author property in the Photo class below
     jobs: Job[];
