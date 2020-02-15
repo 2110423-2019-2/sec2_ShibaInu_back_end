@@ -1,5 +1,5 @@
 import { User } from "../entities/user.entity";
-import { Status, Catergory } from "src/entities/job.entity";
+import { Status, Catergory } from "../entities/job.entity";
 
 export class CreateJobDto {
     name: string;
