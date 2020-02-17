@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Post, Body, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Patch, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -21,6 +22,7 @@ export class UsersController {
         return this.userService.getUserById(userId);
     }
 
+    @UseGuards(AuthGuard())
     @Get('money/:userId')
     async getMoneyById(@Param('userId') userId: number) {
         return this.userService.getMoneyById(userId);
