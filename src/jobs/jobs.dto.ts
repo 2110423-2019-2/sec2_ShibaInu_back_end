@@ -1,5 +1,5 @@
-import { User } from "../entities/user.entity";
-import { Status, Catergory } from "../entities/job.entity";
+import { User } from '../entities/user.entity';
+import { Status, Catergory } from '../entities/job.entity';
 
 export class CreateJobDto {
     name: string;
@@ -27,4 +27,3 @@ export class CreateJobDto {
 //     optionalSkills?: string[];
 //     client: User;
 //}
-

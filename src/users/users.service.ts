@@ -12,30 +12,32 @@ export class UsersService {
         private readonly userRepository: Repository<User>,
     ) {}
 
-	async getAllUsers(): Promise<User[]> {
+    async getAllUsers(): Promise<User[]> {
         return this.userRepository.find({
-            select: ["userId",
-            "firstName",
-            "lastName",
-            "phone",
-            "email",
-            "education",
-            "createdTime",
-            "isVerified",
-            "identificationCardPic",
-            "identificationCardWithFacePic",
-            "identificationNumber",
-            "isVisible",
-            "about",
-            "location",
-            "profilePicture",
-            "dateOfBirth",
-            "website",
-            "experience",
-            "resume",
-            "skills",
-            "money",
-            "interestedCategories"] 
+            select: [
+                'userId',
+                'firstName',
+                'lastName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+                'interestedCategories',
+            ],
         });
     }
 
@@ -46,33 +48,33 @@ export class UsersService {
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
         console.log(userNamePasswordDto);
         return this.userRepository.find({
-            where:  {
-                username : userNamePasswordDto.username,
-                password : userNamePasswordDto.password
-            }
+            where: {
+                username: userNamePasswordDto.username,
+                password: userNamePasswordDto.password,
+            },
         });
     }
 
     async getMoneyById(userId: number): Promise<User> {
         return this.userRepository.findOne({
-            select: ["money"],
-            where:  {
-                userId : userId
-            }
+            select: ['money'],
+            where: {
+                userId: userId,
+            },
         });
     }
 
     async getInterestedCategoriesById(userId: number): Promise<User> {
         return this.userRepository.findOne({
-            select: ["interestedCategories"],
-            where:  {
-                userId : userId
-            }
+            select: ['interestedCategories'],
+            where: {
+                userId: userId,
+            },
         });
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        return this.userRepository.findOne({username});
+        return this.userRepository.findOne({ username });
     }
 
     async createNewUser(createUserDto: CreateUserDto) {
@@ -85,7 +87,7 @@ export class UsersService {
         createUserDto.money = 0;
 
         if (this.getUserByUsername(createUserDto.username)) {
-            throw new BadRequestException(`This username has been used.`)
+            throw new BadRequestException(`This username has been used.`);
         }
 
         return this.userRepository.insert(createUserDto);
@@ -94,6 +96,4 @@ export class UsersService {
     async editUser(editUserDto: EditUserDto) {
         return this.userRepository.save(editUserDto);
     }
-
-    
 }
