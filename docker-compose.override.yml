@@ -1,0 +1,30 @@
+version: "3.2"
+
+services: 
+    backend:
+        build:
+            context: ./dockerfiles/dev
+        volumes:
+            - .:/server
+        command: sh -c 'cd /server && yarn && yarn start'
+        environment: 
+            MYSQL_USER:
+            MYSQL_PASSWORD:
+            MYSQL_URL:
+            MYSQL_DBNAME:
+        ports:
+            - 10000:10000
+        depends_on:
+            - db
+
+    db:
+        container_name: se_youngstar_backend-db
+        image: mysql:5.7
+        restart: always
+        environment: 
+            MYSQL_ROOT_PASSWORD: 
+        ports: 
+            - 3306:3306
+        volumes:
+            - ./db-volume:/var/lib/mysql
+            - ./my.cnf:/etc/my.cnf
