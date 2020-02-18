@@ -8,6 +8,7 @@ import {
     JoinTable,
 } from 'typeorm';
 import { User } from './user.entity';
+import { Bid } from './bid.entity';
 //import { JobReqSkill } from './jobReqSkill.entity';
 //import { JobOptSkill } from "./JobOptSkill.entity";
 
@@ -61,12 +62,8 @@ export class Job {
     )
     client: User;
 
-    @ManyToMany(
-        type => User,
-        user => user.interestedJobs,
-    )
-    @JoinTable()
-    interestedFreelancer: User[];
+    @OneToMany(type => Bid, bid => bid.jobId)
+    bid: Bid[];
 
     // @OneToMany(type => JobReqSkill, jobReqSkill => jobReqSkill.skill)
     // requiredSkills: JobReqSkill[];

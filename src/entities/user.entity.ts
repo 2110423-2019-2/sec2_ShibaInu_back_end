@@ -9,6 +9,7 @@ import {
     ManyToOne,
 } from 'typeorm';
 import { Job } from './job.entity';
+import { Bid } from "./bid.entity";
 
 export enum InterestedCategoryEnum {
     game = 'game',
@@ -92,11 +93,8 @@ export class User {
     ) // note: we will create author property in the Photo class below
     jobs: Job[];
 
-    @ManyToMany(
-        type => Job,
-        job => job.interestedFreelancer,
-    )
-    interestedJobs: Job[];
+    @OneToMany(type => Bid, bid => bid.userId)
+    bid: Bid[];
 }
 
 @Entity()
