@@ -11,7 +11,6 @@ export class CreateJobDto {
     status?: Status;
     createdTime?: Date;
     client: User;
-    interestedFreelancer: User[];
 }
 
 // export class CreateJobWithSkillDto {
