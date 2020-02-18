@@ -23,11 +23,8 @@ export class User {
     @PrimaryGeneratedColumn()
     userId: number;
 
-    @Column('varchar', { length: 50 })
-    firstName: string;
-
-    @Column('varchar', { length: 50 })
-    lastName: string;
+    @Column('varchar', { length: 100 })
+    fullName: string;
 
     @Column('varchar', { length: 10 })
     phone: string;

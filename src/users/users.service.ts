@@ -24,8 +24,7 @@ export class UsersService {
         return this.userRepository.find({
             select: [
                 'userId',
-                'firstName',
-                'lastName',
+                'fullName',
                 'phone',
                 'email',
                 'education',
@@ -49,7 +48,30 @@ export class UsersService {
     }
 
     async getUserById(userId: number): Promise<User> {
-        return this.userRepository.findOne(userId);
+        return this.userRepository.findOne(userId,{
+            select: [
+                'userId',
+                'fullName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+            ]
+        });
     }
 
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
@@ -72,7 +94,30 @@ export class UsersService {
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        return this.userRepository.findOne({ username });
+        return this.userRepository.findOne({
+            where : username = username,
+            select: [
+                'userId',
+                'fullName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+            ]});
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
