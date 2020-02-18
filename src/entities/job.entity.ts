@@ -50,9 +50,9 @@ export class Job {
 	@ManyToOne(type => User, user => user.jobs)
     client: User;
 
-    // @OneToMany(type => JobReqSkill, jobReqSkill => jobReqSkill.skill)
-    // requiredSkills: JobReqSkill[];
+    @OneToMany(type => JobReqSkill, jobReqSkill => jobReqSkill.requiredSkill)
+    requiredSkills: JobReqSkill[];
 
-    // @OneToMany(type => JobReqSkill, jobReqSkill => jobReqSkill.skill)
-    // optionalSkills: JobOptSkill[];
+    @OneToMany(type => JobOptSkill, jobOptSkill => jobOptSkill.optionalSkill)
+    optionalSkills: JobOptSkill[];
 }
