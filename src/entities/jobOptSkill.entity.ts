@@ -4,11 +4,10 @@ import { Job } from './job.entity';
 @Entity()
 export class JobOptSkill {
     @PrimaryColumn('varchar', { length: 50 })
-    optionalSkill: string;
+    skill: string;
 
     @ManyToOne(type => Job, {
         primary: true,
-        cascade: true,
         onDelete: 'CASCADE',
     })
     @JoinColumn({ name: 'jobId' })

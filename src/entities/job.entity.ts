@@ -61,13 +61,15 @@ export class Job {
 
     @OneToMany(
         type => JobReqSkill,
-        jobReqSkill => jobReqSkill.requiredSkill,
+        jobReqSkill => jobReqSkill.job,
+        { cascade: true },
     )
     requiredSkills: JobReqSkill[];
 
     @OneToMany(
         type => JobOptSkill,
-        jobOptSkill => jobOptSkill.optionalSkill,
+        jobOptSkill => jobOptSkill.job,
+        { cascade: true },
     )
     optionalSkills: JobOptSkill[];
 }
