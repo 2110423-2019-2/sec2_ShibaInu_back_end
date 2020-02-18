@@ -17,52 +17,52 @@ export class User {
     @Column('varchar', { length: 50 })
     firstName: string;
 
-	@Column('varchar', { length: 50 })
+    @Column('varchar', { length: 50 })
     lastName: string;
 
-    @Column('varchar', { length: 10})
+    @Column('varchar', { length: 10 })
     phone: string;
 
-	@Column('varchar', { length: 50})
+    @Column('varchar', { length: 50 })
     email: string;
 
-    @Column('varchar', { length: 50})
+    @Column('varchar', { length: 50 })
     username: string;
 
 	@Column('varchar', { length: 100})
     password: string;
 
-	@Column('text')
+    @Column('text')
     education: string;
 
     @Column('timestamp')
     createdTime: Date;
 
-	@Column('boolean')
+    @Column('boolean')
     isVerified: boolean;
 
-	@Column('text') //link to photo
+    @Column('text') //link to photo
     identificationCardPic: string;
 
     @Column('text') //link to photo
     identificationCardWithFacePic: string;
 
-	@Column('varchar', { length: 13 })
+    @Column('varchar', { length: 13 })
     identificationNumber: string;
 
-	@Column('boolean') //is the user can see by other user?
+    @Column('boolean') //is the user can see by other user?
     isVisible: boolean;
 
-	@Column('text')
+    @Column('text')
     about: string;
 
     @Column('text')
     location: string;
-    
+
     @Column('text') //link to photo
     profilePicture: string;
 
-    @Column('datetime') 
+    @Column('datetime')
     dateOfBirth: Date;
 
     @Column('text')
@@ -74,18 +74,23 @@ export class User {
     @Column('text')
     resume: string;
 
-    @Column("simple-array")
+    @Column('simple-array')
     skills: string[];
 
-    @Column("integer")
+    @Column('integer')
     money: number;
 
-	@OneToMany(type => Job, job => job.client) // note: we will create author property in the Photo class below
+    @OneToMany(
+        type => Job,
+        job => job.client,
+    ) // note: we will create author property in the Photo class below
     jobs: Job[];
 
-    @ManyToMany(type => Job, job => job.interestedFreelancer)
+    @ManyToMany(
+        type => Job,
+        job => job.interestedFreelancer,
+    )
     interestedJobs: Job[];
-
 }
 
 

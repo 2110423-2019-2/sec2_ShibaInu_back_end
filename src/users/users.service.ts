@@ -15,7 +15,7 @@ export class UsersService {
         private readonly interestedCategoryRepository: Repository<InterestedCategory>,
     ) {}
 
-	async getAllUsers(): Promise<User[]> {
+    async getAllUsers(): Promise<User[]> {
         return this.userRepository.find({
             select: ["userId",
             "firstName",
@@ -48,25 +48,25 @@ export class UsersService {
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
         console.log(userNamePasswordDto);
         return this.userRepository.find({
-            where:  {
-                username : userNamePasswordDto.username,
-                password : userNamePasswordDto.password
-            }
+            where: {
+                username: userNamePasswordDto.username,
+                password: userNamePasswordDto.password,
+            },
         });
     }
 
     async getMoneyById(userId: number): Promise<User> {
         return this.userRepository.findOne({
-            select: ["money"],
-            where:  {
-                userId : userId
-            }
+            select: ['money'],
+            where: {
+                userId: userId,
+            },
         });
     }
 
 
     async getUserByUsername(username: string): Promise<User> {
-        return this.userRepository.findOne({username});
+        return this.userRepository.findOne({ username });
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
@@ -97,6 +97,4 @@ export class UsersService {
     async editUser(editUserDto: EditUserDto) {
         return this.userRepository.save(editUserDto);
     }
-
-    
 }

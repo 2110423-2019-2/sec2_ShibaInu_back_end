@@ -1,0 +1,6 @@
+version: "3.2"
+
+services: 
+    backend:
+        container_name: se_youngstar_backend
+        restart: always

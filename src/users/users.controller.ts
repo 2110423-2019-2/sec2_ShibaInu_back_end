@@ -1,14 +1,23 @@
-import { Controller, Get, Param, Post, Body, Patch } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Param,
+    Post,
+    Body,
+    Patch,
+    UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
-	constructor(private readonly userService: UsersService) {}
+    constructor(private readonly userService: UsersService) {}
 
     @Get()
     async getAllUsers() {
-		return this.userService.getAllUsers();
+        return this.userService.getAllUsers();
     }
 
     @Get('login')
@@ -21,6 +30,7 @@ export class UsersController {
         return this.userService.getUserById(userId);
     }
 
+    @UseGuards(AuthGuard())
     @Get('money/:userId')
     async getMoneyById(@Param('userId') userId: number) {
         return this.userService.getMoneyById(userId);
@@ -44,8 +54,11 @@ export class UsersController {
     }
 
     @Patch(':userId')
-    async editUser(@Param('userId') userId:number, @Body() editUserDto: EditUserDto) {
-        editUserDto.userId=Number(userId);
+    async editUser(
+        @Param('userId') userId: number,
+        @Body() editUserDto: EditUserDto,
+    ) {
+        editUserDto.userId = Number(userId);
         return this.userService.editUser(editUserDto);
     }
 }

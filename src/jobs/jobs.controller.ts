@@ -1,6 +1,7 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, UseGuards } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './jobs.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('jobs')
 export class JobsController {
@@ -16,6 +17,7 @@ export class JobsController {
         return this.jobService.getJobById(jobId);
     }
 
+    @UseGuards(AuthGuard())
     @Post()
     async createNewJob(@Body() createJobDto: CreateJobDto) {
         return this.jobService.createNewJob(createJobDto);
