@@ -3,7 +3,8 @@ import { AppModule } from './app.module';
 require('dotenv').config();
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule, { cors: true });
+    const app = await NestFactory.create(AppModule);
+    app.enableCors();
     await app.listen(10000);
 }
 bootstrap();

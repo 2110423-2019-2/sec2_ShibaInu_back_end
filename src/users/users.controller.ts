@@ -36,14 +36,9 @@ export class UsersController {
         return this.userService.getMoneyById(userId);
     }
 
-    @Get('username/:username')
-    async getUserByUsername(@Param('username') username: string) {
-        return this.userService.getUserByUsername(username);
-    }
-
-    @Get('category/:userId')
-    async getCategoryByUserId(@Param('userId') userId: number) {
-        return this.userService.getCategoryByUserId(userId);
+    @Get('interestedCategories/:userId')
+    async getInterestedCategoriesById(@Param('userId') userId: number) {
+        return this.userService.getInterestedCategoriesById(userId);
     }
 
     @Post()

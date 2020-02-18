@@ -4,14 +4,11 @@ import {
     Column,
     OneToMany,
     ManyToMany,
-    PrimaryColumn,
-    JoinColumn,
-    OneToOne,
 } from 'typeorm';
 import { Job } from './job.entity';
 import { Bid } from "./bid.entity";
 
-export enum InterestedCategoryEnum {
+export enum InterestedCategory {
     game = 'game',
     software = 'software',
     mobileApp = 'mobileApp',
@@ -90,6 +87,12 @@ export class User {
     @Column('integer')
     money: number;
 
+    @Column('enum', {
+        enum: InterestedCategory,
+        default: InterestedCategory.other,
+    })
+    interestedCategories: InterestedCategory;
+
     @OneToMany(
         type => Job,
         job => job.client,
@@ -98,17 +101,4 @@ export class User {
 
     @OneToMany(type => Bid, bid => bid.userId)
     bid: Bid[];
-}
-
-@Entity()
-export class InterestedCategory {
-    @PrimaryColumn('enum', {
-        enum: InterestedCategoryEnum,
-        default: InterestedCategoryEnum.other,
-    })
-    category: String;
-
-    @OneToOne(type => User, { primary: true })
-    @JoinColumn({ name: 'userId' })
-    userId: User;
 }
