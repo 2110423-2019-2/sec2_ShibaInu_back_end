@@ -3,7 +3,7 @@ import {
     BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, InterestedCategory, UserSkill } from '../entities/user.entity';
+import { User, InterestedCategory, UserSkill, InterestedCategoryEnum } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto, CreateSkillDto } from './users.dto';
 import bcrypt = require('bcrypt');
@@ -20,7 +20,7 @@ export class UsersService {
         >,
 
         @InjectRepository(UserSkill)
-        private readonly userSkill: Repository<
+        private readonly userSkillRepository: Repository<
             UserSkill
         >,
     ) {}
@@ -98,7 +98,7 @@ export class UsersService {
 
     async getUserByUsername(username: string): Promise<User> {
         return this.userRepository.findOne({
-            where : username = username,
+            where : { username : username },
             select: [
                 'userId',
                 'fullName',
@@ -132,7 +132,7 @@ export class UsersService {
     }
 
     async getSkillByUserId(userId: number): Promise<UserSkill[]> {
-        return this.userSkill.find({
+        return this.userSkillRepository.find({
             select: ["skill"],
             where : {
                 user : userId
@@ -161,10 +161,18 @@ export class UsersService {
     }
 
     async createNewUserSkill(createNewSkillDto: CreateSkillDto){
-        return this.userSkill.save(createNewSkillDto);
+        return this.userSkillRepository.save(createNewSkillDto);
     }
 
     async editUser(editUserDto: EditUserDto) {
         return this.userRepository.save(editUserDto);
+    }
+
+    async deleteInterestedCategory(userId,interestedCategory: InterestedCategoryEnum){
+        return this.interestedCategoryRepository.delete({user:userId, interestedCategory:interestedCategory});
+    }
+
+    async deleteUserSkill(userId,skill: string){
+        return this.userSkillRepository.delete({user:userId, skill:skill});
     }
 }

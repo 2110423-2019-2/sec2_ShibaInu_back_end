@@ -6,6 +6,7 @@ import {
     Body,
     Patch,
     UseGuards,
+    Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto, CreateSkillDto } from './users.dto';
@@ -81,5 +82,23 @@ export class UsersController {
     ) {
         editUserDto.userId = Number(userId);
         return this.userService.editUser(editUserDto);
+    }
+
+    @Delete('category/:userId')
+    async deleteInterestedCategory(
+        @Param('userId') userId: number,
+        @Body() deleteInterestedCategoryDto : CreateInterestedCategoryDto
+    )
+    {
+        return this.userService.deleteInterestedCategory(userId,deleteInterestedCategoryDto.interestedCategory);
+    }
+
+    @Delete('skill/:userId')
+    async deleteUserSkill(
+        @Param('userId') userId: number,
+        @Body() deleteUserSkillDto : CreateSkillDto
+    )
+    {
+        return this.userService.deleteUserSkill(userId,deleteUserSkillDto.skill);
     }
 }
