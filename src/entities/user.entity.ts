@@ -6,7 +6,7 @@ import {
     ManyToMany,
     PrimaryColumn,
     JoinColumn,
-    OneToOne,
+    ManyToOne,
 } from 'typeorm';
 import { Job } from './job.entity';
 import { Bid } from "./bid.entity";
@@ -24,11 +24,8 @@ export class User {
     @PrimaryGeneratedColumn()
     userId: number;
 
-    @Column('varchar', { length: 50 })
-    firstName: string;
-
-    @Column('varchar', { length: 50 })
-    lastName: string;
+    @Column('varchar', { length: 100 })
+    fullName: string;
 
     @Column('varchar', { length: 10 })
     phone: string;
@@ -102,13 +99,12 @@ export class User {
 
 @Entity()
 export class InterestedCategory {
-    @PrimaryColumn('enum', {
-        enum: InterestedCategoryEnum,
-        default: InterestedCategoryEnum.other,
-    })
-    category: String;
+    @PrimaryColumn("enum",{enum : InterestedCategoryEnum, default: InterestedCategoryEnum.other})
+    interestedCategory: String;
 
-    @OneToOne(type => User, { primary: true })
-    @JoinColumn({ name: 'userId' })
-    userId: User;
+
+    @ManyToOne(type => User, { primary: true})
+    @JoinColumn({ name: "userId" })
+    user:User;
+
 }

@@ -1,12 +1,11 @@
 import {
     Injectable,
     BadRequestException,
-    NotImplementedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, InterestedCategory } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
+import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto } from './users.dto';
 import bcrypt = require('bcrypt');
 
 @Injectable()
@@ -25,8 +24,7 @@ export class UsersService {
         return this.userRepository.find({
             select: [
                 'userId',
-                'firstName',
-                'lastName',
+                'fullName',
                 'phone',
                 'email',
                 'education',
@@ -50,7 +48,30 @@ export class UsersService {
     }
 
     async getUserById(userId: number): Promise<User> {
-        return this.userRepository.findOne(userId);
+        return this.userRepository.findOne(userId,{
+            select: [
+                'userId',
+                'fullName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+            ]
+        });
     }
 
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
@@ -73,15 +94,38 @@ export class UsersService {
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        return this.userRepository.findOne({ username });
+        return this.userRepository.findOne({
+            where : username = username,
+            select: [
+                'userId',
+                'fullName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+            ]});
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
         return this.interestedCategoryRepository.find({
-            select: ['category'],
-            where: {
-                userId: userId,
-            },
+            select: ["interestedCategory"],
+            where : {
+                user : userId
+            }
         });
     }
 
@@ -99,6 +143,10 @@ export class UsersService {
         }
 
         return this.userRepository.insert(createUserDto);
+    }
+
+    async createNewUserInterestedCategory(createInterestedCategoryDto: CreateInterestedCategoryDto){
+        return this.interestedCategoryRepository.save(createInterestedCategoryDto);
     }
 
     async editUser(editUserDto: EditUserDto) {
