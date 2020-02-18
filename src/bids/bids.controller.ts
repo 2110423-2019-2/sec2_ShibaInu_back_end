@@ -6,15 +6,15 @@ import { CreateBidDto } from './bids.dto';
 export class BidsController {
     constructor(private readonly bidService: BidsService) {}
 
-    @Get('bidId/:jobId')
-    async getBidIdByjobId(@Param('jobId') jobId: number){
-        return this.bidService.getBidIdByJobId(jobId);
-    }
-
     @Get(':bidId')
     async getBidById(@Param('bidId') bidId: number) {
         return this.bidService.getBidById(bidId);
     }  
+
+    @Get('bidId/:jobId')
+    async getBidIdByjobId(@Param('jobId') jobId: number){
+        return this.bidService.getBidIdByJobId(jobId);
+    }
 
     @Post()
     async createNewBid(@Body() createBidDto: CreateBidDto) {
