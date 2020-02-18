@@ -35,7 +35,6 @@ export class UsersController {
     async getMoneyById(@Param('userId') userId: number) {
         return this.userService.getMoneyById(userId);
     }
-    
 
     @Get('username/:username')
     async getUserByUsername(@Param('username') username: string) {
@@ -46,7 +45,6 @@ export class UsersController {
     async getCategoryByUserId(@Param('userId') userId: number) {
         return this.userService.getCategoryByUserId(userId);
     }
-
 
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {

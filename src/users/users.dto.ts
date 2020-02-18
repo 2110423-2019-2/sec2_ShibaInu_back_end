@@ -40,11 +40,11 @@ export class EditUserDto {
     website?: string;
     experience?: string;
     resume?: string;
-    skills? : string[];
-    identificationNumber? : string;
-    identificationCardWithFacePic? : string;
-    jobs? : Job[];
-    money? : number;
+    skills?: string[];
+    identificationNumber?: string;
+    identificationCardWithFacePic?: string;
+    jobs?: Job[];
+    money?: number;
 }
 
 export class UserNamePasswordDto {

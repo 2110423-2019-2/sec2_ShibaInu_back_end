@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, NotImplementedException } from '@nestjs/common';
+import {
+    Injectable,
+    BadRequestException,
+    NotImplementedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, InterestedCategory } from '../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -12,32 +16,36 @@ export class UsersService {
         private readonly userRepository: Repository<User>,
 
         @InjectRepository(InterestedCategory)
-        private readonly interestedCategoryRepository: Repository<InterestedCategory>,
+        private readonly interestedCategoryRepository: Repository<
+            InterestedCategory
+        >,
     ) {}
 
     async getAllUsers(): Promise<User[]> {
         return this.userRepository.find({
-            select: ["userId",
-            "firstName",
-            "lastName",
-            "phone",
-            "email",
-            "education",
-            "createdTime",
-            "isVerified",
-            "identificationCardPic",
-            "identificationCardWithFacePic",
-            "identificationNumber",
-            "isVisible",
-            "about",
-            "location",
-            "profilePicture",
-            "dateOfBirth",
-            "website",
-            "experience",
-            "resume",
-            "skills",
-            "money"] 
+            select: [
+                'userId',
+                'firstName',
+                'lastName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+            ],
         });
     }
 
@@ -64,17 +72,16 @@ export class UsersService {
         });
     }
 
-
     async getUserByUsername(username: string): Promise<User> {
         return this.userRepository.findOne({ username });
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
         return this.interestedCategoryRepository.find({
-            select: ["category"],
-            where : {
-                userId : userId
-            }
+            select: ['category'],
+            where: {
+                userId: userId,
+            },
         });
     }
 
@@ -88,7 +95,7 @@ export class UsersService {
         createUserDto.money = 0;
 
         if (await this.getUserByUsername(createUserDto.username)) {
-            throw new BadRequestException(`This username has been used.`)
+            throw new BadRequestException(`This username has been used.`);
         }
 
         return this.userRepository.insert(createUserDto);

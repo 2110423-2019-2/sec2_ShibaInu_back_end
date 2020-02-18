@@ -6,7 +6,10 @@ import { Job } from '../entities/job.entity';
 import { PassportModule } from '@nestjs/passport';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Job]), PassportModule.register({ defaultStrategy: 'jwt' })],
+    imports: [
+        TypeOrmModule.forFeature([Job]),
+        PassportModule.register({ defaultStrategy: 'jwt' }),
+    ],
     controllers: [JobsController],
     providers: [JobsService],
 })
