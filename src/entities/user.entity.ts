@@ -6,6 +6,7 @@ import {
     ManyToMany,
 } from 'typeorm';
 import { Job } from './job.entity';
+import { Bid } from "./bid.entity";
 
 export enum InterestedCategory {
     game = 'game',
@@ -35,7 +36,7 @@ export class User {
     @Column('varchar', { length: 50 })
     username: string;
 
-    @Column('varchar', { length: 50 })
+    @Column('varchar', { length: 100 })
     password: string;
 
     @Column('text')
@@ -98,9 +99,6 @@ export class User {
     ) // note: we will create author property in the Photo class below
     jobs: Job[];
 
-    @ManyToMany(
-        type => Job,
-        job => job.interestedFreelancer,
-    )
-    interestedJobs: Job[];
+    @OneToMany(type => Bid, bid => bid.userId)
+    bid: Bid[];
 }

@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { NotificationController } from './notification/notification.controller';
 import { AuthModule } from './auth/auth.module';
+import { BidsModule } from './bids/bids.module';
 
 require('dotenv').config();
 
@@ -13,6 +14,7 @@ require('dotenv').config();
     imports: [
         JobsModule,
         UsersModule,
+        BidsModule,
         TypeOrmModule.forRootAsync({
             useFactory: () => ({
                 type: 'mysql',

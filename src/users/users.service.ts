@@ -86,7 +86,7 @@ export class UsersService {
         createUserDto.isVisible = true;
         createUserDto.money = 0;
 
-        if (this.getUserByUsername(createUserDto.username)) {
+        if (await this.getUserByUsername(createUserDto.username)) {
             throw new BadRequestException(`This username has been used.`);
         }
 
