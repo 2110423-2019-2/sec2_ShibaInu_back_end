@@ -1,21 +1,27 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { User } from "./user.entity";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    OneToMany,
+} from 'typeorm';
+import { User } from './user.entity';
 import { JobReqSkill } from './jobReqSkill.entity';
-import { JobOptSkill } from "./JobOptSkill.entity";
+import { JobOptSkill } from './JobOptSkill.entity';
 
 export enum Status {
-    OPEN = "open",
-    PROCESS = "process",
-    CANCEL = "cancel",
-    FINISH = "finish"
+    OPEN = 'open',
+    PROCESS = 'process',
+    CANCEL = 'cancel',
+    FINISH = 'finish',
 }
 
 export enum Catergory {
-    WEBSITE = "open",
-    SOFTWARE = "process",
-    MOBILE = "cancel",
-    GAME = "finish",
-    OTHER = "other"
+    WEBSITE = 'open',
+    SOFTWARE = 'process',
+    MOBILE = 'cancel',
+    GAME = 'finish',
+    OTHER = 'other',
 }
 
 @Entity()
@@ -47,12 +53,21 @@ export class Job {
     @Column('timestamp')
     createdTime: Date;
 
-	@ManyToOne(type => User, user => user.jobs)
+    @ManyToOne(
+        type => User,
+        user => user.jobs,
+    )
     client: User;
 
-    @OneToMany(type => JobReqSkill, jobReqSkill => jobReqSkill.requiredSkill)
+    @OneToMany(
+        type => JobReqSkill,
+        jobReqSkill => jobReqSkill.requiredSkill,
+    )
     requiredSkills: JobReqSkill[];
 
-    @OneToMany(type => JobOptSkill, jobOptSkill => jobOptSkill.optionalSkill)
+    @OneToMany(
+        type => JobOptSkill,
+        jobOptSkill => jobOptSkill.optionalSkill,
+    )
     optionalSkills: JobOptSkill[];
 }

@@ -2,15 +2,15 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { JobsModule } from './jobs/jobs.module';
-import { UsersModule} from './users/users.module';
+import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-require('dotenv').config()
+require('dotenv').config();
 
 @Module({
     imports: [
         JobsModule,
-		UsersModule,
+        UsersModule,
         TypeOrmModule.forRootAsync({
             useFactory: () => ({
                 type: 'mysql',

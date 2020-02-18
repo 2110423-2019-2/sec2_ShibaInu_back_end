@@ -4,11 +4,11 @@ import { CreateUserDto } from './users.dto';
 
 @Controller('users')
 export class UsersController {
-	constructor(private readonly userService: UsersService) {}
+    constructor(private readonly userService: UsersService) {}
 
     @Get()
     async getAllUsers() {
-		return this.userService.getAllUsers();
+        return this.userService.getAllUsers();
     }
 
     @Get(':userId')
