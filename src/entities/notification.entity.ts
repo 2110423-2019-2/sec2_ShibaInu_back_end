@@ -10,7 +10,7 @@ import { User } from './user.entity';
 @Entity()
 export class Notification{
     @PrimaryGeneratedColumn()
-    notiId: number;
+    notificationId: number;
 
     @Column('varchar', { length: 50 })
     topic: string;

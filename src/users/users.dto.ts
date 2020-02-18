@@ -2,10 +2,9 @@ import { Job } from 'src/entities/job.entity';
 import { InterestedCategoryEnum, User } from 'src/entities/user.entity';
 
 export class CreateUserDto {
-    firstName: string;
-    lastName: string;
-    phone: string;
-    email: string;
+    fullName: string;
+    phone?: string;
+    email?: string;
     username: string;
     password: string;
     education?: string;

@@ -14,7 +14,7 @@ import { Bid } from "./bid.entity";
 export enum InterestedCategoryEnum {
     game = 'game',
     software = 'software',
-    mobileApp = 'mobileApp',
+    mobileApp = 'mobile',
     website = 'website',
     other = 'other',
 }
