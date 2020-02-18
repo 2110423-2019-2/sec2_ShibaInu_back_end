@@ -2,7 +2,8 @@ version: "3.2"
 
 services: 
     backend:
-        image: node:12-alpine
+        build:
+            context: ./dockerfiles/dev
         volumes:
             - .:/server
         command: sh -c 'cd /server && yarn && yarn start'
