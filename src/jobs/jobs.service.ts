@@ -28,4 +28,8 @@ export class JobsService {
         createJobDto.createdTime = null;
         return this.jobRepository.update(jobId, createJobDto);
     }
+
+    async deleteJobById(jobId: number) {
+        return this.jobRepository.delete(jobId);
+    }
 }
