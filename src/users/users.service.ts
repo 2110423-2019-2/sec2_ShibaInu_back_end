@@ -1,6 +1,10 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+    Injectable,
+    BadRequestException,
+    NotImplementedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../entities/user.entity';
+import { User, InterestedCategory } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
 import bcrypt = require('bcrypt');
@@ -10,6 +14,11 @@ export class UsersService {
     constructor(
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
+
+        @InjectRepository(InterestedCategory)
+        private readonly interestedCategoryRepository: Repository<
+            InterestedCategory
+        >,
     ) {}
 
     async getAllUsers(): Promise<User[]> {
@@ -36,7 +45,6 @@ export class UsersService {
                 'resume',
                 'skills',
                 'money',
-                'interestedCategories',
             ],
         });
     }
@@ -64,17 +72,17 @@ export class UsersService {
         });
     }
 
-    async getInterestedCategoriesById(userId: number): Promise<User> {
-        return this.userRepository.findOne({
-            select: ['interestedCategories'],
+    async getUserByUsername(username: string): Promise<User> {
+        return this.userRepository.findOne({ username });
+    }
+
+    async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
+        return this.interestedCategoryRepository.find({
+            select: ['category'],
             where: {
                 userId: userId,
             },
         });
-    }
-
-    async getUserByUsername(username: string): Promise<User> {
-        return this.userRepository.findOne({ username });
     }
 
     async createNewUser(createUserDto: CreateUserDto) {

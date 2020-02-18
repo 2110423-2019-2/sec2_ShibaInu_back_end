@@ -18,7 +18,8 @@ services:
 
     db:
         container_name: se_youngstar_backend-db
-        image: mysql:5.7
+        build:
+            context: ./dockerfiles/dev
         restart: always
         environment: 
             MYSQL_ROOT_PASSWORD: 
