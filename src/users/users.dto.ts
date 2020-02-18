@@ -46,7 +46,6 @@ export class EditUserDto {
     identificationCardWithFacePic? : string;
     jobs? : Job[];
     money? : number;
-    interestedCategories? : InterestedCategory;
 }
 
 export class UserNamePasswordDto {

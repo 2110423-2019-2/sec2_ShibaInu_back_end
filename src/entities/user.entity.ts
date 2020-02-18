@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, PrimaryColumn, JoinColumn, OneToOne } from 'typeorm';
 import { Job } from "./job.entity";
 
-export enum InterestedCategory {
+export enum InterestedCategoryEnum {
     game = "game",
     software = "software",
     mobileApp = "mobileApp",
@@ -29,7 +29,7 @@ export class User {
     @Column('varchar', { length: 50})
     username: string;
 
-	@Column('varchar', { length: 50})
+	@Column('varchar', { length: 100})
     password: string;
 
 	@Column('text')
@@ -80,13 +80,23 @@ export class User {
     @Column("integer")
     money: number;
 
-    @Column("enum",{enum : InterestedCategory, default: InterestedCategory.other})
-    interestedCategories: InterestedCategory;
-
 	@OneToMany(type => Job, job => job.client) // note: we will create author property in the Photo class below
     jobs: Job[];
 
     @ManyToMany(type => Job, job => job.interestedFreelancer)
     interestedJobs: Job[];
+
+}
+
+
+@Entity()
+export class InterestedCategory {
+    @PrimaryColumn("enum",{enum : InterestedCategoryEnum, default: InterestedCategoryEnum.other})
+    category: String;
+
+
+    @OneToOne(type => User, { primary: true })
+    @JoinColumn({ name: "userId" })
+    userId:User;
 
 }
