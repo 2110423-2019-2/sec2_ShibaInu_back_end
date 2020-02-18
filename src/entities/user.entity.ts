@@ -1,10 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, PrimaryColumn, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, PrimaryColumn, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
 import { Job } from "./job.entity";
 
 export enum InterestedCategoryEnum {
     game = "game",
     software = "software",
-    mobileApp = "mobileApp",
+    mobileApp = "mobile",
     website = "website",
     other = "other"
 };
@@ -97,11 +97,11 @@ export class User {
 @Entity()
 export class InterestedCategory {
     @PrimaryColumn("enum",{enum : InterestedCategoryEnum, default: InterestedCategoryEnum.other})
-    category: String;
+    interestedCategory: String;
 
 
-    @OneToOne(type => User, { primary: true })
+    @ManyToOne(type => User, { primary: true})
     @JoinColumn({ name: "userId" })
-    userId:User;
+    user:User;
 
 }

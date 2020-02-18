@@ -2,7 +2,7 @@ import { Injectable, BadRequestException, NotImplementedException } from '@nestj
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, InterestedCategory } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
+import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto } from './users.dto';
 import bcrypt = require('bcrypt');
 
 @Injectable()
@@ -71,9 +71,9 @@ export class UsersService {
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
         return this.interestedCategoryRepository.find({
-            select: ["category"],
+            select: ["interestedCategory"],
             where : {
-                userId : userId
+                user : userId
             }
         });
     }
@@ -92,6 +92,10 @@ export class UsersService {
         }
 
         return this.userRepository.insert(createUserDto);
+    }
+
+    async createNewUserInterestedCategory(createInterestedCategoryDto: CreateInterestedCategoryDto){
+        return this.interestedCategoryRepository.save(createInterestedCategoryDto);
     }
 
     async editUser(editUserDto: EditUserDto) {
