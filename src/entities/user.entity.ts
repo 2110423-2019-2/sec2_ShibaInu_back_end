@@ -1,13 +1,22 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, PrimaryColumn, JoinColumn, OneToOne, ManyToOne } from 'typeorm';
-import { Job } from "./job.entity";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    ManyToMany,
+    PrimaryColumn,
+    JoinColumn,
+    ManyToOne,
+} from 'typeorm';
+import { Job } from './job.entity';
 
 export enum InterestedCategoryEnum {
-    game = "game",
-    software = "software",
-    mobileApp = "mobile",
-    website = "website",
-    other = "other"
-};
+    game = 'game',
+    software = 'software',
+    mobileApp = 'mobileApp',
+    website = 'website',
+    other = 'other',
+}
 
 @Entity()
 export class User {
@@ -29,7 +38,7 @@ export class User {
     @Column('varchar', { length: 50 })
     username: string;
 
-	@Column('varchar', { length: 100})
+    @Column('varchar', { length: 100 })
     password: string;
 
     @Column('text')
@@ -92,7 +101,6 @@ export class User {
     )
     interestedJobs: Job[];
 }
-
 
 @Entity()
 export class InterestedCategory {
