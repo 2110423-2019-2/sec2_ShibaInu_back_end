@@ -81,9 +81,6 @@ export class User {
     @Column('text')
     resume: string;
 
-    @Column('simple-array')
-    skills: string[];
-
     @Column('integer')
     money: number;
 
@@ -101,6 +98,18 @@ export class User {
 export class InterestedCategory {
     @PrimaryColumn("enum",{enum : InterestedCategoryEnum, default: InterestedCategoryEnum.other})
     interestedCategory: String;
+
+
+    @ManyToOne(type => User, { primary: true})
+    @JoinColumn({ name: "userId" })
+    user:User;
+
+}
+
+@Entity()
+export class UserSkill {
+    @PrimaryColumn("varchar",{ length: 50 })
+    skill: String;
 
 
     @ManyToOne(type => User, { primary: true})

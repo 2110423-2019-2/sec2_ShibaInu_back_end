@@ -8,7 +8,7 @@ import {
     UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto } from './users.dto';
+import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto, CreateSkillDto } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
@@ -46,6 +46,11 @@ export class UsersController {
         return this.userService.getCategoryByUserId(userId);
     }
 
+    @Get('skill/:userId')
+    async getSkillByUserId(@Param('userId') userId: number) {
+        return this.userService.getSkillByUserId(userId);
+    }
+
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {
         return this.userService.createNewUser(createUserDto);
@@ -58,6 +63,15 @@ export class UsersController {
     ) {
         createInterestedCategoryDto.user = await this.userService.getUserById(userId);
         return this.userService.createNewUserInterestedCategory(createInterestedCategoryDto);
+    }
+
+    @Post('skill/:userId')
+    async createNewUserSkill(
+        @Param('userId') userId: number,
+        @Body() createSkillDto : CreateSkillDto
+    ) {
+        createSkillDto.user = await this.userService.getUserById(userId);
+        return this.userService.createNewUserSkill(createSkillDto);
     }
 
     @Patch(':userId')

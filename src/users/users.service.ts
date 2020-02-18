@@ -3,9 +3,9 @@ import {
     BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, InterestedCategory } from '../entities/user.entity';
+import { User, InterestedCategory, UserSkill } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto } from './users.dto';
+import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto, CreateSkillDto } from './users.dto';
 import bcrypt = require('bcrypt');
 
 @Injectable()
@@ -17,6 +17,11 @@ export class UsersService {
         @InjectRepository(InterestedCategory)
         private readonly interestedCategoryRepository: Repository<
             InterestedCategory
+        >,
+
+        @InjectRepository(UserSkill)
+        private readonly userSkill: Repository<
+            UserSkill
         >,
     ) {}
 
@@ -41,7 +46,6 @@ export class UsersService {
                 'website',
                 'experience',
                 'resume',
-                'skills',
                 'money',
             ],
         });
@@ -68,7 +72,6 @@ export class UsersService {
                 'website',
                 'experience',
                 'resume',
-                'skills',
                 'money',
             ]
         });
@@ -115,7 +118,6 @@ export class UsersService {
                 'website',
                 'experience',
                 'resume',
-                'skills',
                 'money',
             ]});
     }
@@ -123,6 +125,15 @@ export class UsersService {
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
         return this.interestedCategoryRepository.find({
             select: ["interestedCategory"],
+            where : {
+                user : userId
+            }
+        });
+    }
+
+    async getSkillByUserId(userId: number): Promise<UserSkill[]> {
+        return this.userSkill.find({
+            select: ["skill"],
             where : {
                 user : userId
             }
@@ -147,6 +158,10 @@ export class UsersService {
 
     async createNewUserInterestedCategory(createInterestedCategoryDto: CreateInterestedCategoryDto){
         return this.interestedCategoryRepository.save(createInterestedCategoryDto);
+    }
+
+    async createNewUserSkill(createNewSkillDto: CreateSkillDto){
+        return this.userSkill.save(createNewSkillDto);
     }
 
     async editUser(editUserDto: EditUserDto) {
