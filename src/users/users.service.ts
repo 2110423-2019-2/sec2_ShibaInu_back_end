@@ -23,15 +23,59 @@ export class UsersService {
     ) {}
 
     async getAllUsers(): Promise<User[]> {
-        return this.userRepository.find({select: ['userId', 'firstName', 'lastName', 'phone', 'email', 'education', 'createdTime',
-            'isVerified', 'identificationCardPic', 'identificationCardWithFacePic', 'identificationNumber', 'isVisible', 'about',
-            'location', 'profilePicture', 'dateOfBirth', 'website', 'experience', 'resume', 'skills', 'money']})
+        return this.userRepository.find({
+            select: [
+                'userId',
+                'firstName',
+                'lastName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+            ],
+        });
     }
 
     async getUserById(userId: number): Promise<User> {
-        return this.userRepository.findOne(userId, {select: ['userId', 'firstName', 'lastName', 'phone', 'email', 'education', 'createdTime',
-            'isVerified', 'identificationCardPic', 'identificationCardWithFacePic', 'identificationNumber', 'isVisible', 'about',
-            'location', 'profilePicture', 'dateOfBirth', 'website', 'experience', 'resume', 'skills', 'money']})
+        return this.userRepository.findOne(userId, {
+            select: [
+                'userId',
+                'firstName',
+                'lastName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+            ],
+        });
     }
 
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
@@ -54,9 +98,32 @@ export class UsersService {
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        return this.userRepository.findOne({where: {username}, select: ['userId', 'firstName', 'lastName', 'phone', 'email', 'education',
-            'createdTime', 'isVerified', 'identificationCardPic', 'identificationCardWithFacePic', 'identificationNumber', 'isVisible',
-            'about', 'location', 'profilePicture', 'dateOfBirth', 'website', 'experience', 'resume', 'skills', 'money']})
+        return this.userRepository.findOne({
+            where: { username },
+            select: [
+                'userId',
+                'firstName',
+                'lastName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'skills',
+                'money',
+            ],
+        });
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
