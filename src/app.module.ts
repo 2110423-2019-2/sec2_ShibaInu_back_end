@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { NotificationController } from './notification/notification.controller';
 import { AuthModule } from './auth/auth.module';
 import { BidsModule } from './bids/bids.module';
+import { NotificationModule } from './notification/notification.module';
 
 require('dotenv').config();
 
@@ -25,9 +26,11 @@ require('dotenv').config();
                 database: process.env.MYSQL_DB,
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: true,
+                charset: 'utf8mb4_general_ci',
             }),
         }),
         AuthModule,
+        NotificationModule,
     ],
     controllers: [AppController, NotificationController],
     providers: [AppService],

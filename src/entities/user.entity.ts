@@ -3,7 +3,6 @@ import {
     PrimaryGeneratedColumn,
     Column,
     OneToMany,
-    ManyToMany,
     PrimaryColumn,
     JoinColumn,
     ManyToOne,
@@ -14,7 +13,7 @@ import { Bid } from './bid.entity';
 export enum InterestedCategoryEnum {
     game = 'game',
     software = 'software',
-    mobileApp = 'mobileApp',
+    mobileApp = 'mobile',
     website = 'website',
     other = 'other',
 }
@@ -25,90 +24,107 @@ export class User {
     userId: number;
 
     @Column('varchar', { length: 100 })
-    fullName: string;
-
-    @Column('varchar', { length: 10 })
-    phone: string;
-
-    @Column('varchar', { length: 50 })
-    email: string;
-
-    @Column('varchar', { length: 50 })
-    username: string;
+    firstName: string;
 
     @Column('varchar', { length: 100 })
+    lastName: string;
+
+    @Column('varchar', { length: 10, nullable: true })
+    phone: string;
+
+    @Column('varchar', { length: 50, nullable: true })
+    email: string;
+
+    @Column('varchar', { length: 50})
+    username: string;
+
+    @Column('varchar', { length: 100})
     password: string;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     education: string;
 
-    @Column('timestamp')
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @Column('boolean')
+    @Column('boolean', { default: false })
     isVerified: boolean;
 
-    @Column('text') //link to photo
+    @Column('text', { nullable: true }) //link to photo
     identificationCardPic: string;
 
-    @Column('text') //link to photo
+    @Column('text', { nullable: true }) //link to photo
     identificationCardWithFacePic: string;
 
-    @Column('varchar', { length: 13 })
+    @Column('varchar', { length: 13, nullable: true })
     identificationNumber: string;
 
-    @Column('boolean') //is the user can see by other user?
+    @Column('boolean', { default: true }) //is the user can see by other user?
     isVisible: boolean;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     about: string;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     location: string;
 
-    @Column('text') //link to photo
+    @Column('text', { nullable: true }) //link to photo
     profilePicture: string;
 
-    @Column('datetime')
+    @Column('datetime', { nullable: true })
     dateOfBirth: Date;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     website: string;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     experience: string;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     resume: string;
 
-    @Column('simple-array')
+    @Column('simple-array', { nullable: true })
     skills: string[];
 
-    @Column('integer')
+    @Column('integer', { default: 0 })
     money: number;
 
+    @Column('varchar',{ length: 100, nullable: true })
+    headline: string;
+
     @OneToMany(
-        type => Job,
+        () => Job,
         job => job.client,
+        { nullable: true },
     ) // note: we will create author property in the Photo class below
     jobs: Job[];
 
     @OneToMany(
-        type => Bid,
+        () => Bid,
         bid => bid.userId,
+        { nullable: true },
     )
     bid: Bid[];
 }
 
 @Entity()
 export class InterestedCategory {
-    @PrimaryColumn('enum', {
-        enum: InterestedCategoryEnum,
-        default: InterestedCategoryEnum.other,
-    })
-    interestedCategory: String;
+    @PrimaryColumn("enum",{enum : InterestedCategoryEnum, default: InterestedCategoryEnum.other})
+    interestedCategory: InterestedCategoryEnum;
 
-    @ManyToOne(type => User, { primary: true })
+
+    @ManyToOne(type => User, { primary: true})
+    @JoinColumn({ name: "userId" })
+    user:User;
+
+}
+
+@Entity()
+export class UserSkill {
+    @PrimaryColumn("varchar",{ length: 50 })
+    skill: String;
+
+    @ManyToOne(() => User, { primary: true })
     @JoinColumn({ name: 'userId' })
     user: User;
 }

@@ -10,7 +10,7 @@ import { User } from './user.entity';
 @Entity()
 export class Notification {
     @PrimaryGeneratedColumn()
-    notiId: number;
+    notificationId: number;
 
     @Column('varchar', { length: 50 })
     topic: string;
@@ -18,13 +18,13 @@ export class Notification {
     @Column('text')
     description: string;
 
-    @Column('timestamp')
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @Column('boolean')
+    @Column('boolean', { default: false })
     isRead: boolean;
 
-    @ManyToOne(type => User, { primary: true })
-    @JoinColumn({ name: 'userId' })
-    user: User;
+    @ManyToOne(type => User)
+    @JoinColumn({ name: "userId" })
+    user:User;
 }

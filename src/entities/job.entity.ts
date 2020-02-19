@@ -48,10 +48,13 @@ export class Job {
     @Column('enum', { enum: Catergory })
     catergory: Catergory;
 
-    @Column('timestamp')
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @Column('timestamp')
+    @Column('timestamp', {
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+    })
     updatedTime: Date;
 
     @ManyToOne(
@@ -66,6 +69,7 @@ export class Job {
         { cascade: true },
     )
     requiredSkills: JobReqSkill[];
+
     @OneToMany(
         type => Bid,
         bid => bid.jobId,
