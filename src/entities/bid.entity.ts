@@ -14,6 +14,12 @@ export class Bid {
     @PrimaryGeneratedColumn()
     bidId: number;
 
+    @Column()
+    jobId: number;
+
+    @Column()
+    userId: number;
+   
     @Column('integer')
     biddedWage: number;
 
@@ -24,10 +30,10 @@ export class Bid {
     createdTime: Date;
 
     @ManyToOne(type => Job)
-    @JoinColumn({ name: 'jobId' })
-    jobId: Job;
+    @JoinColumn({ name: "jobId"})
+    job: Job;
 
     @ManyToOne(type => User)
-    @JoinColumn({ name: 'userId' })
-    userId: User;
+    @JoinColumn({ name: "userId"})
+    user: User;
 }
