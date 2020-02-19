@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory } from '../entities/user.entity';
-import { Job } from '../entities/job.entity';
+import { Job, JobReqSkill, JobOptSkill } from '../entities/job.entity';
 import { Repository } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 import { NamingStrategyMetadataArgs } from 'typeorm/metadata-args/NamingStrategyMetadataArgs';
@@ -16,6 +16,12 @@ export class JobsService {
         private readonly interestedCategoryRepository: Repository<
             InterestedCategory
         >,
+
+        @InjectRepository(JobReqSkill)
+        private readonly jobReqSkillRepository: Repository<JobReqSkill>,
+
+        @InjectRepository(JobOptSkill)
+        private readonly jobOptSkillRepository: Repository<JobReqSkill>,
     ) {}
 
     async getAllJobs(): Promise<Job[]> {
@@ -41,37 +47,26 @@ export class JobsService {
     async editJob(jobId: number, updateJobDto: UpdateJobDto) {
         if (updateJobDto.requiredSkills) {
             let updateJobReqSkills = updateJobDto.requiredSkills;
-            //console.log(updateJobDto.requiredSkills);
-            //console.log(`DELETE FROM job_req_skill WHERE jobId = ${jobId}`);
-            await this.jobRepository.query(
-                `DELETE FROM job_req_skill WHERE jobId = ${jobId}`,
-            );
-            //console.log(updateJobReqSkills);
+            await this.jobReqSkillRepository.delete({ job: { jobId: jobId } });
             for (let i = 0; i < updateJobReqSkills.length; i++) {
-                //console.log(updateJobReqSkills[i]);
-                //console.log(`INSERT INTO job_req_skill VALUES ("${updateJobReqSkills[i].skill}",${jobId})`);
-                this.jobRepository.query(
-                    `INSERT INTO job_req_skill VALUES ("${updateJobReqSkills[i].skill}",${jobId})`,
-                );
+                this.jobReqSkillRepository.insert({
+                    skill: updateJobReqSkills[i].skill,
+                    job: { jobId: jobId },
+                });
             }
             delete updateJobDto.requiredSkills;
         }
         if (updateJobDto.optionalSkills) {
             let updateJobOptSkills = updateJobDto.optionalSkills;
-            //console.log(updateJobOptSkill);
-            //console.log(`DELETE FROM job_opt_skill WHERE jobId = ${jobId}`);
-            await this.jobRepository.query(
-                `DELETE FROM job_opt_skill WHERE jobId = ${jobId}`,
-            );
+            await this.jobOptSkillRepository.delete({ job: { jobId: jobId } });
             for (let i = 0; i < updateJobOptSkills.length; i++) {
-                //console.log(`INSERT INTO job_opt_skill VALUES (${updateJobOptSkills[i].skill},${jobId})`);
-                this.jobRepository.query(
-                    `INSERT INTO job_opt_skill VALUES ("${updateJobOptSkills[i].skill}",${jobId})`,
-                );
+                this.jobOptSkillRepository.insert({
+                    skill: updateJobOptSkills[i].skill,
+                    job: { jobId: jobId },
+                });
             }
             delete updateJobDto.optionalSkills;
         }
-        //console.log(updateJobDto);
         updateJobDto.updatedTime = new Date();
         return this.jobRepository.update(jobId, updateJobDto);
     }
