@@ -68,13 +68,16 @@ export class UsersController {
         @Param('userId') userId: number,
         @Body() createInterestedCategoryDto: CreateInterestedCategoryDto,
     ) {
-        return this.userService.createNewUserInterestedCategory(userId,createInterestedCategoryDto.interestedCategory);
+        return this.userService.createNewUserInterestedCategory(
+            userId,
+            createInterestedCategoryDto.interestedCategory,
+        );
     }
 
     @Post('skill/:userId')
     async createNewUserSkill(
         @Param('userId') userId: number,
-        @Body() createSkillDto : CreateSkillDto
+        @Body() createSkillDto: CreateSkillDto,
     ) {
         createSkillDto.user = await this.userService.getUserById(userId);
         return this.userService.createNewUserSkill(createSkillDto);
@@ -88,23 +91,26 @@ export class UsersController {
         editUserDto.userId = Number(userId);
         return this.userService.editUser(editUserDto);
     }
-    
 
     @Delete('category/:userId')
     async deleteInterestedCategory(
         @Param('userId') userId: number,
-        @Body() deleteInterestedCategoryDto : CreateInterestedCategoryDto
-    )
-    {
-        return this.userService.deleteInterestedCategory(userId,deleteInterestedCategoryDto.interestedCategory);
+        @Body() deleteInterestedCategoryDto: CreateInterestedCategoryDto,
+    ) {
+        return this.userService.deleteInterestedCategory(
+            userId,
+            deleteInterestedCategoryDto.interestedCategory,
+        );
     }
 
     @Delete('skill/:userId')
     async deleteUserSkill(
         @Param('userId') userId: number,
-        @Body() deleteUserSkillDto : CreateSkillDto
-    )
-    {
-        return this.userService.deleteUserSkill(userId,deleteUserSkillDto.skill);
+        @Body() deleteUserSkillDto: CreateSkillDto,
+    ) {
+        return this.userService.deleteUserSkill(
+            userId,
+            deleteUserSkillDto.skill,
+        );
     }
 }

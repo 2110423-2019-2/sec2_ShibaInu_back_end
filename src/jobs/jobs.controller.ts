@@ -37,7 +37,7 @@ export class JobsController {
     }
 
     @Get('recommend/:userId')
-    async getRecommendJobByFreelancerId(@Param('userId') userId: number){
+    async getRecommendJobByFreelancerId(@Param('userId') userId: number) {
         return this.jobService.getRecommendJobByFreelancerId(userId);
     }
 
