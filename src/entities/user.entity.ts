@@ -3,7 +3,6 @@ import {
     PrimaryGeneratedColumn,
     Column,
     OneToMany,
-    ManyToMany,
     PrimaryColumn,
     JoinColumn,
     ManyToOne,
@@ -42,7 +41,7 @@ export class User {
     @Column('text')
     education: string;
 
-    @Column('timestamp', {default: () => "CURRENT_TIMESTAMP"})
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
     @Column('boolean')
@@ -88,13 +87,13 @@ export class User {
     money: number;
 
     @OneToMany(
-        type => Job,
+        () => Job,
         job => job.client,
     ) // note: we will create author property in the Photo class below
     jobs: Job[];
 
     @OneToMany(
-        type => Bid,
+        () => Bid,
         bid => bid.userId,
     )
     bid: Bid[];
@@ -108,7 +107,7 @@ export class InterestedCategory {
     })
     interestedCategory: String;
 
-    @ManyToOne(type => User, { primary: true })
+    @ManyToOne(() => User, { primary: true })
     @JoinColumn({ name: 'userId' })
     user: User;
 }

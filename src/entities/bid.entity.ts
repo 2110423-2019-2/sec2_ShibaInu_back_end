@@ -3,7 +3,6 @@ import {
     Column,
     ManyToOne,
     PrimaryGeneratedColumn,
-    JoinTable,
     JoinColumn,
 } from 'typeorm';
 import { Job } from '../entities/job.entity';
@@ -26,14 +25,14 @@ export class Bid {
     @Column('integer')
     biddedDuration: number;
 
-    @Column('timestamp', {default: () => "CURRENT_TIMESTAMP"})
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @ManyToOne(type => Job)
+    @ManyToOne(() => Job)
     @JoinColumn({ name: 'jobId' })
     job: Job;
 
-    @ManyToOne(type => User)
+    @ManyToOne(() => User)
     @JoinColumn({ name: 'userId' })
     user: User;
 }
