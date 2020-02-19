@@ -28,6 +28,7 @@ export class JobsService {
 
     async createNewJob(createJobDto: CreateJobDto) {
         createJobDto.createdTime = new Date();
+        createJobDto.updatedTime = new Date();
         return this.jobRepository.save(createJobDto);
     }
 
@@ -65,6 +66,7 @@ export class JobsService {
             delete updateJobDto.optionalSkills;
         }
         //console.log(updateJobDto);
+        updateJobDto.updatedTime = new Date();
         return this.jobRepository.update(jobId, updateJobDto);
     }
 
