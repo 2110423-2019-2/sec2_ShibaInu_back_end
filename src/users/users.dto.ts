@@ -52,7 +52,7 @@ export class UserNamePasswordDto {
     password: string;
 }
 
-export class CreateInterestedCategoryDto{
-    user? : User;
+export class CreateInterestedCategoryDto {
+    user?: User;
     interestedCategory: InterestedCategoryEnum;
 }

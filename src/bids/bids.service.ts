@@ -11,15 +11,15 @@ export class BidsService {
         private readonly bidRepository: Repository<Bid>,
     ) {}
 
-    async getBidIdByJobId(jobIdParam: number): Promise<Bid[]>{
+    async getBidIdByJobId(jobIdParam: number): Promise<Bid[]> {
         return this.bidRepository.find({
-            where: {jobId:jobIdParam}
+            where: { jobId: jobIdParam },
         });
     }
 
     async getBidById(bidId: number): Promise<Bid> {
         return this.bidRepository.findOne(bidId);
-    }  
+    }
 
     async createNewBid(createBidDto: CreateBidDto) {
         createBidDto.createdTime = new Date();

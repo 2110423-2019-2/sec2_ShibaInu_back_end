@@ -8,7 +8,7 @@ import {
 import { User } from './user.entity';
 
 @Entity()
-export class Notification{
+export class Notification {
     @PrimaryGeneratedColumn()
     notiId: number;
 
@@ -24,7 +24,7 @@ export class Notification{
     @Column('boolean')
     isRead: boolean;
 
-    @ManyToOne(type => User, { primary: true})
-    @JoinColumn({ name: "userId" })
-    user:User;
+    @ManyToOne(type => User, { primary: true })
+    @JoinColumn({ name: 'userId' })
+    user: User;
 }
