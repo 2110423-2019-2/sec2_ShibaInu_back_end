@@ -53,6 +53,9 @@ export class Job {
     @Column('timestamp')
     createdTime: Date;
 
+    @Column('timestamp')
+    updatedTime: Date;
+
     @ManyToOne(
         type => User,
         user => user.jobs,

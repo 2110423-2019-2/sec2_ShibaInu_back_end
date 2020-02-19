@@ -11,6 +11,7 @@ export class CreateJobDto {
     catergory: Catergory;
     status?: Status;
     createdTime?: Date;
+    updatedTime?: Date;
     client: User;
     requiredSkills: JobReqSkill[];
     optionalSkills: JobOptSkill[];
@@ -25,6 +26,7 @@ export class UpdateJobDto {
     catergory: Catergory;
     status?: Status;
     createdTime?: Date;
+    updatedTime?: Date;
     client: User;
     requiredSkills: JobReqSkill[];
     optionalSkills: JobOptSkill[];

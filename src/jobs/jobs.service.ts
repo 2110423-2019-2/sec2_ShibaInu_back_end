@@ -58,6 +58,7 @@ export class JobsService {
             delete updateJobDto.optionalSkills;
         }
         //console.log(updateJobDto);
+        updateJobDto.updatedTime = new Date();
         return this.jobRepository.update(jobId, updateJobDto);
     }
 
