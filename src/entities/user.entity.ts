@@ -83,9 +83,6 @@ export class User {
     @Column('text', { nullable: true })
     resume: string;
 
-    @Column('simple-array', { nullable: true })
-    skills: string[];
-
     @Column('integer', { default: 0 })
     money: number;
 
