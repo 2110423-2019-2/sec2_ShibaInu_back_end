@@ -1,7 +1,10 @@
-import { JobReqSkill } from 'src/entities/jobReqSkill.entity';
-import { JobOptSkill } from 'src/entities/JobOptSkill.entity';
 import { User } from '../entities/user.entity';
-import { Status, Catergory } from '../entities/job.entity';
+import {
+    Status,
+    Catergory,
+    JobReqSkill,
+    JobOptSkill,
+} from '../entities/job.entity';
 
 export class CreateJobDto {
     name: string;

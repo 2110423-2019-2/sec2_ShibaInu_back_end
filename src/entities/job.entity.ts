@@ -4,13 +4,11 @@ import {
     Column,
     ManyToOne,
     OneToMany,
-    ManyToMany,
-    JoinTable,
+    PrimaryColumn,
+    JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
-import { JobReqSkill } from './jobReqSkill.entity';
-import { JobOptSkill } from './jobOptSkill.entity';
 
 export enum Status {
     OPEN = 'open',
@@ -80,4 +78,30 @@ export class Job {
         { cascade: true },
     )
     optionalSkills: JobOptSkill[];
+}
+
+@Entity()
+export class JobReqSkill {
+    @PrimaryColumn('varchar', { length: 50 })
+    skill: string;
+
+    @ManyToOne(type => Job, {
+        primary: true,
+        onDelete: 'CASCADE',
+    })
+    @JoinColumn({ name: 'jobId' })
+    public job: Job;
+}
+
+@Entity()
+export class JobOptSkill {
+    @PrimaryColumn('varchar', { length: 50 })
+    skill: string;
+
+    @ManyToOne(type => Job, {
+        primary: true,
+        onDelete: 'CASCADE',
+    })
+    @JoinColumn({ name: 'jobId' })
+    public job: Job;
 }

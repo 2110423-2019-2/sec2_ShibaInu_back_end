@@ -19,7 +19,7 @@ export class Bid {
 
     @Column()
     userId: number;
-   
+
     @Column('integer')
     biddedWage: number;
 
@@ -30,10 +30,10 @@ export class Bid {
     createdTime: Date;
 
     @ManyToOne(type => Job)
-    @JoinColumn({ name: "jobId"})
+    @JoinColumn({ name: 'jobId' })
     job: Job;
 
     @ManyToOne(type => User)
-    @JoinColumn({ name: "userId"})
+    @JoinColumn({ name: 'userId' })
     user: User;
 }
