@@ -24,9 +24,12 @@ export class User {
     userId: number;
 
     @Column('varchar', { length: 100 })
-    fullName: string;
+    firstName: string;
 
-    @Column('varchar', { length: 10 })
+    @Column('varchar', { length: 100 })
+    lastName: string;
+
+    @Column('varchar', { length: 10, nullable: true })
     phone: string;
 
     @Column('varchar', { length: 50 })
@@ -38,63 +41,65 @@ export class User {
     @Column('varchar', { length: 100 })
     password: string;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     education: string;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @Column('boolean')
+    @Column('boolean', { default: false })
     isVerified: boolean;
 
-    @Column('text') //link to photo
+    @Column('text', { nullable: true }) //link to photo
     identificationCardPic: string;
 
-    @Column('text') //link to photo
+    @Column('text', { nullable: true }) //link to photo
     identificationCardWithFacePic: string;
 
-    @Column('varchar', { length: 13 })
+    @Column('varchar', { length: 13, nullable: true })
     identificationNumber: string;
 
-    @Column('boolean') //is the user can see by other user?
+    @Column('boolean', { default: true }) //is the user can see by other user?
     isVisible: boolean;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     about: string;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     location: string;
 
-    @Column('text') //link to photo
+    @Column('text', { nullable: true }) //link to photo
     profilePicture: string;
 
-    @Column('datetime')
+    @Column('datetime', { nullable: true })
     dateOfBirth: Date;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     website: string;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     experience: string;
 
-    @Column('text')
+    @Column('text', { nullable: true })
     resume: string;
 
-    @Column('simple-array')
+    @Column('simple-array', { nullable: true })
     skills: string[];
 
-    @Column('integer')
+    @Column('integer', { default: 0 })
     money: number;
 
     @OneToMany(
         () => Job,
         job => job.client,
+        { nullable: true },
     ) // note: we will create author property in the Photo class below
     jobs: Job[];
 
     @OneToMany(
         () => Bid,
         bid => bid.userId,
+        { nullable: true },
     )
     bid: Bid[];
 }

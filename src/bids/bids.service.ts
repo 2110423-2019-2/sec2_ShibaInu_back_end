@@ -2,8 +2,8 @@ import { Injectable, Get } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBidDto } from './bids.dto';
-import { Bid } from 'src/entities/bid.entity';
-import { Job } from 'src/entities/job.entity';
+import { Bid } from '../entities/bid.entity';
+import { Job } from '../entities/job.entity';
 
 @Injectable()
 export class BidsService {
