@@ -73,4 +73,8 @@ export class JobsService {
     async deleteJobById(jobId: number) {
         return this.jobRepository.delete(jobId);
     }
+
+    async getRecentJobByClientId(clientUserId: number){
+        return this.jobRepository.find({ where: {client: clientUserId} , order: {updatedTime: "DESC"}, take: 5});
+    }
 }
