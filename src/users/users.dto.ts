@@ -1,5 +1,5 @@
-import { Job } from 'src/entities/job.entity';
-import { InterestedCategoryEnum, User, InterestedCategory } from 'src/entities/user.entity';
+import { Job } from '../entities/job.entity';
+import { InterestedCategoryEnum, User, InterestedCategory } from '../entities/user.entity';
 
 export class CreateUserDto {
     firstName: string;

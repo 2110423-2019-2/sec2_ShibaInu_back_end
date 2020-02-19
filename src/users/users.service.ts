@@ -104,31 +104,11 @@ export class UsersService {
 
     async getUserByUsername(username: string): Promise<User> {
         return this.userRepository.findOne({
-            where : { username : username },
-            select: [
-                'userId',
-                'firstName',
-                'lastName',
-                'phone',
-                'email',
-                'education',
-                'createdTime',
-                'isVerified',
-                'identificationCardPic',
-                'identificationCardWithFacePic',
-                'identificationNumber',
-                'isVisible',
-                'about',
-                'location',
-                'profilePicture',
-                'dateOfBirth',
-                'website',
-                'experience',
-                'resume',
-                'money',
-                'password',
-                'headline',
-            ]});
+            where: {username},
+            select: ['userId', 'firstName', 'lastName', 'phone', 'email', 'education', 'createdTime', 'isVerified', 'identificationCardPic',
+                'identificationCardWithFacePic', 'identificationNumber', 'isVisible', 'about', 'location', 'profilePicture', 'dateOfBirth',
+                'website', 'experience', 'resume', 'money', 'password', 'headline']
+        })
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
