@@ -76,8 +76,7 @@ export class UsersController {
         @Param('userId') userId: number,
         @Body() createSkillDto : CreateSkillDto
     ) {
-        createSkillDto.user = await this.userService.getUserById(userId);
-        return this.userService.createNewUserSkill(createSkillDto);
+        return this.userService.createNewUserSkill(userId,createSkillDto.skill);
     }
 
     @Patch(':userId')

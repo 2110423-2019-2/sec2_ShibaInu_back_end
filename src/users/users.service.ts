@@ -169,8 +169,9 @@ export class UsersService {
         return this.interestedCategoryRepository.save({user:userId, interestedCategory:interestedCategory});
     }
 
-    async createNewUserSkill(createNewSkillDto: CreateSkillDto){
-        return this.userSkillRepository.save(createNewSkillDto);
+    async createNewUserSkill(userId,skill){
+        console.log(userId,skill);
+        return this.userSkillRepository.save({user:userId, skill:skill});
     }
 
     async editUser(editUserDto: EditUserDto) {
@@ -184,6 +185,16 @@ export class UsersService {
                 await this.createNewUserInterestedCategory(editUserDto.userId,interestedCategories[i].interestedCategory);
             }
         }
+        if(editUserDto.skills){
+            let skills = editUserDto.skills;
+            delete editUserDto.skills;
+
+            this.deleteUserSkillOfUserId(editUserDto.userId); //delete
+
+            for(let i=0;i<skills.length;i++){ //insert
+                await this.createNewUserSkill(editUserDto.userId,skills[i].skill);
+            }
+        }
         return this.userRepository.save(editUserDto);
     }
 
@@ -193,6 +204,10 @@ export class UsersService {
 
     async deleteInterestedCategory(userId,interestedCategory: InterestedCategoryEnum){
         return this.interestedCategoryRepository.delete({user:userId, interestedCategory:interestedCategory});
+    }
+
+    async deleteUserSkillOfUserId(userId){
+        return this.userSkillRepository.delete({user:userId});
     }
 
     async deleteUserSkill(userId,skill: string){
