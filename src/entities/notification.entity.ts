@@ -18,7 +18,7 @@ export class Notification {
     @Column('text')
     description: string;
 
-    @Column('timestamp')
+    @Column('timestamp', {default: 'current_timestamp'})
     createdTime: Date;
 
     @Column('boolean')
