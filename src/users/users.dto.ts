@@ -1,11 +1,11 @@
-import { Job } from '../entities/job.entity';
-import { InterestedCategoryEnum, User } from '../entities/user.entity';
+import { Job } from 'src/entities/job.entity';
+import { InterestedCategoryEnum, User, InterestedCategory } from 'src/entities/user.entity';
 
 export class CreateUserDto {
     firstName: string;
     lastName: string;
-    phone: string;
-    email: string;
+    phone?: string;
+    email?: string;
     username: string;
     password: string;
     education?: string;
@@ -24,6 +24,7 @@ export class CreateUserDto {
     resume?: string;
     skills?: string[];
     money?: number;
+    headline?: string;
 }
 
 export class EditUserDto {
@@ -45,6 +46,8 @@ export class EditUserDto {
     identificationCardWithFacePic?: string;
     jobs?: Job[];
     money?: number;
+    headline?: string;
+    interestedCategories?: InterestedCategory[];
 }
 
 export class UserNamePasswordDto {
@@ -55,4 +58,9 @@ export class UserNamePasswordDto {
 export class CreateInterestedCategoryDto {
     user?: User;
     interestedCategory: InterestedCategoryEnum;
+}
+
+export class CreateSkillDto{
+    user? : User;
+    skill: string;
 }

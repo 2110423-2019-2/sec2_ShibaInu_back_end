@@ -13,7 +13,7 @@ import { Bid } from './bid.entity';
 export enum InterestedCategoryEnum {
     game = 'game',
     software = 'software',
-    mobileApp = 'mobileApp',
+    mobileApp = 'mobile',
     website = 'website',
     other = 'other',
 }
@@ -35,10 +35,10 @@ export class User {
     @Column('varchar', { length: 50, nullable: true })
     email: string;
 
-    @Column('varchar', { length: 50 })
+    @Column('varchar', { length: 50})
     username: string;
 
-    @Column('varchar', { length: 100 })
+    @Column('varchar', { length: 100})
     password: string;
 
     @Column('text', { nullable: true })
@@ -89,6 +89,9 @@ export class User {
     @Column('integer', { default: 0 })
     money: number;
 
+    @Column('varchar',{ length: 100, nullable: true })
+    headline: string;
+
     @OneToMany(
         () => Job,
         job => job.client,
@@ -106,11 +109,20 @@ export class User {
 
 @Entity()
 export class InterestedCategory {
-    @PrimaryColumn('enum', {
-        enum: InterestedCategoryEnum,
-        default: InterestedCategoryEnum.other,
-    })
-    interestedCategory: String;
+    @PrimaryColumn("enum",{enum : InterestedCategoryEnum, default: InterestedCategoryEnum.other})
+    interestedCategory: InterestedCategoryEnum;
+
+
+    @ManyToOne(type => User, { primary: true})
+    @JoinColumn({ name: "userId" })
+    user:User;
+
+}
+
+@Entity()
+export class UserSkill {
+    @PrimaryColumn("varchar",{ length: 50 })
+    skill: String;
 
     @ManyToOne(() => User, { primary: true })
     @JoinColumn({ name: 'userId' })

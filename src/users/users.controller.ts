@@ -6,6 +6,7 @@ import {
     Body,
     Patch,
     UseGuards,
+    Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -13,6 +14,7 @@ import {
     EditUserDto,
     UserNamePasswordDto,
     CreateInterestedCategoryDto,
+    CreateSkillDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -51,6 +53,11 @@ export class UsersController {
         return this.userService.getCategoryByUserId(userId);
     }
 
+    @Get('skill/:userId')
+    async getSkillByUserId(@Param('userId') userId: number) {
+        return this.userService.getSkillByUserId(userId);
+    }
+
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {
         return this.userService.createNewUser(createUserDto);
@@ -61,12 +68,16 @@ export class UsersController {
         @Param('userId') userId: number,
         @Body() createInterestedCategoryDto: CreateInterestedCategoryDto,
     ) {
-        createInterestedCategoryDto.user = await this.userService.getUserById(
-            userId,
-        );
-        return this.userService.createNewUserInterestedCategory(
-            createInterestedCategoryDto,
-        );
+        return this.userService.createNewUserInterestedCategory(userId,createInterestedCategoryDto.interestedCategory);
+    }
+
+    @Post('skill/:userId')
+    async createNewUserSkill(
+        @Param('userId') userId: number,
+        @Body() createSkillDto : CreateSkillDto
+    ) {
+        createSkillDto.user = await this.userService.getUserById(userId);
+        return this.userService.createNewUserSkill(createSkillDto);
     }
 
     @Patch(':userId')
@@ -76,5 +87,24 @@ export class UsersController {
     ) {
         editUserDto.userId = Number(userId);
         return this.userService.editUser(editUserDto);
+    }
+    
+
+    @Delete('category/:userId')
+    async deleteInterestedCategory(
+        @Param('userId') userId: number,
+        @Body() deleteInterestedCategoryDto : CreateInterestedCategoryDto
+    )
+    {
+        return this.userService.deleteInterestedCategory(userId,deleteInterestedCategoryDto.interestedCategory);
+    }
+
+    @Delete('skill/:userId')
+    async deleteUserSkill(
+        @Param('userId') userId: number,
+        @Body() deleteUserSkillDto : CreateSkillDto
+    )
+    {
+        return this.userService.deleteUserSkill(userId,deleteUserSkillDto.skill);
     }
 }

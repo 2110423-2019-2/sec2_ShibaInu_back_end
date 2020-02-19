@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { NotificationController } from './notification/notification.controller';
 import { AuthModule } from './auth/auth.module';
 import { BidsModule } from './bids/bids.module';
+import { NotificationModule } from './notification/notification.module';
 
 require('dotenv').config();
 
@@ -29,6 +30,7 @@ require('dotenv').config();
             }),
         }),
         AuthModule,
+        NotificationModule,
     ],
     controllers: [AppController, NotificationController],
     providers: [AppService],

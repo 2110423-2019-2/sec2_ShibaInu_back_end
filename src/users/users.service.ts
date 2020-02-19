@@ -1,12 +1,12 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, InterestedCategory } from '../entities/user.entity';
+import { User, InterestedCategory, UserSkill, InterestedCategoryEnum } from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import {
     CreateUserDto,
     EditUserDto,
     UserNamePasswordDto,
-    CreateInterestedCategoryDto,
+    CreateSkillDto,
 } from './users.dto';
 import bcrypt = require('bcrypt');
 
@@ -19,6 +19,11 @@ export class UsersService {
         @InjectRepository(InterestedCategory)
         private readonly interestedCategoryRepository: Repository<
             InterestedCategory
+        >,
+
+        @InjectRepository(UserSkill)
+        private readonly userSkillRepository: Repository<
+            UserSkill
         >,
     ) {}
 
@@ -44,8 +49,8 @@ export class UsersService {
                 'website',
                 'experience',
                 'resume',
-                'skills',
                 'money',
+                'headline',
             ],
         });
     }
@@ -72,9 +77,9 @@ export class UsersService {
                 'website',
                 'experience',
                 'resume',
-                'skills',
                 'money',
-            ],
+                'headline',
+            ]
         });
     }
 
@@ -99,7 +104,7 @@ export class UsersService {
 
     async getUserByUsername(username: string): Promise<User> {
         return this.userRepository.findOne({
-            where: { username },
+            where : { username : username },
             select: [
                 'userId',
                 'firstName',
@@ -120,11 +125,10 @@ export class UsersService {
                 'website',
                 'experience',
                 'resume',
-                'skills',
                 'money',
                 'password',
-            ],
-        });
+                'headline',
+            ]});
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
@@ -133,6 +137,15 @@ export class UsersService {
             where: {
                 user: userId,
             },
+        });
+    }
+
+    async getSkillByUserId(userId: number): Promise<UserSkill[]> {
+        return this.userSkillRepository.find({
+            select: ["skill"],
+            where : {
+                user : userId
+            }
         });
     }
 
@@ -152,15 +165,37 @@ export class UsersService {
         return this.userRepository.insert(createUserDto);
     }
 
-    async createNewUserInterestedCategory(
-        createInterestedCategoryDto: CreateInterestedCategoryDto,
-    ) {
-        return this.interestedCategoryRepository.save(
-            createInterestedCategoryDto,
-        );
+    async createNewUserInterestedCategory(userId,interestedCategory){
+        return this.interestedCategoryRepository.save({user:userId, interestedCategory:interestedCategory});
+    }
+
+    async createNewUserSkill(createNewSkillDto: CreateSkillDto){
+        return this.userSkillRepository.save(createNewSkillDto);
     }
 
     async editUser(editUserDto: EditUserDto) {
+        if(editUserDto.interestedCategories){
+            let interestedCategories = editUserDto.interestedCategories;
+            delete editUserDto.interestedCategories;
+
+            this.deleteInterestedCategoryOfUserId(editUserDto.userId); //delete
+
+            for(let i=0;i<interestedCategories.length;i++){ //insert
+                await this.createNewUserInterestedCategory(editUserDto.userId,interestedCategories[i].interestedCategory);
+            }
+        }
         return this.userRepository.save(editUserDto);
+    }
+
+    async deleteInterestedCategoryOfUserId(userId){
+        return this.interestedCategoryRepository.delete({user:userId});
+    }
+
+    async deleteInterestedCategory(userId,interestedCategory: InterestedCategoryEnum){
+        return this.interestedCategoryRepository.delete({user:userId, interestedCategory:interestedCategory});
+    }
+
+    async deleteUserSkill(userId,skill: string){
+        return this.userSkillRepository.delete({user:userId, skill:skill});
     }
 }
