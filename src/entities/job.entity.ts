@@ -66,8 +66,9 @@ export class Job {
     @OneToMany(
         type => JobReqSkill,
         jobReqSkill => jobReqSkill.job,
-        { cascade: true },
+        { cascade: true, eager: true },
     )
+    @JoinColumn({ referencedColumnName: 'skill' })
     requiredSkills: JobReqSkill[];
 
     @OneToMany(
@@ -79,8 +80,9 @@ export class Job {
     @OneToMany(
         type => JobOptSkill,
         jobOptSkill => jobOptSkill.job,
-        { cascade: true },
+        { cascade: true, eager: true },
     )
+    @JoinColumn({ referencedColumnName: 'skill' })
     optionalSkills: JobOptSkill[];
 }
 
