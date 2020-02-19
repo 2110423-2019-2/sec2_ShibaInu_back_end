@@ -95,7 +95,7 @@ export class UsersService {
 
     async getUserByUsername(username: string): Promise<User> {
         return this.userRepository.findOne({
-            where : username = username,
+            where : {username: username},
             select: [
                 'userId',
                 'fullName',

@@ -13,8 +13,7 @@ export class BidsService {
 
     async getBidIdByJobId(jobIdParam: number): Promise<Bid[]>{
         return this.bidRepository.find({
-            where: {jobId:jobIdParam},
-            select: ["bidId"]
+            where: {jobId:jobIdParam}
         });
     }
 
