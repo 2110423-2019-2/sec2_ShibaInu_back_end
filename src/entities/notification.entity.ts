@@ -25,6 +25,6 @@ export class Notification {
     isRead: boolean;
 
     @ManyToOne(type => User)
-    @JoinColumn({ name: "userId" })
-    user:User;
+    @JoinColumn({ name: 'userId' })
+    user: User;
 }

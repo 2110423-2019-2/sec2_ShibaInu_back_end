@@ -26,8 +26,8 @@ export class BidsService {
             where: { userId: userId },
             select: ['jobId'],
         });
-        if(temp.length==0){
-            return []
+        if (temp.length == 0) {
+            return [];
         }
         return this.jobRepository.find({
             where: temp,

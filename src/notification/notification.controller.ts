@@ -7,22 +7,22 @@ export class NotificationController {
     constructor(private readonly notificationService: NotificationService) {}
 
     @Get()
-    async getAllNoti(){
+    async getAllNoti() {
         return this.notificationService.getAllNoti();
     }
 
     @Get(':userId')
-    async getNotibyUserId(@Param('userId') userId: number){
+    async getNotibyUserId(@Param('userId') userId: number) {
         return this.notificationService.getNotibyUserId(userId);
     }
-    
+
     @Post()
-    async addNewNoti(@Body() createNotificationDto: CreateNotificationDto){
+    async addNewNoti(@Body() createNotificationDto: CreateNotificationDto) {
         return this.notificationService.addNewNoti(createNotificationDto);
     }
 
     @Patch(':notificationId')
-    async readNoti(@Param('notificationId') notificationId: number){
+    async readNoti(@Param('notificationId') notificationId: number) {
         return this.notificationService.readNoti(notificationId);
     }
 }
