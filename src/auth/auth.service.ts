@@ -12,9 +12,7 @@ export class AuthService {
     ) {}
 
     async validateUser(username: string, password: string) {
-        console.log(username, password);
         const user = await this.userService.getUserByUsername(username);
-        console.log(user);
         if (!user) {
             throw new UnauthorizedException(`Invalid username or password`);
         }
