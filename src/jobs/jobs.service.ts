@@ -20,9 +20,9 @@ export class JobsService {
         return this.jobRepository.findOne(jobId);
     }
 
-    async getJobByUserId(userId: number): Promise<Job[]>{
+    async getJobByUserId(userId: number): Promise<Job[]> {
         return this.jobRepository.find({
-            where: {client: userId}
+            where: { client: userId },
         });
     }
 
@@ -72,5 +72,13 @@ export class JobsService {
 
     async deleteJobById(jobId: number) {
         return this.jobRepository.delete(jobId);
+    }
+
+    async getRecentJobByClientId(clientUserId: number) {
+        return this.jobRepository.find({
+            where: { client: clientUserId },
+            order: { updatedTime: 'DESC' },
+            take: 5,
+        });
     }
 }

@@ -27,8 +27,13 @@ export class JobsController {
     }
 
     @Get('user/:userId')
-    async getJobByUserId(@Param('userId') userId: number){
+    async getJobByUserId(@Param('userId') userId: number) {
         return this.jobService.getJobByUserId(userId);
+    }
+
+    @Get('recent/:userId')
+    async getRecentJobByClientId(@Param('userId') userId: number) {
+        return this.jobService.getRecentJobByClientId(userId);
     }
 
     @UseGuards(AuthGuard())
