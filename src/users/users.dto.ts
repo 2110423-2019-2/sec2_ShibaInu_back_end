@@ -3,6 +3,7 @@ import {
     InterestedCategoryEnum,
     User,
     InterestedCategory,
+    UserSkill,
 } from '../entities/user.entity';
 
 export class CreateUserDto {
@@ -26,7 +27,6 @@ export class CreateUserDto {
     website?: string;
     experience?: string;
     resume?: string;
-    skills?: string[];
     money?: number;
     headline?: string;
 }
@@ -45,13 +45,13 @@ export class EditUserDto {
     website?: string;
     experience?: string;
     resume?: string;
-    skills?: string[];
     identificationNumber?: string;
     identificationCardWithFacePic?: string;
     jobs?: Job[];
     money?: number;
     headline?: string;
     interestedCategories?: InterestedCategory[];
+    skills?: UserSkill[];
 }
 
 export class UserNamePasswordDto {
