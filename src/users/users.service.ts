@@ -126,6 +126,7 @@ export class UsersService {
                 'experience',
                 'resume',
                 'money',
+                'password',
                 'headline',
             ]});
     }
