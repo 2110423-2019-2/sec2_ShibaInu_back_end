@@ -26,7 +26,7 @@ export class Bid {
     @Column('integer')
     biddedDuration: number;
 
-    @Column('timestamp')
+    @Column('timestamp', {default: 'current_timestamp'})
     createdTime: Date;
 
     @ManyToOne(type => Job)
