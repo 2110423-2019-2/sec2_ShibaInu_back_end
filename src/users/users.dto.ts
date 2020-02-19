@@ -23,6 +23,7 @@ export class CreateUserDto {
     resume?: string;
     skills?: string[];
     money?: number;
+    headline?: string;
 }
 
 export class EditUserDto {
@@ -44,6 +45,7 @@ export class EditUserDto {
     identificationCardWithFacePic?: string;
     jobs?: Job[];
     money?: number;
+    headline?: string;
 }
 
 export class UserNamePasswordDto {

@@ -84,6 +84,9 @@ export class UsersController {
         return this.userService.editUser(editUserDto);
     }
 
+    @Patch('category/:userId')
+    
+
     @Delete('category/:userId')
     async deleteInterestedCategory(
         @Param('userId') userId: number,
