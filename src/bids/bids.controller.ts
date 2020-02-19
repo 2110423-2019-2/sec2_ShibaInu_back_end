@@ -17,7 +17,7 @@ export class BidsController {
     }
 
     @Get('job/:userId')
-    async getJobByUserId(@Param('userId') userId: number){
+    async getJobByUserId(@Param('userId') userId: number) {
         return this.bidService.getJobByUserId(userId);
     }
 
