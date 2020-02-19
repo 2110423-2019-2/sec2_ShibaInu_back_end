@@ -6,7 +6,6 @@ import { Status, Catergory } from '../entities/job.entity';
 export class CreateJobDto {
     name: string;
     description: string;
-    picture: string;
     estimatedDuration: number;
     estimatedWage: number;
     catergory: Catergory;
@@ -21,7 +20,6 @@ export class UpdateJobDto {
     jobId?: number;
     name: string;
     description: string;
-    picture: string;
     estimatedDuration: number;
     estimatedWage: number;
     catergory: Catergory;

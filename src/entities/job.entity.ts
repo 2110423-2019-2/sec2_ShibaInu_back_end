@@ -20,10 +20,10 @@ export enum Status {
 }
 
 export enum Catergory {
-    WEBSITE = 'open',
-    SOFTWARE = 'process',
-    MOBILE = 'cancel',
-    GAME = 'finish',
+    WEBSITE = 'web',
+    SOFTWARE = 'software',
+    MOBILE = 'mobile',
+    GAME = 'game',
     OTHER = 'other',
 }
 
@@ -37,9 +37,6 @@ export class Job {
 
     @Column('text')
     description: string;
-
-    @Column('text', { default: null })
-    picture: string;
 
     @Column('integer')
     estimatedDuration: number;
