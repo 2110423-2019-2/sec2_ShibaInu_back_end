@@ -10,7 +10,7 @@ import {
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
 import { JobReqSkill } from './jobReqSkill.entity';
-import { JobOptSkill } from "./JobOptSkill.entity";
+import { JobOptSkill } from './JobOptSkill.entity';
 
 export enum Status {
     OPEN = 'open',
@@ -67,9 +67,11 @@ export class Job {
         jobReqSkill => jobReqSkill.job,
         { cascade: true },
     )
-    
     requiredSkills: JobReqSkill[];
-    @OneToMany(type => Bid, bid => bid.jobId)
+    @OneToMany(
+        type => Bid,
+        bid => bid.jobId,
+    )
     bid: Bid[];
 
     @OneToMany(

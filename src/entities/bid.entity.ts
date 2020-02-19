@@ -1,6 +1,13 @@
-import { Entity, Column, ManyToOne, PrimaryGeneratedColumn, JoinTable, JoinColumn } from "typeorm";
-import { Job } from "../entities/job.entity";
-import { User } from "../entities/user.entity";
+import {
+    Entity,
+    Column,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+    JoinTable,
+    JoinColumn,
+} from 'typeorm';
+import { Job } from '../entities/job.entity';
+import { User } from '../entities/user.entity';
 
 @Entity()
 export class Bid {

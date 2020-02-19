@@ -17,7 +17,7 @@ export class BidsService {
         >,
     ) {}
 
-    async getBidIdByJobId(jobIdParam: number): Promise<Bid[]>{
+    async getBidIdByJobId(jobIdParam: number): Promise<Bid[]> {
         return this.bidRepository.find({
             where: {jobId:jobIdParam}
         })
@@ -35,7 +35,7 @@ export class BidsService {
 
     async getBidById(bidId: number): Promise<Bid> {
         return this.bidRepository.findOne(bidId);
-    }  
+    }
 
     async createNewBid(createBidDto: CreateBidDto) {
         createBidDto.createdTime = new Date();
