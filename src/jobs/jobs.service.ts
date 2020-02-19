@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from '../entities/job.entity';
 import { Repository } from 'typeorm';
-import { CreateJobDto } from './jobs.dto';
+import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 
 @Injectable()
 export class JobsService {
@@ -21,11 +21,47 @@ export class JobsService {
 
     async createNewJob(createJobDto: CreateJobDto) {
         createJobDto.createdTime = new Date();
-        return this.jobRepository.insert(createJobDto);
+        return this.jobRepository.save(createJobDto);
     }
 
-    async editJob(jobId: number, createJobDto: CreateJobDto) {
-        createJobDto.createdTime = null;
-        return this.jobRepository.update(jobId, createJobDto);
+    async editJob(jobId: number, updateJobDto: UpdateJobDto) {
+        if (updateJobDto.requiredSkills) {
+            let updateJobReqSkills = updateJobDto.requiredSkills;
+            //console.log(updateJobDto.requiredSkills);
+            //console.log(`DELETE FROM job_req_skill WHERE jobId = ${jobId}`);
+            await this.jobRepository.query(
+                `DELETE FROM job_req_skill WHERE jobId = ${jobId}`,
+            );
+            //console.log(updateJobReqSkills);
+            for (let i = 0; i < updateJobReqSkills.length; i++) {
+                //console.log(updateJobReqSkills[i]);
+                //console.log(`INSERT INTO job_req_skill VALUES ("${updateJobReqSkills[i].skill}",${jobId})`);
+                this.jobRepository.query(
+                    `INSERT INTO job_req_skill VALUES ("${updateJobReqSkills[i].skill}",${jobId})`,
+                );
+            }
+            delete updateJobDto.requiredSkills;
+        }
+        if (updateJobDto.optionalSkills) {
+            let updateJobOptSkills = updateJobDto.optionalSkills;
+            //console.log(updateJobOptSkill);
+            //console.log(`DELETE FROM job_opt_skill WHERE jobId = ${jobId}`);
+            await this.jobRepository.query(
+                `DELETE FROM job_opt_skill WHERE jobId = ${jobId}`,
+            );
+            for (let i = 0; i < updateJobOptSkills.length; i++) {
+                //console.log(`INSERT INTO job_opt_skill VALUES (${updateJobOptSkills[i].skill},${jobId})`);
+                this.jobRepository.query(
+                    `INSERT INTO job_opt_skill VALUES ("${updateJobOptSkills[i].skill}",${jobId})`,
+                );
+            }
+            delete updateJobDto.optionalSkills;
+        }
+        //console.log(updateJobDto);
+        return this.jobRepository.update(jobId, updateJobDto);
+    }
+
+    async deleteJobById(jobId: number) {
+        return this.jobRepository.delete(jobId);
     }
 }

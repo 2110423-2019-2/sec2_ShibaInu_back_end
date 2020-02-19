@@ -9,8 +9,8 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
-//import { JobReqSkill } from './jobReqSkill.entity';
-//import { JobOptSkill } from "./JobOptSkill.entity";
+import { JobReqSkill } from './jobReqSkill.entity';
+import { JobOptSkill } from "./JobOptSkill.entity";
 
 export enum Status {
     OPEN = 'open',
@@ -62,12 +62,20 @@ export class Job {
     )
     client: User;
 
+    @OneToMany(
+        type => JobReqSkill,
+        jobReqSkill => jobReqSkill.job,
+        { cascade: true },
+    )
+    
+    requiredSkills: JobReqSkill[];
     @OneToMany(type => Bid, bid => bid.jobId)
     bid: Bid[];
 
-    // @OneToMany(type => JobReqSkill, jobReqSkill => jobReqSkill.skill)
-    // requiredSkills: JobReqSkill[];
-
-    // @OneToMany(type => JobReqSkill, jobReqSkill => jobReqSkill.skill)
-    // optionalSkills: JobOptSkill[];
+    @OneToMany(
+        type => JobOptSkill,
+        jobOptSkill => jobOptSkill.job,
+        { cascade: true },
+    )
+    optionalSkills: JobOptSkill[];
 }
