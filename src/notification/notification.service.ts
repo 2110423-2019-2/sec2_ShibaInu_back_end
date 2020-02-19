@@ -15,9 +15,22 @@ export class NotificationService {
         return this.noticationRepository.find();
     }
 
+    async getNotibyUserId(userId : number): Promise<Notification[]>{
+        return this.noticationRepository.find({
+            where : {
+                user: userId
+            }
+        });
+        
+    }
+
     async addNewNoti(createNotificationDto: CreateNotificationDto){
         createNotificationDto.createdTime = new Date();
         createNotificationDto.isRead = false;
         return this.noticationRepository.insert(createNotificationDto);
+    }
+
+    async readNoti(notificationId: number){
+        return this.noticationRepository.update(notificationId,{isRead : true});
     }
 }
