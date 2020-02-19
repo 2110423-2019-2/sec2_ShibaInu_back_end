@@ -122,6 +122,7 @@ export class UsersService {
                 'resume',
                 'skills',
                 'money',
+                'password',
             ],
         });
     }
