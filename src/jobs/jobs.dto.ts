@@ -19,15 +19,14 @@ export class CreateJobDto {
 
 export class UpdateJobDto {
     jobId?: number;
-    name: string;
-    description: string;
-    estimatedDuration: number;
-    estimatedWage: number;
-    catergory: Catergory;
+    name?: string;
+    description?: string;
+    estimatedDuration?: number;
+    estimatedWage?: number;
+    catergory?: Catergory;
     status?: Status;
     createdTime?: Date;
     updatedTime?: Date;
-    client: User;
-    requiredSkills: JobReqSkill[];
-    optionalSkills: JobOptSkill[];
+    requiredSkills?: JobReqSkill[];
+    optionalSkills?: JobOptSkill[];
 }
