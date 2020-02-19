@@ -1,5 +1,5 @@
 import { Job } from 'src/entities/job.entity';
-import { InterestedCategoryEnum, User, UserSkill } from 'src/entities/user.entity';
+import { InterestedCategoryEnum, User, UserSkill, InterestedCategory } from 'src/entities/user.entity';
 
 export class CreateUserDto {
     fullName: string;
@@ -46,6 +46,7 @@ export class EditUserDto {
     jobs?: Job[];
     money?: number;
     headline?: string;
+    interestedCategories?: InterestedCategory[];
 }
 
 export class UserNamePasswordDto {

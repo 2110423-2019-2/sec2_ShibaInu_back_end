@@ -62,8 +62,7 @@ export class UsersController {
         @Param('userId') userId: number,
         @Body() createInterestedCategoryDto : CreateInterestedCategoryDto
     ) {
-        createInterestedCategoryDto.user = await this.userService.getUserById(userId);
-        return this.userService.createNewUserInterestedCategory(createInterestedCategoryDto);
+        return this.userService.createNewUserInterestedCategory(userId,createInterestedCategoryDto.interestedCategory);
     }
 
     @Post('skill/:userId')
@@ -83,8 +82,6 @@ export class UsersController {
         editUserDto.userId = Number(userId);
         return this.userService.editUser(editUserDto);
     }
-
-    @Patch('category/:userId')
     
 
     @Delete('category/:userId')

@@ -3,7 +3,6 @@ import {
     PrimaryGeneratedColumn,
     Column,
     OneToMany,
-    ManyToMany,
     PrimaryColumn,
     JoinColumn,
     ManyToOne,
@@ -27,10 +26,10 @@ export class User {
     @Column('varchar', { length: 100 })
     fullName: string;
 
-    @Column('varchar', { length: 10, nullable: false })
+    @Column('varchar', { length: 10, nullable: true })
     phone: string;
 
-    @Column('varchar', { length: 50, nullable: false })
+    @Column('varchar', { length: 50, nullable: true })
     email: string;
 
     @Column('varchar', { length: 50})
@@ -100,7 +99,7 @@ export class User {
 @Entity()
 export class InterestedCategory {
     @PrimaryColumn("enum",{enum : InterestedCategoryEnum, default: InterestedCategoryEnum.other})
-    interestedCategory: String;
+    interestedCategory: InterestedCategoryEnum;
 
 
     @ManyToOne(type => User, { primary: true})

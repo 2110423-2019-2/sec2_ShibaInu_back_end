@@ -47,6 +47,7 @@ export class UsersService {
                 'experience',
                 'resume',
                 'money',
+                'headline',
             ],
         });
     }
@@ -73,6 +74,7 @@ export class UsersService {
                 'experience',
                 'resume',
                 'money',
+                'headline',
             ]
         });
     }
@@ -119,6 +121,7 @@ export class UsersService {
                 'experience',
                 'resume',
                 'money',
+                'headline',
             ]});
     }
 
@@ -156,8 +159,8 @@ export class UsersService {
         return this.userRepository.insert(createUserDto);
     }
 
-    async createNewUserInterestedCategory(createInterestedCategoryDto: CreateInterestedCategoryDto){
-        return this.interestedCategoryRepository.save(createInterestedCategoryDto);
+    async createNewUserInterestedCategory(userId,interestedCategory){
+        return this.interestedCategoryRepository.save({user:userId, interestedCategory:interestedCategory});
     }
 
     async createNewUserSkill(createNewSkillDto: CreateSkillDto){
@@ -165,7 +168,21 @@ export class UsersService {
     }
 
     async editUser(editUserDto: EditUserDto) {
+        if(editUserDto.interestedCategories){
+            let interestedCategories = editUserDto.interestedCategories;
+            delete editUserDto.interestedCategories;
+
+            this.deleteInterestedCategoryOfUserId(editUserDto.userId); //delete
+
+            for(let i=0;i<interestedCategories.length;i++){ //insert
+                await this.createNewUserInterestedCategory(editUserDto.userId,interestedCategories[i].interestedCategory);
+            }
+        }
         return this.userRepository.save(editUserDto);
+    }
+
+    async deleteInterestedCategoryOfUserId(userId){
+        return this.interestedCategoryRepository.delete({user:userId});
     }
 
     async deleteInterestedCategory(userId,interestedCategory: InterestedCategoryEnum){
