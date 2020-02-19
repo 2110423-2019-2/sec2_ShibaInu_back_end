@@ -21,7 +21,7 @@ export class Notification {
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @Column('boolean')
+    @Column('boolean', { default: false })
     isRead: boolean;
 
     @ManyToOne(type => User, { primary: true })
