@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Job } from '../entities/job.entity';
 import { Repository } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
+import { NamingStrategyMetadataArgs } from 'typeorm/metadata-args/NamingStrategyMetadataArgs';
 
 @Injectable()
 export class JobsService {
@@ -19,8 +20,15 @@ export class JobsService {
         return this.jobRepository.findOne(jobId);
     }
 
+    async getJobByUserId(userId: number): Promise<Job[]> {
+        return this.jobRepository.find({
+            where: { client: userId },
+        });
+    }
+
     async createNewJob(createJobDto: CreateJobDto) {
         createJobDto.createdTime = new Date();
+        createJobDto.updatedTime = new Date();
         return this.jobRepository.save(createJobDto);
     }
 
@@ -58,10 +66,19 @@ export class JobsService {
             delete updateJobDto.optionalSkills;
         }
         //console.log(updateJobDto);
+        updateJobDto.updatedTime = new Date();
         return this.jobRepository.update(jobId, updateJobDto);
     }
 
     async deleteJobById(jobId: number) {
         return this.jobRepository.delete(jobId);
+    }
+
+    async getRecentJobByClientId(clientUserId: number) {
+        return this.jobRepository.find({
+            where: { client: clientUserId },
+            order: { updatedTime: 'DESC' },
+            take: 5,
+        });
     }
 }

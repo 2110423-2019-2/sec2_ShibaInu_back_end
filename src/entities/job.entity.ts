@@ -4,13 +4,11 @@ import {
     Column,
     ManyToOne,
     OneToMany,
-    ManyToMany,
-    JoinTable,
+    PrimaryColumn,
+    JoinColumn,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
-import { JobReqSkill } from './jobReqSkill.entity';
-import { JobOptSkill } from "./JobOptSkill.entity";
 
 export enum Status {
     OPEN = 'open',
@@ -20,10 +18,10 @@ export enum Status {
 }
 
 export enum Catergory {
-    WEBSITE = 'open',
-    SOFTWARE = 'process',
-    MOBILE = 'cancel',
-    GAME = 'finish',
+    WEBSITE = 'web',
+    SOFTWARE = 'software',
+    MOBILE = 'mobile',
+    GAME = 'game',
     OTHER = 'other',
 }
 
@@ -38,9 +36,6 @@ export class Job {
     @Column('text')
     description: string;
 
-    @Column('text', { default: null })
-    picture: string;
-
     @Column('integer')
     estimatedDuration: number;
 
@@ -53,8 +48,14 @@ export class Job {
     @Column('enum', { enum: Catergory })
     catergory: Catergory;
 
-    @Column('timestamp')
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
+
+    @Column('timestamp', {
+        default: () => 'CURRENT_TIMESTAMP',
+        onUpdate: 'CURRENT_TIMESTAMP',
+    })
+    updatedTime: Date;
 
     @ManyToOne(
         type => User,
@@ -67,9 +68,12 @@ export class Job {
         jobReqSkill => jobReqSkill.job,
         { cascade: true },
     )
-    
     requiredSkills: JobReqSkill[];
-    @OneToMany(type => Bid, bid => bid.jobId)
+
+    @OneToMany(
+        type => Bid,
+        bid => bid.jobId,
+    )
     bid: Bid[];
 
     @OneToMany(
@@ -78,4 +82,30 @@ export class Job {
         { cascade: true },
     )
     optionalSkills: JobOptSkill[];
+}
+
+@Entity()
+export class JobReqSkill {
+    @PrimaryColumn('varchar', { length: 50 })
+    skill: string;
+
+    @ManyToOne(type => Job, {
+        primary: true,
+        onDelete: 'CASCADE',
+    })
+    @JoinColumn({ name: 'jobId' })
+    public job: Job;
+}
+
+@Entity()
+export class JobOptSkill {
+    @PrimaryColumn('varchar', { length: 50 })
+    skill: string;
+
+    @ManyToOne(type => Job, {
+        primary: true,
+        onDelete: 'CASCADE',
+    })
+    @JoinColumn({ name: 'jobId' })
+    public job: Job;
 }

@@ -9,7 +9,13 @@ import {
     Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto, CreateSkillDto } from './users.dto';
+import {
+    CreateUserDto,
+    EditUserDto,
+    UserNamePasswordDto,
+    CreateInterestedCategoryDto,
+    CreateSkillDto,
+} from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
@@ -60,7 +66,7 @@ export class UsersController {
     @Post('category/:userId')
     async createNewUserInterestedCategory(
         @Param('userId') userId: number,
-        @Body() createInterestedCategoryDto : CreateInterestedCategoryDto
+        @Body() createInterestedCategoryDto: CreateInterestedCategoryDto,
     ) {
         return this.userService.createNewUserInterestedCategory(userId,createInterestedCategoryDto.interestedCategory);
     }

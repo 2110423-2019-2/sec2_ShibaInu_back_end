@@ -26,6 +26,7 @@ require('dotenv').config();
                 database: process.env.MYSQL_DB,
                 entities: [__dirname + '/**/*.entity{.ts,.js}'],
                 synchronize: true,
+                charset: 'utf8mb4_general_ci',
             }),
         }),
         AuthModule,

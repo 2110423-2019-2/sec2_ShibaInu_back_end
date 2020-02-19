@@ -8,7 +8,7 @@ import {
 import { User } from './user.entity';
 
 @Entity()
-export class Notification{
+export class Notification {
     @PrimaryGeneratedColumn()
     notificationId: number;
 
@@ -18,10 +18,10 @@ export class Notification{
     @Column('text')
     description: string;
 
-    @Column('timestamp')
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @Column('boolean')
+    @Column('boolean', { default: false })
     isRead: boolean;
 
     @ManyToOne(type => User)

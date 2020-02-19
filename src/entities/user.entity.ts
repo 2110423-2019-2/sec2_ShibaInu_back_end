@@ -8,7 +8,7 @@ import {
     ManyToOne,
 } from 'typeorm';
 import { Job } from './job.entity';
-import { Bid } from "./bid.entity";
+import { Bid } from './bid.entity';
 
 export enum InterestedCategoryEnum {
     game = 'game',
@@ -24,7 +24,10 @@ export class User {
     userId: number;
 
     @Column('varchar', { length: 100 })
-    fullName: string;
+    firstName: string;
+
+    @Column('varchar', { length: 100 })
+    lastName: string;
 
     @Column('varchar', { length: 10, nullable: true })
     phone: string;
@@ -38,61 +41,69 @@ export class User {
     @Column('varchar', { length: 100})
     password: string;
 
-    @Column('text',{ nullable: true })
+    @Column('text', { nullable: true })
     education: string;
 
-    @Column('timestamp',{ nullable: true })
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @Column('boolean',{ nullable: true })
+    @Column('boolean', { default: false })
     isVerified: boolean;
 
-    @Column('text',{ nullable: true }) //link to photo
+    @Column('text', { nullable: true }) //link to photo
     identificationCardPic: string;
 
-    @Column('text',{ nullable: true }) //link to photo
+    @Column('text', { nullable: true }) //link to photo
     identificationCardWithFacePic: string;
 
     @Column('varchar', { length: 13, nullable: true })
     identificationNumber: string;
 
-    @Column('boolean') //is the user can see by other user?
+    @Column('boolean', { default: true }) //is the user can see by other user?
     isVisible: boolean;
 
-    @Column('text',{ nullable: true })
+    @Column('text', { nullable: true })
     about: string;
 
-    @Column('text',{ nullable: true })
+    @Column('text', { nullable: true })
     location: string;
 
-    @Column('text',{ nullable: true }) //link to photo
+    @Column('text', { nullable: true }) //link to photo
     profilePicture: string;
 
-    @Column('datetime',{ nullable: true })
+    @Column('datetime', { nullable: true })
     dateOfBirth: Date;
 
-    @Column('text',{ nullable: true })
+    @Column('text', { nullable: true })
     website: string;
 
-    @Column('text',{ nullable: true })
+    @Column('text', { nullable: true })
     experience: string;
 
-    @Column('text',{ nullable: true })
+    @Column('text', { nullable: true })
     resume: string;
 
-    @Column('integer',{ nullable: true })
+    @Column('simple-array', { nullable: true })
+    skills: string[];
+
+    @Column('integer', { default: 0 })
     money: number;
 
     @Column('varchar',{ length: 100, nullable: true })
     headline: string;
 
     @OneToMany(
-        type => Job,
+        () => Job,
         job => job.client,
+        { nullable: true },
     ) // note: we will create author property in the Photo class below
     jobs: Job[];
 
-    @OneToMany(type => Bid, bid => bid.userId)
+    @OneToMany(
+        () => Bid,
+        bid => bid.userId,
+        { nullable: true },
+    )
     bid: Bid[];
 }
 
@@ -113,9 +124,7 @@ export class UserSkill {
     @PrimaryColumn("varchar",{ length: 50 })
     skill: String;
 
-
-    @ManyToOne(type => User, { primary: true})
-    @JoinColumn({ name: "userId" })
-    user:User;
-
+    @ManyToOne(() => User, { primary: true })
+    @JoinColumn({ name: 'userId' })
+    user: User;
 }

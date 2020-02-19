@@ -1,11 +1,13 @@
-import {
-    Injectable,
-    BadRequestException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, InterestedCategory, UserSkill, InterestedCategoryEnum } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto, EditUserDto, UserNamePasswordDto, CreateInterestedCategoryDto, CreateSkillDto } from './users.dto';
+import {
+    CreateUserDto,
+    EditUserDto,
+    UserNamePasswordDto,
+    CreateSkillDto,
+} from './users.dto';
 import bcrypt = require('bcrypt');
 
 @Injectable()
@@ -29,7 +31,8 @@ export class UsersService {
         return this.userRepository.find({
             select: [
                 'userId',
-                'fullName',
+                'firstName',
+                'lastName',
                 'phone',
                 'email',
                 'education',
@@ -53,10 +56,11 @@ export class UsersService {
     }
 
     async getUserById(userId: number): Promise<User> {
-        return this.userRepository.findOne(userId,{
+        return this.userRepository.findOne(userId, {
             select: [
                 'userId',
-                'fullName',
+                'firstName',
+                'lastName',
                 'phone',
                 'email',
                 'education',
@@ -103,7 +107,8 @@ export class UsersService {
             where : { username : username },
             select: [
                 'userId',
-                'fullName',
+                'firstName',
+                'lastName',
                 'phone',
                 'email',
                 'education',
@@ -127,10 +132,10 @@ export class UsersService {
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
         return this.interestedCategoryRepository.find({
-            select: ["interestedCategory"],
-            where : {
-                user : userId
-            }
+            select: ['interestedCategory'],
+            where: {
+                user: userId,
+            },
         });
     }
 

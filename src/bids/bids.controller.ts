@@ -9,11 +9,16 @@ export class BidsController {
     @Get(':bidId')
     async getBidById(@Param('bidId') bidId: number) {
         return this.bidService.getBidById(bidId);
-    }  
+    }
 
     @Get('bidId/:jobId')
-    async getBidIdByjobId(@Param('jobId') jobId: number){
+    async getBidIdByjobId(@Param('jobId') jobId: number) {
         return this.bidService.getBidIdByJobId(jobId);
+    }
+
+    @Get('job/:userId')
+    async getJobByUserId(@Param('userId') userId: number) {
+        return this.bidService.getJobByUserId(userId);
     }
 
     @Post()
