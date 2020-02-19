@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UseGuards } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt = require('bcrypt');
+import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class AuthService {
@@ -18,6 +19,7 @@ export class AuthService {
         return null;
     }
 
+    @UseGuards(AuthGuard('local'))
     async login(user: any) {
         const payload = { sub: user.id, username: user.username };
         return { access_token: this.jwtService.sign(payload) };
