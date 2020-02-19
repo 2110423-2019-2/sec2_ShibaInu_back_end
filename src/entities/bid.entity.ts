@@ -6,6 +6,12 @@ import { User } from "../entities/user.entity";
 export class Bid {
     @PrimaryGeneratedColumn()
     bidId: number;
+
+    @Column()
+    jobId: number;
+
+    @Column()
+    userId: number;
    
     @Column('integer')
     biddedWage: number;
@@ -18,9 +24,9 @@ export class Bid {
 
     @ManyToOne(type => Job)
     @JoinColumn({ name: "jobId"})
-    jobId: Job;
+    job: Job;
 
     @ManyToOne(type => User)
     @JoinColumn({ name: "userId"})
-    userId: User;
+    user: User;
 }

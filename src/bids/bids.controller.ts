@@ -16,6 +16,11 @@ export class BidsController {
         return this.bidService.getBidIdByJobId(jobId);
     }
 
+    @Get('job/:userId')
+    async getJobByUserId(@Param('userId') userId: number){
+        return this.bidService.getJobByUserId(userId);
+    }
+
     @Post()
     async createNewBid(@Body() createBidDto: CreateBidDto) {
         return this.bidService.createNewBid(createBidDto);
