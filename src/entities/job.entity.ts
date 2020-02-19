@@ -48,10 +48,10 @@ export class Job {
     @Column('enum', { enum: Catergory })
     catergory: Catergory;
 
-    @Column('timestamp')
+    @Column('timestamp', {default: 'current_timestamp'})
     createdTime: Date;
 
-    @Column('timestamp')
+    @Column('timestamp', {default: 'current_timestamp', onUpdate: 'current_timestamp'})
     updatedTime: Date;
 
     @ManyToOne(
