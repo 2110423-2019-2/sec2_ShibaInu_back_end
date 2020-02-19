@@ -42,7 +42,7 @@ export class User {
     @Column('text')
     education: string;
 
-    @Column('timestamp', {default: 'current_timestamp'})
+    @Column('timestamp', {default: () => "CURRENT_TIMESTAMP"})
     createdTime: Date;
 
     @Column('boolean')
