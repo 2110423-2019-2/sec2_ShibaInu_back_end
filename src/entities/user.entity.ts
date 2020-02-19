@@ -35,10 +35,10 @@ export class User {
     @Column('varchar', { length: 50, nullable: true })
     email: string;
 
-    @Column('varchar', { length: 50})
+    @Column('varchar', { length: 50 })
     username: string;
 
-    @Column('varchar', { length: 100})
+    @Column('varchar', { length: 100 })
     password: string;
 
     @Column('text', { nullable: true })
@@ -86,7 +86,7 @@ export class User {
     @Column('integer', { default: 0 })
     money: number;
 
-    @Column('varchar',{ length: 100, nullable: true })
+    @Column('varchar', { length: 100, nullable: true })
     headline: string;
 
     @OneToMany(
@@ -106,19 +106,20 @@ export class User {
 
 @Entity()
 export class InterestedCategory {
-    @PrimaryColumn("enum",{enum : InterestedCategoryEnum, default: InterestedCategoryEnum.other})
+    @PrimaryColumn('enum', {
+        enum: InterestedCategoryEnum,
+        default: InterestedCategoryEnum.other,
+    })
     interestedCategory: InterestedCategoryEnum;
 
-
-    @ManyToOne(type => User, { primary: true})
-    @JoinColumn({ name: "userId" })
-    user:User;
-
+    @ManyToOne(type => User, { primary: true })
+    @JoinColumn({ name: 'userId' })
+    user: User;
 }
 
 @Entity()
 export class UserSkill {
-    @PrimaryColumn("varchar",{ length: 50 })
+    @PrimaryColumn('varchar', { length: 50 })
     skill: String;
 
     @ManyToOne(() => User, { primary: true })

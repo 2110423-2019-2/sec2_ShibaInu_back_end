@@ -5,9 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { NotificationController } from './notification.controller';
 
 @Module({
-    imports: [
-      TypeOrmModule.forFeature([Notification]),
-    ],
+    imports: [TypeOrmModule.forFeature([Notification])],
     controllers: [NotificationController],
     providers: [NotificationService],
     exports: [NotificationService],

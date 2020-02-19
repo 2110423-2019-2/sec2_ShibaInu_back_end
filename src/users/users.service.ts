@@ -170,7 +170,6 @@ export class UsersService {
     }
 
     async createNewUserSkill(userId,skill){
-        console.log(userId,skill);
         return this.userSkillRepository.save({user:userId, skill:skill});
     }
 

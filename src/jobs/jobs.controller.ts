@@ -36,6 +36,11 @@ export class JobsController {
         return this.jobService.getRecentJobByClientId(userId);
     }
 
+    @Get('recommend/:userId')
+    async getRecommendJobByFreelancerId(@Param('userId') userId: number) {
+        return this.jobService.getRecommendJobByFreelancerId(userId);
+    }
+
     @UseGuards(AuthGuard())
     @Post()
     async createNewJob(@Body() createJobDto: CreateJobDto) {

@@ -1,5 +1,10 @@
-import { Job } from 'src/entities/job.entity';
-import { InterestedCategoryEnum, User, InterestedCategory, UserSkill } from 'src/entities/user.entity';
+import { Job } from '../entities/job.entity';
+import {
+    InterestedCategoryEnum,
+    User,
+    InterestedCategory,
+    UserSkill,
+} from '../entities/user.entity';
 
 export class CreateUserDto {
     firstName: string;
@@ -59,7 +64,7 @@ export class CreateInterestedCategoryDto {
     interestedCategory: InterestedCategoryEnum;
 }
 
-export class CreateSkillDto{
-    user? : User;
+export class CreateSkillDto {
+    user?: User;
     skill: string;
 }
