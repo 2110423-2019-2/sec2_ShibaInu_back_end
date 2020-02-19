@@ -10,7 +10,7 @@ import {
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
 import { JobReqSkill } from './jobReqSkill.entity';
-import { JobOptSkill } from './JobOptSkill.entity';
+import { JobOptSkill } from './jobOptSkill.entity';
 
 export enum Status {
     OPEN = 'open',

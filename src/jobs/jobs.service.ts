@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { InterestedCategory } from "../entities/user.entity";
 import { Job } from '../entities/job.entity';
 import { Repository } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
@@ -10,6 +11,11 @@ export class JobsService {
     constructor(
         @InjectRepository(Job)
         private readonly jobRepository: Repository<Job>,
+        
+        @InjectRepository(InterestedCategory)
+        private readonly interestedCategoryRepository: Repository<
+            InterestedCategory
+        >,
     ) {}
 
     async getAllJobs(): Promise<Job[]> {
@@ -81,4 +87,33 @@ export class JobsService {
             take: 5,
         });
     }
+
+    async getRecommendJobByFreelancerId(freelancerUserId: number): Promise<Job[]>{
+        let temp = await this.interestedCategoryRepository.find({
+            where: {user: freelancerUserId}
+        })
+        let tempArray=[]
+        for (let i=0;i<temp.length;i++){
+            tempArray.push({
+                catergory: temp[i].interestedCategory
+            })
+        }
+        return getRandom(await this.jobRepository.find({
+            where: tempArray
+        }),3)
+    }
+}
+
+function getRandom(arr, n) {
+    var result = new Array(n),
+        len = arr.length,
+        taken = new Array(len);
+    if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
 }
