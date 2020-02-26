@@ -1,6 +1,11 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, InterestedCategory, UserSkill, InterestedCategoryEnum } from '../entities/user.entity';
+import {
+    User,
+    InterestedCategory,
+    UserSkill,
+    InterestedCategoryEnum,
+} from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import {
     CreateUserDto,
@@ -22,9 +27,7 @@ export class UsersService {
         >,
 
         @InjectRepository(UserSkill)
-        private readonly userSkillRepository: Repository<
-            UserSkill
-        >,
+        private readonly userSkillRepository: Repository<UserSkill>,
     ) {}
 
     async getAllUsers(): Promise<User[]> {
@@ -79,7 +82,7 @@ export class UsersService {
                 'resume',
                 'money',
                 'headline',
-            ]
+            ],
         });
     }
 
@@ -104,7 +107,7 @@ export class UsersService {
 
     async getUserByUsername(username: string): Promise<User> {
         return this.userRepository.findOne({
-            where : { username : username },
+            where: { username: username },
             select: [
                 'userId',
                 'firstName',
@@ -128,7 +131,8 @@ export class UsersService {
                 'money',
                 'password',
                 'headline',
-            ]});
+            ],
+        });
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
@@ -142,10 +146,10 @@ export class UsersService {
 
     async getSkillByUserId(userId: number): Promise<UserSkill[]> {
         return this.userSkillRepository.find({
-            select: ["skill"],
-            where : {
-                user : userId
-            }
+            select: ['skill'],
+            where: {
+                user: userId,
+            },
         });
     }
 
@@ -165,51 +169,68 @@ export class UsersService {
         return this.userRepository.insert(createUserDto);
     }
 
-    async createNewUserInterestedCategory(userId,interestedCategory){
-        return this.interestedCategoryRepository.save({user:userId, interestedCategory:interestedCategory});
+    async createNewUserInterestedCategory(userId, interestedCategory) {
+        return this.interestedCategoryRepository.save({
+            user: userId,
+            interestedCategory: interestedCategory,
+        });
     }
 
-    async createNewUserSkill(userId,skill){
-        return this.userSkillRepository.save({user:userId, skill:skill});
+    async createNewUserSkill(userId, skill) {
+        return this.userSkillRepository.save({ user: userId, skill: skill });
     }
 
     async editUser(editUserDto: EditUserDto) {
-        if(editUserDto.interestedCategories){
+        if (editUserDto.interestedCategories) {
             let interestedCategories = editUserDto.interestedCategories;
             delete editUserDto.interestedCategories;
 
             this.deleteInterestedCategoryOfUserId(editUserDto.userId); //delete
 
-            for(let i=0;i<interestedCategories.length;i++){ //insert
-                await this.createNewUserInterestedCategory(editUserDto.userId,interestedCategories[i].interestedCategory);
+            for (let i = 0; i < interestedCategories.length; i++) {
+                //insert
+                await this.createNewUserInterestedCategory(
+                    editUserDto.userId,
+                    interestedCategories[i].interestedCategory,
+                );
             }
         }
-        if(editUserDto.skills){
+        if (editUserDto.skills) {
             let skills = editUserDto.skills;
             delete editUserDto.skills;
 
             this.deleteUserSkillOfUserId(editUserDto.userId); //delete
 
-            for(let i=0;i<skills.length;i++){ //insert
-                await this.createNewUserSkill(editUserDto.userId,skills[i].skill);
+            for (let i = 0; i < skills.length; i++) {
+                //insert
+                await this.createNewUserSkill(
+                    editUserDto.userId,
+                    skills[i].skill,
+                );
             }
         }
         return this.userRepository.save(editUserDto);
     }
 
-    async deleteInterestedCategoryOfUserId(userId){
-        return this.interestedCategoryRepository.delete({user:userId});
+    async deleteInterestedCategoryOfUserId(userId) {
+        return this.interestedCategoryRepository.delete({ user: userId });
     }
 
-    async deleteInterestedCategory(userId,interestedCategory: InterestedCategoryEnum){
-        return this.interestedCategoryRepository.delete({user:userId, interestedCategory:interestedCategory});
+    async deleteInterestedCategory(
+        userId,
+        interestedCategory: InterestedCategoryEnum,
+    ) {
+        return this.interestedCategoryRepository.delete({
+            user: userId,
+            interestedCategory: interestedCategory,
+        });
     }
 
-    async deleteUserSkillOfUserId(userId){
-        return this.userSkillRepository.delete({user:userId});
+    async deleteUserSkillOfUserId(userId) {
+        return this.userSkillRepository.delete({ user: userId });
     }
 
-    async deleteUserSkill(userId,skill: string){
-        return this.userSkillRepository.delete({user:userId, skill:skill});
+    async deleteUserSkill(userId, skill: string) {
+        return this.userSkillRepository.delete({ user: userId, skill: skill });
     }
 }

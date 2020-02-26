@@ -1,7 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory } from '../entities/user.entity';
-import { Job, JobReqSkill, JobOptSkill, Catergory } from '../entities/job.entity';
+import {
+    Job,
+    JobReqSkill,
+    JobOptSkill,
+    Catergory,
+} from '../entities/job.entity';
 import { Repository, Like, Between } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 import { NamingStrategyMetadataArgs } from 'typeorm/metadata-args/NamingStrategyMetadataArgs';
@@ -24,57 +29,88 @@ export class JobsService {
         private readonly jobOptSkillRepository: Repository<JobReqSkill>,
     ) {}
 
-    async getAllJobs(name: string, w1: number, w2: number,t1: number, t2: number, cat:string, rs1:string, rs2:string, rs3:string, os1:string, os2:string, os3:string): Promise<Job[]> {
-        if(!name) name = "";
-        if(!cat || !(cat in Catergory)) cat = "";
-        if(!w1 || !w2){
+    async getAllJobs(
+        name: string,
+        w1: number,
+        w2: number,
+        t1: number,
+        t2: number,
+        cat: string,
+        rs1: string,
+        rs2: string,
+        rs3: string,
+        os1: string,
+        os2: string,
+        os3: string,
+    ): Promise<Job[]> {
+        if (!name) name = '';
+        if (!cat || !(cat in Catergory)) cat = '';
+        if (!w1 || !w2) {
             w1 = 0;
             w2 = 9999999999999;
         }
-        if(!t1 || !t2){
+        if (!t1 || !t2) {
             t1 = 0;
             t2 = 2147483647;
         }
-        let a = await this.jobRepository.find({ 
-            select: [ "jobId" ],
-            where:{
+        let a = await this.jobRepository.find({
+            select: ['jobId'],
+            where: {
                 name: Like(`%${name}%`),
-                estimatedWage: Between(w1,w2),
-                estimatedDuration: Between(t1,t2),
-                catergory: Like(`%${cat}%`)
-            }
+                estimatedWage: Between(w1, w2),
+                estimatedDuration: Between(t1, t2),
+                catergory: Like(`%${cat}%`),
+            },
         });
         let data = [[]];
-        for(let i=0;i<a.length;i++) data[0].push(a[i].jobId);
-        if(rs1){
-            let reqs1 = await this.jobRepository.query(`select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs1}')`);
+        for (let i = 0; i < a.length; i++) data[0].push(a[i].jobId);
+        if (rs1) {
+            let reqs1 = await this.jobRepository.query(
+                `select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs1}')`,
+            );
             data.push([]);
-            for(let i=0;i<reqs1.length;i++) data[data.length-1].push(reqs1[i].jobId);
+            for (let i = 0; i < reqs1.length; i++)
+                data[data.length - 1].push(reqs1[i].jobId);
         }
-        if(rs2){
-            let reqs2 = await this.jobRepository.query(`select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs2}')`);
+        if (rs2) {
+            let reqs2 = await this.jobRepository.query(
+                `select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs2}')`,
+            );
             data.push([]);
-            for(let i=0;i<reqs2.length;i++) data[data.length-1].push(reqs2[i].jobId);
+            for (let i = 0; i < reqs2.length; i++)
+                data[data.length - 1].push(reqs2[i].jobId);
         }
-        if(rs3){
-            let reqs3 = await this.jobRepository.query(`select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs3}')`);
+        if (rs3) {
+            let reqs3 = await this.jobRepository.query(
+                `select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs3}')`,
+            );
             data.push([]);
-            for(let i=0;i<reqs3.length;i++) data[data.length-1].push(reqs3[i].jobId);
+            for (let i = 0; i < reqs3.length; i++)
+                data[data.length - 1].push(reqs3[i].jobId);
         }
-        if(os1){
-            let opts1 = await this.jobRepository.query(`select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os1}')`);
+        if (os1) {
+            let opts1 = await this.jobRepository.query(
+                `select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os1}')`,
+            );
             data.push([]);
-            for(let i=0;i<opts1.length;i++) data[data.length-1].push(opts1[i].jobId);
+            for (let i = 0; i < opts1.length; i++)
+                data[data.length - 1].push(opts1[i].jobId);
         }
-        if(os2){
-            let opts2 = await this.jobRepository.query(`select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os2}')`);
+        if (os2) {
+            let opts2 = await this.jobRepository.query(
+                `select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os2}')`,
+            );
             data.push([]);
-            for(let i=0;i<opts2.length;i++) data[data.length-1].push(opts2[i].jobId);
+            for (let i = 0; i < opts2.length; i++)
+                data[data.length - 1].push(opts2[i].jobId);
         }
-        if(os3){
-            let opts3 = await this.jobRepository.query(`select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os3}')`);
+        if (os3) {
+            let opts3 = await this.jobRepository.query(
+                `select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os3}')`,
+            );
             data.push([]);
-            for(let i=0;i<opts3.length;i++) data[data.length-1].push(opts3[i].jobId);
+            for (let i = 0; i < opts3.length; i++)
+                data[data.length - 1].push(opts3[i].jobId);
         }
         let jobIds = data.reduce((a, b) => a.filter(c => b.includes(c)));
         return this.jobRepository.findByIds(jobIds);
