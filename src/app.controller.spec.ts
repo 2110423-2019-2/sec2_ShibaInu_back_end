@@ -18,5 +18,9 @@ describe('AppController', () => {
         it('should return "Hello World!"', () => {
             expect(appController.getHello()).toBe('Hello World!');
         });
+
+        it('should return "Pong"', async () => {
+            expect(await appController.ping()).toBe('Pong');
+        })
     });
 });

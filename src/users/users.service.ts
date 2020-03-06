@@ -212,4 +212,9 @@ export class UsersService {
     async deleteUserSkill(userId,skill: string){
         return this.userSkillRepository.delete({user:userId, skill:skill});
     }
+
+    async testUserDecorator(user: any) {
+        console.log(user);
+        return user;
+    }
 }

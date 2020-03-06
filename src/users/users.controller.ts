@@ -7,6 +7,7 @@ import {
     Patch,
     UseGuards,
     Delete,
+    Req,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -17,10 +18,22 @@ import {
     CreateSkillDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { User } from '../decorators/users.decorator';
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly userService: UsersService) {}
+
+    @UseGuards(AuthGuard())
+    @Get('test')
+    async testUserDecorator(@User() user: any, @Req() req: any) {
+        console.log(user);
+    }
+
+    @Get('testnojwt')
+    async testUserDecoratorNoJwt(@User() user: any) {
+        console.log(user);
+    }
 
     @Get()
     async getAllUsers() {
