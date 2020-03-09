@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, InterestedCategory, UserSkill, InterestedCategoryEnum } from '../entities/user.entity';
 import { Repository } from 'typeorm';
@@ -9,6 +9,7 @@ import {
     CreateSkillDto,
 } from './users.dto';
 import bcrypt = require('bcrypt');
+import { readSync } from 'fs';
 
 @Injectable()
 export class UsersService {
@@ -28,7 +29,7 @@ export class UsersService {
     ) {}
 
     async getAllUsers(): Promise<User[]> {
-        return this.userRepository.find({
+        let ret = await this.userRepository.find({
             select: [
                 'userId',
                 'firstName',
@@ -53,10 +54,12 @@ export class UsersService {
                 'headline',
             ],
         });
+        if(ret.length == 0) throw new BadRequestException("Not found any User");
+        return ret;
     }
 
     async getUserById(userId: number): Promise<User> {
-        return this.userRepository.findOne(userId, {
+        let ret = await this.userRepository.findOne(userId, {
             select: [
                 'userId',
                 'firstName',
@@ -81,29 +84,34 @@ export class UsersService {
                 'headline',
             ]
         });
+        if(!ret) throw new BadRequestException("Invalid User");
+        return ret;
     }
 
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
-        console.log(userNamePasswordDto);
-        return this.userRepository.find({
+        let ret = await this.userRepository.find({
             where: {
                 username: userNamePasswordDto.username,
                 password: userNamePasswordDto.password,
             },
         });
+        if(!ret || ret.length==0) throw new BadRequestException("Invalid username or password");
+        return ret;
     }
 
     async getMoneyById(userId: number): Promise<User> {
-        return this.userRepository.findOne({
+        let ret = await this.userRepository.findOne({
             select: ['money'],
             where: {
                 userId: userId,
             },
         });
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        return this.userRepository.findOne({
+        let ret = await this.userRepository.findOne({
             where : { username : username },
             select: [
                 'userId',
@@ -129,24 +137,30 @@ export class UsersService {
                 'password',
                 'headline',
             ]});
+            if(!ret) throw new BadRequestException("Invalid username");
+            return ret;
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
-        return this.interestedCategoryRepository.find({
+        let ret = await this.interestedCategoryRepository.find({
             select: ['interestedCategory'],
             where: {
                 user: userId,
             },
         });
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async getSkillByUserId(userId: number): Promise<UserSkill[]> {
-        return this.userSkillRepository.find({
+        let ret = await this.userSkillRepository.find({
             select: ["skill"],
             where : {
                 user : userId
             }
         });
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async createNewUser(createUserDto: CreateUserDto) {
@@ -166,11 +180,15 @@ export class UsersService {
     }
 
     async createNewUserInterestedCategory(userId,interestedCategory){
-        return this.interestedCategoryRepository.save({user:userId, interestedCategory:interestedCategory});
+        let ret = await this.interestedCategoryRepository.save({user:userId, interestedCategory:interestedCategory});
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async createNewUserSkill(userId,skill){
-        return this.userSkillRepository.save({user:userId, skill:skill});
+        let ret = await  this.userSkillRepository.save({user:userId, skill:skill});
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async editUser(editUserDto: EditUserDto) {
@@ -194,23 +212,33 @@ export class UsersService {
                 await this.createNewUserSkill(editUserDto.userId,skills[i].skill);
             }
         }
-        return this.userRepository.save(editUserDto);
+        let ret = await this.userRepository.save(editUserDto);
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async deleteInterestedCategoryOfUserId(userId){
-        return this.interestedCategoryRepository.delete({user:userId});
+        let ret = await this.interestedCategoryRepository.delete({user:userId});
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async deleteInterestedCategory(userId,interestedCategory: InterestedCategoryEnum){
-        return this.interestedCategoryRepository.delete({user:userId, interestedCategory:interestedCategory});
+        let ret = await this.interestedCategoryRepository.delete({user:userId, interestedCategory:interestedCategory});
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async deleteUserSkillOfUserId(userId){
-        return this.userSkillRepository.delete({user:userId});
+        let ret = await this.userSkillRepository.delete({user:userId});
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async deleteUserSkill(userId,skill: string){
-        return this.userSkillRepository.delete({user:userId, skill:skill});
+        let ret = await this.userSkillRepository.delete({user:userId, skill:skill});
+        if(!ret) throw new BadRequestException("Invalid UserId");
+        return ret;
     }
 
     async testUserDecorator(user: any) {
