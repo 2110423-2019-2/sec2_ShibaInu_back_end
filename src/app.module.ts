@@ -8,6 +8,8 @@ import { NotificationController } from './notification/notification.controller';
 import { AuthModule } from './auth/auth.module';
 import { BidsModule } from './bids/bids.module';
 import { NotificationModule } from './notification/notification.module';
+import { ReviewController } from './review/review.controller';
+import { ReviewModule } from './review/review.module';
 
 require('dotenv').config();
 
@@ -31,8 +33,9 @@ require('dotenv').config();
         }),
         AuthModule,
         NotificationModule,
+        ReviewModule,
     ],
-    controllers: [AppController, NotificationController],
+    controllers: [AppController, NotificationController, ReviewController],
     providers: [AppService],
 })
 export class AppModule {}
