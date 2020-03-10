@@ -42,6 +42,7 @@ export class JobsService {
         os1: string,
         os2: string,
         os3: string,
+        sort: number,
     ): Promise<Job[]> {
         if (!name) name = '';
         if (!cat || !(cat in Catergory)) cat = '';
@@ -113,7 +114,31 @@ export class JobsService {
                 data[data.length - 1].push(opts3[i].jobId);
         }
         let jobIds = data.reduce((a, b) => a.filter(c => b.includes(c)));
-        return this.jobRepository.findByIds(jobIds);
+        let sorting:Object;
+        switch(Number(sort)){
+            case 0:
+                sorting = { updatedTime: 'DESC' };
+                break;
+            case 1:
+                sorting = { updatedTime: 'ASC' };
+                break;
+            case 2:
+                sorting = { estimatedWage: 'DESC' };
+                break;
+            case 3:
+                sorting = { estimatedWage: 'ASC' };
+                break;
+            case 4:
+                sorting = { estimatedDuration: 'DESC' };
+                break;
+            case 5:
+                sorting = { estimatedDuration: 'ASC' };
+                break;
+            default:
+                sorting = { updatedTime: 'DESC' };
+                break;
+        }
+        return this.jobRepository.findByIds(jobIds, { order: sorting });
     }
 
     async getJobById(jobId: number): Promise<Job> {
