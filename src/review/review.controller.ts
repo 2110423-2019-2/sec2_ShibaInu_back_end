@@ -12,7 +12,7 @@ export class ReviewController {
     }
 
     @Post()
-    async createNewReview(@Body() createReviewDto: CreateReviewDto){
+    async createNewReview(@Body() createReviewDto: CreateReviewDto) {
         return this.reviewService.createNewReview(createReviewDto);
     }
 }

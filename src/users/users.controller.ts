@@ -92,7 +92,10 @@ export class UsersController {
         @Param('userId') userId: number,
         @Body() createSkillDto: CreateSkillDto,
     ) {
-        return this.userService.createNewUserSkill(userId,createSkillDto.skill);
+        return this.userService.createNewUserSkill(
+            userId,
+            createSkillDto.skill,
+        );
     }
 
     @Patch(':userId')

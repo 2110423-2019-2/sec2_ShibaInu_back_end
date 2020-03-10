@@ -1,6 +1,15 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+    Injectable,
+    BadRequestException,
+    NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, InterestedCategory, UserSkill, InterestedCategoryEnum } from '../entities/user.entity';
+import {
+    User,
+    InterestedCategory,
+    UserSkill,
+    InterestedCategoryEnum,
+} from '../entities/user.entity';
 import { Repository } from 'typeorm';
 import {
     CreateUserDto,
@@ -23,9 +32,7 @@ export class UsersService {
         >,
 
         @InjectRepository(UserSkill)
-        private readonly userSkillRepository: Repository<
-            UserSkill
-        >,
+        private readonly userSkillRepository: Repository<UserSkill>,
     ) {}
 
     async getAllUsers(): Promise<User[]> {
@@ -54,7 +61,8 @@ export class UsersService {
                 'headline',
             ],
         });
-        if(ret.length == 0) throw new BadRequestException("Not found any User");
+        if (ret.length == 0)
+            throw new BadRequestException('Not found any User');
         return ret;
     }
 
@@ -82,9 +90,9 @@ export class UsersService {
                 'resume',
                 'money',
                 'headline',
-            ]
+            ],
         });
-        if(!ret) throw new BadRequestException("Invalid User");
+        if (!ret) throw new BadRequestException('Invalid User');
         return ret;
     }
 
@@ -95,7 +103,8 @@ export class UsersService {
                 password: userNamePasswordDto.password,
             },
         });
-        if(!ret || ret.length==0) throw new BadRequestException("Invalid username or password");
+        if (!ret || ret.length == 0)
+            throw new BadRequestException('Invalid username or password');
         return ret;
     }
 
@@ -106,13 +115,13 @@ export class UsersService {
                 userId: userId,
             },
         });
-        if(!ret) throw new BadRequestException("Invalid UserId");
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
     async getUserByUsername(username: string): Promise<User> {
         let ret = await this.userRepository.findOne({
-            where : { username : username },
+            where: { username: username },
             select: [
                 'userId',
                 'firstName',
@@ -136,9 +145,9 @@ export class UsersService {
                 'money',
                 'password',
                 'headline',
-            ]});
-            if(!ret) throw new BadRequestException("Invalid username");
-            return ret;
+            ],
+        });
+        return ret;
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
@@ -148,18 +157,18 @@ export class UsersService {
                 user: userId,
             },
         });
-        if(!ret) throw new BadRequestException("Invalid UserId");
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
     async getSkillByUserId(userId: number): Promise<UserSkill[]> {
         let ret = await this.userSkillRepository.find({
-            select: ["skill"],
-            where : {
-                user : userId
-            }
+            select: ['skill'],
+            where: {
+                user: userId,
+            },
         });
-        if(!ret) throw new BadRequestException("Invalid UserId");
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
@@ -179,65 +188,90 @@ export class UsersService {
         return this.userRepository.insert(createUserDto);
     }
 
-    async createNewUserInterestedCategory(userId,interestedCategory){
-        let ret = await this.interestedCategoryRepository.save({user:userId, interestedCategory:interestedCategory});
-        if(!ret) throw new BadRequestException("Invalid UserId");
+    async createNewUserInterestedCategory(userId, interestedCategory) {
+        let ret = await this.interestedCategoryRepository.save({
+            user: userId,
+            interestedCategory: interestedCategory,
+        });
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
-    async createNewUserSkill(userId,skill){
-        let ret = await  this.userSkillRepository.save({user:userId, skill:skill});
-        if(!ret) throw new BadRequestException("Invalid UserId");
+    async createNewUserSkill(userId, skill) {
+        let ret = await this.userSkillRepository.save({
+            user: userId,
+            skill: skill,
+        });
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
     async editUser(editUserDto: EditUserDto) {
-        if(editUserDto.interestedCategories){
+        if (editUserDto.interestedCategories) {
             let interestedCategories = editUserDto.interestedCategories;
             delete editUserDto.interestedCategories;
 
             this.deleteInterestedCategoryOfUserId(editUserDto.userId); //delete
 
-            for(let i=0;i<interestedCategories.length;i++){ //insert
-                await this.createNewUserInterestedCategory(editUserDto.userId,interestedCategories[i].interestedCategory);
+            for (let i = 0; i < interestedCategories.length; i++) {
+                //insert
+                await this.createNewUserInterestedCategory(
+                    editUserDto.userId,
+                    interestedCategories[i].interestedCategory,
+                );
             }
         }
-        if(editUserDto.skills){
+        if (editUserDto.skills) {
             let skills = editUserDto.skills;
             delete editUserDto.skills;
 
             this.deleteUserSkillOfUserId(editUserDto.userId); //delete
 
-            for(let i=0;i<skills.length;i++){ //insert
-                await this.createNewUserSkill(editUserDto.userId,skills[i].skill);
+            for (let i = 0; i < skills.length; i++) {
+                //insert
+                await this.createNewUserSkill(
+                    editUserDto.userId,
+                    skills[i].skill,
+                );
             }
         }
         let ret = await this.userRepository.save(editUserDto);
-        if(!ret) throw new BadRequestException("Invalid UserId");
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
-    async deleteInterestedCategoryOfUserId(userId){
-        let ret = await this.interestedCategoryRepository.delete({user:userId});
-        if(!ret) throw new BadRequestException("Invalid UserId");
+    async deleteInterestedCategoryOfUserId(userId) {
+        let ret = await this.interestedCategoryRepository.delete({
+            user: userId,
+        });
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
-    async deleteInterestedCategory(userId,interestedCategory: InterestedCategoryEnum){
-        let ret = await this.interestedCategoryRepository.delete({user:userId, interestedCategory:interestedCategory});
-        if(!ret) throw new BadRequestException("Invalid UserId");
+    async deleteInterestedCategory(
+        userId,
+        interestedCategory: InterestedCategoryEnum,
+    ) {
+        let ret = await this.interestedCategoryRepository.delete({
+            user: userId,
+            interestedCategory: interestedCategory,
+        });
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
-    async deleteUserSkillOfUserId(userId){
-        let ret = await this.userSkillRepository.delete({user:userId});
-        if(!ret) throw new BadRequestException("Invalid UserId");
+    async deleteUserSkillOfUserId(userId) {
+        let ret = await this.userSkillRepository.delete({ user: userId });
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
-    async deleteUserSkill(userId,skill: string){
-        let ret = await this.userSkillRepository.delete({user:userId, skill:skill});
-        if(!ret) throw new BadRequestException("Invalid UserId");
+    async deleteUserSkill(userId, skill: string) {
+        let ret = await this.userSkillRepository.delete({
+            user: userId,
+            skill: skill,
+        });
+        if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
