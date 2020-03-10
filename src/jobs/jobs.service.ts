@@ -114,8 +114,8 @@ export class JobsService {
                 data[data.length - 1].push(opts3[i].jobId);
         }
         let jobIds = data.reduce((a, b) => a.filter(c => b.includes(c)));
-        let sorting:Object;
-        switch(Number(sort)){
+        let sorting: Object;
+        switch (Number(sort)) {
             case 0:
                 sorting = { updatedTime: 'DESC' };
                 break;
