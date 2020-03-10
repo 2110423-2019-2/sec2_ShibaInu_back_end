@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Job } from './job.entity';
 import { Bid } from './bid.entity';
+import { Review } from './review.entity';
 
 export enum InterestedCategoryEnum {
     game = 'game',
@@ -102,6 +103,20 @@ export class User {
         { nullable: true },
     )
     bid: Bid[];
+
+    @OneToMany(
+        () => Review,
+        review => review.reviewId,
+        { nullable: true },
+    )
+    reviewedByOthers: Review[];
+
+    @OneToMany(
+        () => Review,
+        review => review.reviewId,
+        { nullable: true },
+    )
+    reviews: Review[];
 }
 
 @Entity()
