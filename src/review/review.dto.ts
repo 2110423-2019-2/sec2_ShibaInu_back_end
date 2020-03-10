@@ -5,3 +5,8 @@ export class CreateReviewDto {
     reviewee: User;
     reviewer: User;
 }
+
+export class EditReviewDto {
+    reviewId?: number;
+    description: string;
+}
