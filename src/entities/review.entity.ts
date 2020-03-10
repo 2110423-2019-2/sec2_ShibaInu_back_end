@@ -19,5 +19,5 @@ export class Review {
         type => User,
         user => user.reviews,
     )
-    reviwer: User;
+    reviewer: User;
 }

@@ -18,6 +18,15 @@ export class ReviewService {
         return ret;
     }
 
+    async getReviewsByUserId(userId: number): Promise<Review[]> {
+        let ret = await this.reviewRepository.find({
+            where: { reviewee : userId },
+        });
+        if (ret.length == 0)
+            throw new BadRequestException('Not found any Review');
+        return ret;
+    }
+
     async createNewReview(createReviewDto: CreateReviewDto) {
         return this.reviewRepository.insert(createReviewDto);
     }
