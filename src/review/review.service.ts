@@ -12,7 +12,7 @@ export class ReviewService {
         @InjectRepository(Review)
         private readonly reviewRepository: Repository<Review>,
         private readonly jobService: JobsService,
-        private readonly userService: UsersService
+        private readonly userService: UsersService,
     ) {}
 
     async getAllReviews(): Promise<Review[]> {
@@ -47,8 +47,11 @@ export class ReviewService {
         ).name;
         createReviewDto.createdTime = new Date();
 
-        this.userService.updateReviewData(parseInt(String(createReviewDto.reviewee)),createReviewDto.score);
-        
+        this.userService.updateReviewData(
+            parseInt(String(createReviewDto.reviewee)),
+            createReviewDto.score,
+        );
+
         return this.reviewRepository.insert(createReviewDto);
     }
 

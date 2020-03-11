@@ -48,8 +48,6 @@ export class UsersService {
         return ret;
     }
 
-
-
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
         let ret = await this.userRepository.find({
             where: {
@@ -102,7 +100,7 @@ export class UsersService {
 
     async getAverageReviewdScore(userId: number): Promise<number> {
         let user = await this.getUserById(userId);
-        return user.sumReviewedScore/user.reviewedNumber;
+        return user.sumReviewedScore / user.reviewedNumber;
     }
 
     async createNewUser(createUserDto: CreateUserDto) {
@@ -174,10 +172,10 @@ export class UsersService {
         return ret;
     }
 
-    async updateReviewData(userId: number,score: number){
-        console.log(userId,score);
+    async updateReviewData(userId: number, score: number) {
+        console.log(userId, score);
         let user = await this.getUserById(userId);
-        let editUserDto = new EditUserDto;
+        let editUserDto = new EditUserDto();
         editUserDto.userId = userId;
         editUserDto.sumReviewedScore = user.sumReviewedScore + score;
         editUserDto.reviewedNumber = user.reviewedNumber + 1;
