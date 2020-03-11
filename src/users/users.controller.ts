@@ -41,7 +41,7 @@ export class UsersController {
     }
 
     @UseGuards(AuthGuard())
-    @Get('idfromtoken')
+    @Get('fromtoken')
     async getUserDataFromToken(@LoadUser() user: any) {
         return this.userService.getUserById(user.id);
     }
