@@ -1,8 +1,4 @@
-import {
-    Injectable,
-    BadRequestException,
-    NotFoundException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
     User,
@@ -11,12 +7,7 @@ import {
     InterestedCategoryEnum,
 } from '../entities/user.entity';
 import { Repository } from 'typeorm';
-import {
-    CreateUserDto,
-    EditUserDto,
-    UserNamePasswordDto,
-    CreateSkillDto,
-} from './users.dto';
+import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
 import bcrypt = require('bcrypt');
 import { readSync } from 'fs';
 
@@ -60,19 +51,25 @@ export class UsersService {
         return ret;
     }
 
-    async getMoneyById(userId: number): Promise<User[]> {
-        let ret = await this.userRepository.find({
-            select: ['money'],
+    async getMoneyById(userId: number): Promise<User> {
+        let ret = await this.userRepository.findOne({
+            select: ['userId', 'money'],
             where: {
                 userId: userId,
             },
         });
         if (!ret) throw new BadRequestException('Invalid UserId');
+        delete ret.userId;
         return ret;
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        let ret = await this.userRepository.findOne();
+        let ret = await this.userRepository.findOne({
+            where: {
+                username: username,
+            },
+        });
+        if (!ret) throw new BadRequestException('Invalid Username');
         return ret;
     }
 
