@@ -1,12 +1,18 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { User } from "./user.entity";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    ManyToOne,
+    JoinColumn,
+} from 'typeorm';
+import { User } from './user.entity';
 
 @Entity()
 export class Announcement {
     @PrimaryGeneratedColumn()
     announcementId: number;
 
-    @Column('varchar', {length: 150})
+    @Column('varchar', { length: 150 })
     title: string;
 
     @Column('text')
@@ -23,7 +29,7 @@ export class Announcement {
 
     @ManyToOne(
         () => User,
-        creator => creator.userId
+        creator => creator.userId,
     )
     @JoinColumn()
     creator: User;

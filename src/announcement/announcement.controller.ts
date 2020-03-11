@@ -1,4 +1,14 @@
-import { Controller, Get, Param, Post, Body, Patch, Delete, UseGuards, SetMetadata } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Param,
+    Post,
+    Body,
+    Patch,
+    Delete,
+    UseGuards,
+    SetMetadata,
+} from '@nestjs/common';
 import { AnnouncementService } from './announcement.service';
 import { CreateAnnouncementDto } from './announcement.dto';
 import { AdminGuard } from '../guards/admin.guard';
@@ -23,16 +33,28 @@ export class AnnouncementController {
     @UseGuards(AdminGuard)
     @SetMetadata('isadmin', [true])
     @UseGuards(AuthGuard())
-    async createAnnouncement(@LoadUser() user: any, @Body() createAnnouncementDto: CreateAnnouncementDto) {
-        return this.announcementService.createAnnouncement(createAnnouncementDto, user.id);
+    async createAnnouncement(
+        @LoadUser() user: any,
+        @Body() createAnnouncementDto: CreateAnnouncementDto,
+    ) {
+        return this.announcementService.createAnnouncement(
+            createAnnouncementDto,
+            user.id,
+        );
     }
 
     @Patch(':id')
     @UseGuards(AdminGuard)
     @SetMetadata('isadmin', [true])
     @UseGuards(AuthGuard())
-    async editAnnouncement(@Param('id') id: number, @Body() createAnnouncementDto: CreateAnnouncementDto) {
-        return this.announcementService.editAnnouncement(id, createAnnouncementDto);
+    async editAnnouncement(
+        @Param('id') id: number,
+        @Body() createAnnouncementDto: CreateAnnouncementDto,
+    ) {
+        return this.announcementService.editAnnouncement(
+            id,
+            createAnnouncementDto,
+        );
     }
 
     @Delete(':id')

@@ -7,10 +7,12 @@ import { PassportModule } from '@nestjs/passport';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Announcement]),
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    UsersModule],
-  controllers: [AnnouncementController],
-  providers: [AnnouncementService]
+    imports: [
+        TypeOrmModule.forFeature([Announcement]),
+        PassportModule.register({ defaultStrategy: 'jwt' }),
+        UsersModule,
+    ],
+    controllers: [AnnouncementController],
+    providers: [AnnouncementService],
 })
 export class AnnouncementModule {}

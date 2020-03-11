@@ -137,6 +137,7 @@ export class User {
     )
     @JoinColumn({ referencedColumnName: 'skill' })
     skills: UserSkill[];
+
     @OneToMany(
         () => Announcement,
         createdAnnouncement => createdAnnouncement.announcementId,
@@ -153,8 +154,7 @@ export class InterestedCategory {
     })
     interestedCategory: InterestedCategoryEnum;
 
-    @ManyToOne(type => User, { primary: true,
-        onDelete: 'CASCADE', })
+    @ManyToOne(type => User, { primary: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     public user: User;
 }
@@ -164,8 +164,7 @@ export class UserSkill {
     @PrimaryColumn('varchar', { length: 50 })
     skill: String;
 
-    @ManyToOne(() => User, { primary: true,
-        onDelete: 'CASCADE',})
+    @ManyToOne(() => User, { primary: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     public user: User;
 }

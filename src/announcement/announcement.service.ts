@@ -3,14 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Announcement } from '../entities/announcement.entity';
 import { Repository } from 'typeorm';
 import { CreateAnnouncementDto } from './announcement.dto';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AnnouncementService {
     constructor(
         @InjectRepository(Announcement)
         private readonly announcementRepository: Repository<Announcement>,
-        private readonly userService: UsersService
+        private readonly userService: UsersService,
     ) {}
 
     async getAllAnnouncements(): Promise<Announcement[]> {
@@ -21,12 +21,20 @@ export class AnnouncementService {
         return this.announcementRepository.findOne(id);
     }
 
-    async createAnnouncement(createAnnouncementDto: CreateAnnouncementDto, creator: number) {
-        createAnnouncementDto.creator = await this.userService.getUserById(creator);
+    async createAnnouncement(
+        createAnnouncementDto: CreateAnnouncementDto,
+        creator: number,
+    ) {
+        createAnnouncementDto.creator = await this.userService.getUserById(
+            creator,
+        );
         return this.announcementRepository.insert(createAnnouncementDto);
     }
 
-    async editAnnouncement(id: number, createAnnouncementDto: CreateAnnouncementDto) {
+    async editAnnouncement(
+        id: number,
+        createAnnouncementDto: CreateAnnouncementDto,
+    ) {
         return this.announcementRepository.update(id, createAnnouncementDto);
     }
 
