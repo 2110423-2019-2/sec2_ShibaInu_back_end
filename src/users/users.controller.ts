@@ -87,6 +87,11 @@ export class UsersController {
         return this.userService.getSkillByUserId(userId);
     }
 
+    @Get('reviewedScore/:userId')
+    async getAverageReviewdScore(@Param('userId') userId: number) {
+        return this.userService.getAverageReviewdScore(userId);
+    }
+
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {
         return this.userService.createNewUser(createUserDto);
