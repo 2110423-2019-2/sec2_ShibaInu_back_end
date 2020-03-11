@@ -10,6 +10,7 @@ import {
 import { Job } from './job.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
+import { Announcement } from './announcement.entity';
 
 export enum InterestedCategoryEnum {
     game = 'game',
@@ -50,6 +51,9 @@ export class User {
 
     @Column('boolean', { default: false })
     isVerified: boolean;
+
+    @Column('boolean', { default: false })
+    isAdmin: boolean;
 
     @Column('text', { nullable: true }) //link to photo
     identificationCardPic: string;
@@ -133,6 +137,13 @@ export class User {
     )
     @JoinColumn({ referencedColumnName: 'skill' })
     skills: UserSkill[];
+
+    @OneToMany(
+        () => Announcement,
+        createdAnnouncement => createdAnnouncement.announcementId,
+        { nullable: true },
+    )
+    createdAnnouncement: Announcement[];
 }
 
 @Entity()
