@@ -18,7 +18,7 @@ import {
     CreateSkillDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '../decorators/users.decorator';
+import { LoadUser } from '../decorators/users.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -26,18 +26,24 @@ export class UsersController {
 
     @UseGuards(AuthGuard())
     @Get('test')
-    async testUserDecorator(@User() user: any, @Req() req: any) {
+    async testUserDecorator(@LoadUser() user: any, @Req() req: any) {
         console.log(user);
     }
 
     @Get('testnojwt')
-    async testUserDecoratorNoJwt(@User() user: any) {
+    async testUserDecoratorNoJwt(@LoadUser() user: any) {
         console.log(user);
     }
 
     @Get()
     async getAllUsers() {
         return this.userService.getAllUsers();
+    }
+
+    @UseGuards(AuthGuard())
+    @Get('fromtoken')
+    async getUserDataFromToken(@LoadUser() user: any) {
+        return this.userService.getUserById(user.id);
     }
 
     @Get('login')
