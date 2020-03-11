@@ -8,6 +8,10 @@ import {
     UseGuards,
     Delete,
     Req,
+    UseInterceptors,
+    UploadedFile,
+    Res,
+    SetMetadata,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -16,9 +20,15 @@ import {
     UserNamePasswordDto,
     CreateInterestedCategoryDto,
     CreateSkillDto,
+    VerifyApprovalDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '../decorators/users.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { editFileName, imageFileFilter } from 'src/util/file-uploading.utils';
+import { diskStorage } from 'multer';
+import { file } from '@babel/types';
+import { LoadUser } from '../decorators/users.decorator';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -26,12 +36,12 @@ export class UsersController {
 
     @UseGuards(AuthGuard())
     @Get('test')
-    async testUserDecorator(@User() user: any, @Req() req: any) {
+    async testUserDecorator(@LoadUser() user: any, @Req() req: any) {
         console.log(user);
     }
 
     @Get('testnojwt')
-    async testUserDecoratorNoJwt(@User() user: any) {
+    async testUserDecoratorNoJwt(@LoadUser() user: any) {
         console.log(user);
     }
 
@@ -40,9 +50,23 @@ export class UsersController {
         return this.userService.getAllUsers();
     }
 
+    @UseGuards(AuthGuard())
+    @Get('fromtoken')
+    async getUserDataFromToken(@LoadUser() user: any) {
+        return this.userService.getUserById(user.id);
+    }
+
     @Get('login')
     async getUserId(@Body() userNamePasswordDto: UserNamePasswordDto) {
         return this.userService.getUserId(userNamePasswordDto);
+    }
+
+    @Get('verify')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
+    async getAllPendingVerificationRequest() {
+        return this.userService.getAllPendingVerificationRequest();
     }
 
     @Get(':userId')
@@ -71,9 +95,28 @@ export class UsersController {
         return this.userService.getSkillByUserId(userId);
     }
 
+    @Get('reviewedScore/:userId')
+    async getAverageReviewdScore(@Param('userId') userId: number) {
+        return this.userService.getAverageReviewdScore(userId);
+    }
+
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {
         return this.userService.createNewUser(createUserDto);
+    }
+
+    @UseGuards(AuthGuard())
+    @Post('verify/request')
+    async requestVerification(@LoadUser() user: any) {
+        return this.userService.requestVerification(user.id);
+    }
+
+    @Patch('verify/verify')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
+    async verifyUser(@Body() verifyApprovalDto: VerifyApprovalDto) {
+        return this.userService.verifyUser(verifyApprovalDto);
     }
 
     @Post('category/:userId')
@@ -92,7 +135,10 @@ export class UsersController {
         @Param('userId') userId: number,
         @Body() createSkillDto: CreateSkillDto,
     ) {
-        return this.userService.createNewUserSkill(userId,createSkillDto.skill);
+        return this.userService.createNewUserSkill(
+            userId,
+            createSkillDto.skill,
+        );
     }
 
     @Patch(':userId')
@@ -124,5 +170,34 @@ export class UsersController {
             userId,
             deleteUserSkillDto.skill,
         );
+    }
+
+    @Post('profilePicture/:userId')
+    @UseInterceptors(
+        FileInterceptor('image', {
+            storage: diskStorage({
+                destination: './profile_picture',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async uploadProfilePicture(
+        @UploadedFile() file,
+        @Param('userId') userId: number,
+    ) {
+        const response = {
+            originalname: file.originalname,
+            filename: file.filename,
+        };
+        return this.userService.uploadProfilePic(userId, file.filename);
+    }
+
+    @Get('profilePicture/:userId')
+    async getProfilePicture(@Param('userId') userId: number, @Res() res) {
+        let temp = await this.userService.getProfilePicById(userId);
+        return res.sendFile(temp[0].profilePicture, {
+            root: './profile_picture',
+        });
     }
 }

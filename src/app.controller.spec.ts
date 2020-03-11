@@ -21,6 +21,6 @@ describe('AppController', () => {
 
         it('should return "Pong"', async () => {
             expect(await appController.ping()).toBe('Pong');
-        })
+        });
     });
 });

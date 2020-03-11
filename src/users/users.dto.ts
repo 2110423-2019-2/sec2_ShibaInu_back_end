@@ -29,6 +29,8 @@ export class CreateUserDto {
     resume?: string;
     money?: number;
     headline?: string;
+    sumReviewedScore?: number;
+    reviewedNumber?: number;
 }
 
 export class EditUserDto {
@@ -52,6 +54,8 @@ export class EditUserDto {
     headline?: string;
     interestedCategories?: InterestedCategory[];
     skills?: UserSkill[];
+    sumReviewedScore?: number;
+    reviewedNumber?: number;
 }
 
 export class UserNamePasswordDto {
@@ -67,4 +71,9 @@ export class CreateInterestedCategoryDto {
 export class CreateSkillDto {
     user?: User;
     skill: string;
+}
+
+export class VerifyApprovalDto {
+    user: User;
+    approve: boolean;
 }

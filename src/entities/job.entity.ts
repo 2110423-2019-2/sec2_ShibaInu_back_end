@@ -9,12 +9,13 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
+import { Review } from './review.entity';
 
 export enum Status {
     OPEN = 'open',
-    PROCESS = 'process',
-    CANCEL = 'cancel',
-    FINISH = 'finish',
+    ACCEPTED = 'accepted',
+    WORKING = 'working',
+    DONE = 'done',
 }
 
 export enum Catergory {
@@ -45,7 +46,7 @@ export class Job {
     @Column('enum', { enum: Status, default: Status.OPEN })
     status: Status;
 
-    @Column('enum', { enum: Catergory })
+    @Column('enum', { enum: Catergory, default: Catergory.OTHER })
     catergory: Catergory;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
@@ -57,9 +58,25 @@ export class Job {
     })
     updatedTime: Date;
 
+    @Column('timestamp', {
+        default: null,
+    })
+    acceptedTime: Date;
+
+    @Column('timestamp', {
+        default: null,
+    })
+    startWorkingTime: Date;
+
+    @Column('timestamp', {
+        default: null,
+    })
+    doneTime: Date;
+
     @ManyToOne(
         type => User,
         user => user.jobs,
+        { eager: true },
     )
     client: User;
 
@@ -84,6 +101,12 @@ export class Job {
     )
     @JoinColumn({ referencedColumnName: 'skill' })
     optionalSkills: JobOptSkill[];
+
+    @OneToMany(
+        type => Review,
+        review => review.job,
+    )
+    reviews: Review[];
 }
 
 @Entity()
