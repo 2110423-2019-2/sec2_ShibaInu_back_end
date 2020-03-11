@@ -48,6 +48,8 @@ export class UsersService {
         return ret;
     }
 
+
+
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
         let ret = await this.userRepository.find({
             where: {
@@ -72,33 +74,7 @@ export class UsersService {
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        let ret = await this.userRepository.findOne({
-            where: { username: username },
-            select: [
-                'userId',
-                'firstName',
-                'lastName',
-                'phone',
-                'email',
-                'education',
-                'createdTime',
-                'isVerified',
-                'identificationCardPic',
-                'identificationCardWithFacePic',
-                'identificationNumber',
-                'isVisible',
-                'about',
-                'location',
-                'profilePicture',
-                'dateOfBirth',
-                'website',
-                'experience',
-                'resume',
-                'money',
-                'password',
-                'headline',
-            ],
-        });
+        let ret = await this.userRepository.findOne();
         return ret;
     }
 
