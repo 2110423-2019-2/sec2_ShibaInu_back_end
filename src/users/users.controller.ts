@@ -8,6 +8,9 @@ import {
     UseGuards,
     Delete,
     Req,
+    UseInterceptors,
+    UploadedFile,
+    Res,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -19,6 +22,10 @@ import {
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '../decorators/users.decorator';
+import { FileInterceptor } from '@nestjs/platform-express'
+import { editFileName, imageFileFilter } from 'src/util/file-uploading.utils';
+import { diskStorage } from "multer";
+import { file } from '@babel/types';
 
 @Controller('users')
 export class UsersController {
@@ -124,5 +131,28 @@ export class UsersController {
             userId,
             deleteUserSkillDto.skill,
         );
+    }
+
+    @Post('image')
+    @UseInterceptors(
+        FileInterceptor('image', {
+            storage: diskStorage({
+                destination: './files',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async uploadedFile(@UploadedFile() file) {
+        const response = {
+            originalname: file.originalname,
+            filename: file.filename,
+        };
+        return response;
+    }
+
+    @Get('image/:imgpath')
+    seeUploadedFile(@Param('imgpath') image, @Res() res) {
+        return res.sendFile(image, { root: './files' });
     }
 }
