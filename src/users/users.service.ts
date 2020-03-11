@@ -74,7 +74,38 @@ export class UsersService {
     }
 
     async getUserByUsername(username: string): Promise<User> {
+<<<<<<< HEAD
         let ret = await this.userRepository.findOne();
+=======
+        let ret = await this.userRepository.findOne({
+            where: { username: username },
+            select: [
+                'userId',
+                'firstName',
+                'lastName',
+                'phone',
+                'email',
+                'education',
+                'createdTime',
+                'isVerified',
+                'identificationCardPic',
+                'identificationCardWithFacePic',
+                'identificationNumber',
+                'isVisible',
+                'isAdmin',
+                'about',
+                'location',
+                'profilePicture',
+                'dateOfBirth',
+                'website',
+                'experience',
+                'resume',
+                'money',
+                'password',
+                'headline',
+            ],
+        });
+>>>>>>> 090f5b81f64f6cc976c94ba0c4681a1ace5f231e
         return ret;
     }
 
@@ -174,6 +205,10 @@ export class UsersService {
         });
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
+    }
+
+    async verifyUser(userId: number) {
+        return this.userRepository.update(userId, { isVerified: true });
     }
 
     async deleteInterestedCategory(
