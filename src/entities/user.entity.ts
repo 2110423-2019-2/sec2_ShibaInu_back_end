@@ -187,6 +187,6 @@ export class VerifyRequest {
     @JoinColumn()
     requestedUser: User;
 
-    @Column('timestamp', {default: () => 'CURRENT_TIMESTAMP'})
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 }

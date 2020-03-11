@@ -8,7 +8,12 @@ import {
     VerifyRequest,
 } from '../entities/user.entity';
 import { Repository, getRepository } from 'typeorm';
-import { CreateUserDto, EditUserDto, UserNamePasswordDto, VerifyApprovalDto } from './users.dto';
+import {
+    CreateUserDto,
+    EditUserDto,
+    UserNamePasswordDto,
+    VerifyApprovalDto,
+} from './users.dto';
 import bcrypt = require('bcrypt');
 
 @Injectable()
@@ -78,9 +83,12 @@ export class UsersService {
 
     // Currently unusable, use func. above with the entity allowed to get username/password instead.
     async getUserPassword(username: string): Promise<User> {
-        const ret = await getRepository(User).createQueryBuilder('user').select(['username', 'password'])
-            .where('username = :username', {username}).getOne();
-        console.log(username)
+        const ret = await getRepository(User)
+            .createQueryBuilder('user')
+            .select(['username', 'password'])
+            .where('username = :username', { username })
+            .getOne();
+        console.log(username);
         if (!ret) throw new BadRequestException('Invalid Username');
         return ret;
     }
@@ -201,15 +209,21 @@ export class UsersService {
     }
 
     async requestVerification(userId: number) {
-        return this.verifyRequestRepository.insert({ requestedUser: await this.getUserById(userId) })
+        return this.verifyRequestRepository.insert({
+            requestedUser: await this.getUserById(userId),
+        });
     }
 
     async verifyUser(verifyApprovalDto: VerifyApprovalDto): Promise<any> {
         let res: any = null;
         if (verifyApprovalDto.approve) {
-            res = await this.userRepository.update(verifyApprovalDto.user, { isVerified: true });
+            res = await this.userRepository.update(verifyApprovalDto.user, {
+                isVerified: true,
+            });
         }
-        await this.verifyRequestRepository.delete({ requestedUser: verifyApprovalDto.user });
+        await this.verifyRequestRepository.delete({
+            requestedUser: verifyApprovalDto.user,
+        });
         return res;
     }
 
