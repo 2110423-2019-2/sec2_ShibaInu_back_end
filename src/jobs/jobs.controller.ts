@@ -88,4 +88,9 @@ export class JobsController {
     ) {
         return this.jobService.editJob(jobId, updateJobDto);
     }
+
+    @Get('freelancers/:jobId')
+    async getInterestedFreelancersById(@Param('jobId') jobId: number){
+        return this.jobService.getInterestedFreelancersById(jobId);
+    }
 }

@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { ReviewController } from './review.controller';
-import { UsersService } from 'src/users/users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Review } from 'src/entities/review.entity';
-import { JobsService } from 'src/jobs/jobs.service';
-import { Job, JobOptSkill, JobReqSkill } from 'src/entities/job.entity';
-import { InterestedCategory } from 'src/entities/user.entity';
+import { Review } from '../entities/review.entity';
+import { JobsService } from '../jobs/jobs.service';
+import { Job, JobOptSkill, JobReqSkill } from '../entities/job.entity';
+import { InterestedCategory, User, UserSkill } from '../entities/user.entity';
+import { Bid } from '../entities/bid.entity';
+import { BidsService } from '../bids/bids.service';
+import { UsersService } from '../users/users.service';
 
 @Module({
     imports: [
@@ -14,13 +16,15 @@ import { InterestedCategory } from 'src/entities/user.entity';
             Review,
             Job,
             InterestedCategory,
-            Job,
             JobOptSkill,
             JobReqSkill,
+            Bid,
+            User,
+            UserSkill
         ]),
     ],
     controllers: [ReviewController],
-    providers: [ReviewService, JobsService],
+    providers: [ReviewService, JobsService, BidsService, UsersService],
     exports: [ReviewService],
 })
 export class ReviewModule {}
