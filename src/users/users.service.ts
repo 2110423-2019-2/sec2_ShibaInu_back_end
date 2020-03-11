@@ -209,8 +209,19 @@ export class UsersService {
     }
 
     async requestVerification(userId: number) {
+        const requestedUser = await this.getUserById(userId);
+        if (requestedUser.isVerified) {
+            throw new BadRequestException(
+                `This user have already been verified!`,
+            );
+        }
+        if (await this.verifyRequestRepository.findOne({ requestedUser })) {
+            throw new BadRequestException(
+                `This user already requested verification and is waiting for admin approval`,
+            );
+        }
         return this.verifyRequestRepository.insert({
-            requestedUser: await this.getUserById(userId),
+            requestedUser,
         });
     }
 
@@ -225,6 +236,10 @@ export class UsersService {
             requestedUser: verifyApprovalDto.user,
         });
         return res;
+    }
+
+    async getAllPendingVerificationRequest(): Promise<VerifyRequest[]> {
+        return this.verifyRequestRepository.find();
     }
 
     async deleteInterestedCategory(

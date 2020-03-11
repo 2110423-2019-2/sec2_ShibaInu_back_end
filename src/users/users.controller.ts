@@ -61,6 +61,14 @@ export class UsersController {
         return this.userService.getUserId(userNamePasswordDto);
     }
 
+    @Get('verify')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
+    async getAllPendingVerificationRequest() {
+        return this.userService.getAllPendingVerificationRequest();
+    }
+
     @Get(':userId')
     async getUserById(@Param('userId') userId: number) {
         return this.userService.getUserById(userId);
