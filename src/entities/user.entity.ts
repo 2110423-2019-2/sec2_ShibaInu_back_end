@@ -37,10 +37,10 @@ export class User {
     @Column('varchar', { length: 50, nullable: true })
     email: string;
 
-    @Column('varchar', { length: 50, select: false })
+    @Column('varchar', { length: 50, select: true }) // should be revert to false when a method to get these field could be figured out
     username: string;
 
-    @Column('varchar', { length: 100, select: false })
+    @Column('varchar', { length: 100, select: true }) // should be revert to false when a method to get these field could be figured out
     password: string;
 
     @Column('text', { nullable: true })
@@ -173,4 +173,20 @@ export class UserSkill {
     @ManyToOne(() => User, { primary: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     public user: User;
+}
+
+@Entity()
+export class VerifyRequest {
+    @PrimaryGeneratedColumn()
+    requestId: number;
+
+    @ManyToOne(
+        () => User,
+        requestedUser => requestedUser.userId,
+    )
+    @JoinColumn()
+    requestedUser: User;
+
+    @Column('timestamp', {default: () => 'CURRENT_TIMESTAMP'})
+    createdTime: Date;
 }

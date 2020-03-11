@@ -20,6 +20,7 @@ import {
     UserNamePasswordDto,
     CreateInterestedCategoryDto,
     CreateSkillDto,
+    VerifyApprovalDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -96,12 +97,18 @@ export class UsersController {
         return this.userService.createNewUser(createUserDto);
     }
 
-    @Patch('verify/:id')
+    @UseGuards(AuthGuard())
+    @Post('verify/request')
+    async requestVerification(@LoadUser() user: any) {
+        return this.userService.requestVerification(user.id);
+    }
+
+    @Patch('verify/verify')
     @UseGuards(AdminGuard)
     @SetMetadata('isadmin', [true])
     @UseGuards(AuthGuard())
-    async verifyUser(@Param('id') userId: number) {
-        return this.userService.verifyUser(userId);
+    async verifyUser(@Body() verifyApprovalDto: VerifyApprovalDto) {
+        return this.userService.verifyUser(verifyApprovalDto);
     }
 
     @Post('category/:userId')

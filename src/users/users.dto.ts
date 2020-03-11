@@ -72,3 +72,8 @@ export class CreateSkillDto {
     user?: User;
     skill: string;
 }
+
+export class VerifyApprovalDto {
+    user: User;
+    approve: boolean;
+}
