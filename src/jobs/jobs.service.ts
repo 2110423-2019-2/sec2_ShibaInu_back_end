@@ -6,6 +6,7 @@ import {
     JobReqSkill,
     JobOptSkill,
     Catergory,
+    Status,
 } from '../entities/job.entity';
 import { Repository, Like, Between } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
@@ -179,6 +180,13 @@ export class JobsService {
                 });
             }
             delete updateJobDto.optionalSkills;
+        }
+        if(updateJobDto.status === Status.ACCEPTED){
+            updateJobDto.acceptedTime = new Date();
+        } else if(updateJobDto.status === Status.WORKING){
+            updateJobDto.startWorkingTime = new Date();
+        } else if(updateJobDto.status === Status.DONE){
+            updateJobDto.doneTime = new Date();
         }
         updateJobDto.updatedTime = new Date();
         return this.jobRepository.update(jobId, updateJobDto);

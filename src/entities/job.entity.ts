@@ -13,9 +13,9 @@ import { Review } from './review.entity';
 
 export enum Status {
     OPEN = 'open',
-    PROCESS = 'process',
-    CANCEL = 'cancel',
-    FINISH = 'finish',
+    ACCEPTED = 'accepted',
+    WORKING = 'working',
+    DONE = 'done',
 }
 
 export enum Catergory {
@@ -57,6 +57,21 @@ export class Job {
         onUpdate: 'CURRENT_TIMESTAMP',
     })
     updatedTime: Date;
+
+    @Column('timestamp', {
+        default: null
+    })
+    acceptedTime: Date;
+
+    @Column('timestamp', {
+        default: null
+    })
+    startWorkingTime: Date;
+
+    @Column('timestamp', {
+        default: null
+    })
+    doneTime: Date;
 
     @ManyToOne(
         type => User,
