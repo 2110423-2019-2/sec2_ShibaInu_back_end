@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Review } from 'src/entities/review.entity';
 import { CreateReviewDto, EditReviewDto } from './review.dto';
 import { JobsService } from 'src/jobs/jobs.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ReviewService {
@@ -11,6 +12,7 @@ export class ReviewService {
         @InjectRepository(Review)
         private readonly reviewRepository: Repository<Review>,
         private readonly jobService: JobsService,
+        private readonly userService: UsersService
     ) {}
 
     async getAllReviews(): Promise<Review[]> {
@@ -39,11 +41,14 @@ export class ReviewService {
     }
 
     async createNewReview(createReviewDto: CreateReviewDto) {
-        let job = createReviewDto.job;
+        let jobId = parseInt(String(createReviewDto.job));
         createReviewDto.jobName = (
-            await this.jobService.getJobById(job.jobId)
+            await this.jobService.getJobById(jobId)
         ).name;
         createReviewDto.createdTime = new Date();
+
+        this.userService.updateReviewData(parseInt(String(createReviewDto.reviewee)),createReviewDto.score);
+        
         return this.reviewRepository.insert(createReviewDto);
     }
 
