@@ -87,6 +87,7 @@ export class UsersService {
                 'identificationCardWithFacePic',
                 'identificationNumber',
                 'isVisible',
+                'isAdmin',
                 'about',
                 'location',
                 'profilePicture',
@@ -198,6 +199,10 @@ export class UsersService {
         });
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
+    }
+
+    async verifyUser(userId: number) {
+        return this.userRepository.update(userId, { isVerified: true })
     }
 
     async deleteInterestedCategory(
