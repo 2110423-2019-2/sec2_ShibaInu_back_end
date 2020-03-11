@@ -3,6 +3,7 @@ import { AnnouncementService } from './announcement.service';
 import { CreateAnnouncementDto } from './announcement.dto';
 import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
+import { LoadUser } from '../decorators/users.decorator';
 
 @Controller('announcement')
 export class AnnouncementController {
@@ -22,8 +23,8 @@ export class AnnouncementController {
     @UseGuards(AdminGuard)
     @SetMetadata('isadmin', [true])
     @UseGuards(AuthGuard())
-    async createAnnouncement(@Body() createAnnouncementDto: CreateAnnouncementDto) {
-        return this.announcementService.createAnnouncement(createAnnouncementDto);
+    async createAnnouncement(@LoadUser() user: any, @Body() createAnnouncementDto: CreateAnnouncementDto) {
+        return this.announcementService.createAnnouncement(createAnnouncementDto, user.id);
     }
 
     @Patch(':id')
