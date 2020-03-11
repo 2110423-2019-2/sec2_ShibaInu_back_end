@@ -68,7 +68,7 @@ export class UsersController {
     @UseGuards(AuthGuard())
     @Get('money/:userId')
     async getMoneyById(@Param('userId') userId: number) {
-        let ret = await this.userService.getMoneyById(userId)
+        let ret = await this.userService.getMoneyById(userId);
         return ret[0];
     }
 
@@ -168,7 +168,10 @@ export class UsersController {
             fileFilter: imageFileFilter,
         }),
     )
-    async uploadProfilePicture(@UploadedFile() file, @Param('userId') userId: number) { 
+    async uploadProfilePicture(
+        @UploadedFile() file,
+        @Param('userId') userId: number,
+    ) {
         const response = {
             originalname: file.originalname,
             filename: file.filename,
@@ -179,6 +182,8 @@ export class UsersController {
     @Get('profilePicture/:userId')
     async getProfilePicture(@Param('userId') userId: number, @Res() res) {
         let temp = await this.userService.getProfilePicById(userId);
-        return res.sendFile(temp[0].profilePicture, { root: './profile_picture' });
+        return res.sendFile(temp[0].profilePicture, {
+            root: './profile_picture',
+        });
     }
 }
