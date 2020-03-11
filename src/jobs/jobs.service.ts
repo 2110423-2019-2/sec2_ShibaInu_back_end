@@ -229,7 +229,6 @@ export class JobsService {
 
     async getInterestedFreelancersById(jobId: number):Promise<User[]>{
         let userIds = await this.bidRepository.find({select: ['userId'], where: {jobId:jobId}});
-        console.log(userIds);
         return this.userRepository.findByIds(userIds);
     }
 }
