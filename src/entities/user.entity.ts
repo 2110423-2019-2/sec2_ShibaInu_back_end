@@ -117,6 +117,22 @@ export class User {
         { nullable: true },
     )
     reviews: Review[];
+
+    @OneToMany(
+        type => InterestedCategory,
+        interestedCategory => interestedCategory.user,
+        { cascade: true, eager: true },
+    )
+    @JoinColumn({ referencedColumnName: 'interestedCategor' })
+    interestedCategories: InterestedCategory[];
+
+    @OneToMany(
+        type => UserSkill,
+        userSkill => userSkill.user,
+        { cascade: true, eager: true },
+    )
+    @JoinColumn({ referencedColumnName: 'skill' })
+    skills: UserSkill[];
 }
 
 @Entity()
@@ -127,9 +143,10 @@ export class InterestedCategory {
     })
     interestedCategory: InterestedCategoryEnum;
 
-    @ManyToOne(type => User, { primary: true })
+    @ManyToOne(type => User, { primary: true,
+        onDelete: 'CASCADE', })
     @JoinColumn({ name: 'userId' })
-    user: User;
+    public user: User;
 }
 
 @Entity()
@@ -137,7 +154,8 @@ export class UserSkill {
     @PrimaryColumn('varchar', { length: 50 })
     skill: String;
 
-    @ManyToOne(() => User, { primary: true })
+    @ManyToOne(() => User, { primary: true,
+        onDelete: 'CASCADE',})
     @JoinColumn({ name: 'userId' })
-    user: User;
+    public user: User;
 }
