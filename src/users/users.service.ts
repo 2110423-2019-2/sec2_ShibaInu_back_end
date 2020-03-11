@@ -72,34 +72,7 @@ export class UsersService {
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        let ret = await this.userRepository.findOne({
-            where: { username: username },
-            select: [
-                'userId',
-                'firstName',
-                'lastName',
-                'phone',
-                'email',
-                'education',
-                'createdTime',
-                'isVerified',
-                'identificationCardPic',
-                'identificationCardWithFacePic',
-                'identificationNumber',
-                'isVisible',
-                'isAdmin',
-                'about',
-                'location',
-                'profilePicture',
-                'dateOfBirth',
-                'website',
-                'experience',
-                'resume',
-                'money',
-                'password',
-                'headline',
-            ],
-        });
+        let ret = await this.userRepository.findOne();
         return ret;
     }
 
@@ -123,6 +96,11 @@ export class UsersService {
         });
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
+    }
+
+    async getAverageReviewdScore(userId: number): Promise<number> {
+        let user = await this.getUserById(userId);
+        return user.sumReviewedScore / user.reviewedNumber;
     }
 
     async createNewUser(createUserDto: CreateUserDto) {
@@ -188,9 +166,20 @@ export class UsersService {
                 );
             }
         }
+        console.log(editUserDto);
         let ret = await this.userRepository.save(editUserDto);
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
+    }
+
+    async updateReviewData(userId: number, score: number) {
+        console.log(userId, score);
+        let user = await this.getUserById(userId);
+        let editUserDto = new EditUserDto();
+        editUserDto.userId = userId;
+        editUserDto.sumReviewedScore = user.sumReviewedScore + score;
+        editUserDto.reviewedNumber = user.reviewedNumber + 1;
+        return this.editUser(editUserDto);
     }
 
     async deleteInterestedCategoryOfUserId(userId) {

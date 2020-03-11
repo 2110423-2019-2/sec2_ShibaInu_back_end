@@ -144,6 +144,12 @@ export class User {
         { nullable: true },
     )
     createdAnnouncement: Announcement[];
+
+    @Column('integer')
+    sumReviewedScore: number;
+
+    @Column('integer')
+    reviewedNumber: number;
 }
 
 @Entity()
