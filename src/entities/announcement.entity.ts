@@ -16,7 +16,7 @@ export class Announcement {
     title: string;
 
     @Column('text')
-    announcement: string;
+    content: string;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
