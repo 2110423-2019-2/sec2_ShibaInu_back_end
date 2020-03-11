@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { InterestedCategory } from '../entities/user.entity';
+import { InterestedCategory, User } from '../entities/user.entity';
 import {
     Job,
     JobReqSkill,
@@ -11,6 +11,7 @@ import {
 import { Repository, Like, Between } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 import { NamingStrategyMetadataArgs } from 'typeorm/metadata-args/NamingStrategyMetadataArgs';
+import { Bid } from '../entities/bid.entity';
 
 @Injectable()
 export class JobsService {
@@ -22,6 +23,12 @@ export class JobsService {
         private readonly interestedCategoryRepository: Repository<
             InterestedCategory
         >,
+
+        @InjectRepository(Bid)
+        private readonly bidRepository: Repository<Bid>,
+
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
 
         @InjectRepository(JobReqSkill)
         private readonly jobReqSkillRepository: Repository<JobReqSkill>,
@@ -218,6 +225,14 @@ export class JobsService {
             }),
             3,
         );
+    }
+
+    async getInterestedFreelancersById(jobId: number): Promise<User[]> {
+        let userIds = await this.bidRepository.find({
+            select: ['userId'],
+            where: { jobId: jobId },
+        });
+        return this.userRepository.findByIds(userIds);
     }
 }
 
