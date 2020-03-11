@@ -68,8 +68,7 @@ export class UsersController {
     @UseGuards(AuthGuard())
     @Get('money/:userId')
     async getMoneyById(@Param('userId') userId: number) {
-        let ret = await this.userService.getMoneyById(userId);
-        return ret[0];
+        return this.userService.getMoneyById(userId);
     }
 
     @Get('username/:username')
