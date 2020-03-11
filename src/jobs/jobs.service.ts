@@ -45,7 +45,7 @@ export class JobsService {
         sort: number,
     ): Promise<Job[]> {
         if (!name) name = '';
-        if (!cat || !(cat in Catergory)) cat = '';
+        if (!cat) cat = '';
         if (!w1 || !w2) {
             w1 = 0;
             w2 = 9999999999999;
