@@ -76,6 +76,7 @@ export class Job {
     @ManyToOne(
         type => User,
         user => user.jobs,
+        { eager: true },
     )
     client: User;
 
