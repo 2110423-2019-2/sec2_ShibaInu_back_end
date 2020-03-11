@@ -39,7 +39,7 @@ export class User {
     @Column('varchar', { length: 50 })
     username: string;
 
-    @Column('varchar', { length: 100 })
+    @Column('varchar', { length: 100, select: false })
     password: string;
 
     @Column('text', { nullable: true })
@@ -143,8 +143,7 @@ export class InterestedCategory {
     })
     interestedCategory: InterestedCategoryEnum;
 
-    @ManyToOne(type => User, { primary: true,
-        onDelete: 'CASCADE', })
+    @ManyToOne(type => User, { primary: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     public user: User;
 }
@@ -154,8 +153,7 @@ export class UserSkill {
     @PrimaryColumn('varchar', { length: 50 })
     skill: String;
 
-    @ManyToOne(() => User, { primary: true,
-        onDelete: 'CASCADE',})
+    @ManyToOne(() => User, { primary: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     public user: User;
 }
