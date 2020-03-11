@@ -68,7 +68,8 @@ export class UsersController {
     @UseGuards(AuthGuard())
     @Get('money/:userId')
     async getMoneyById(@Param('userId') userId: number) {
-        return this.userService.getMoneyById(userId);
+        let ret = await this.userService.getMoneyById(userId)
+        return ret[0];
     }
 
     @Get('username/:username')
@@ -152,26 +153,27 @@ export class UsersController {
         );
     }
 
-    @Post('image')
+    @Post('profilePicture/:userId')
     @UseInterceptors(
         FileInterceptor('image', {
             storage: diskStorage({
-                destination: './files',
+                destination: './profile_picture',
                 filename: editFileName,
             }),
             fileFilter: imageFileFilter,
         }),
     )
-    async uploadedFile(@UploadedFile() file) {
+    async uploadProfilePicture(@UploadedFile() file, @Param('userId') userId: number) { 
         const response = {
             originalname: file.originalname,
             filename: file.filename,
         };
-        return response;
+        return this.userService.uploadProfilePic(userId, file.filename);
     }
 
-    @Get('image/:imgpath')
-    seeUploadedFile(@Param('imgpath') image, @Res() res) {
-        return res.sendFile(image, { root: './files' });
+    @Get('profilePicture/:userId')
+    async getProfilePicture(@Param('userId') userId: number, @Res() res) {
+        let temp = await this.userService.getProfilePicById(userId);
+        return res.sendFile(temp[0].profilePicture, { root: './profile_picture' });
     }
 }

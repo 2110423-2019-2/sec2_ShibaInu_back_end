@@ -60,8 +60,8 @@ export class UsersService {
         return ret;
     }
 
-    async getMoneyById(userId: number): Promise<User> {
-        let ret = await this.userRepository.findOne({
+    async getMoneyById(userId: number): Promise<User[]> {
+        let ret = await this.userRepository.find({
             select: ['money'],
             where: {
                 userId: userId,
@@ -126,6 +126,7 @@ export class UsersService {
     }
 
     async createNewUser(createUserDto: CreateUserDto) {
+        console.log(createUserDto)
         const hashedPass = await bcrypt.hash(createUserDto.password, 10);
         createUserDto.password = hashedPass;
 
@@ -236,4 +237,19 @@ export class UsersService {
         console.log(user);
         return user;
     }
+
+    async uploadProfilePic(userId, filename: string) {
+        return this.userRepository.update(userId, {profilePicture: filename});
+    }
+
+    async getProfilePicById(userId: number): Promise<User[]> {
+        let ret = await this.userRepository.find({
+            select: ['profilePicture'],
+            where: {
+                userId: userId,
+            },
+        });
+        if (!ret) throw new BadRequestException('Invalid UserId');
+        return ret;
+    } 
 }
