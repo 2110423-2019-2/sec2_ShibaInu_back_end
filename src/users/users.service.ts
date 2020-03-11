@@ -5,11 +5,11 @@ import {
     InterestedCategory,
     UserSkill,
     InterestedCategoryEnum,
+    VerifyRequest,
 } from '../entities/user.entity';
-import { Repository } from 'typeorm';
-import { CreateUserDto, EditUserDto, UserNamePasswordDto } from './users.dto';
+import { Repository, getRepository } from 'typeorm';
+import { CreateUserDto, EditUserDto, UserNamePasswordDto, VerifyApprovalDto } from './users.dto';
 import bcrypt = require('bcrypt');
-import { readSync } from 'fs';
 
 @Injectable()
 export class UsersService {
@@ -24,6 +24,9 @@ export class UsersService {
 
         @InjectRepository(UserSkill)
         private readonly userSkillRepository: Repository<UserSkill>,
+
+        @InjectRepository(VerifyRequest)
+        private readonly verifyRequestRepository: Repository<VerifyRequest>,
     ) {}
 
     async getAllUsers(): Promise<User[]> {
@@ -69,6 +72,15 @@ export class UsersService {
                 username: username,
             },
         });
+        if (!ret) throw new BadRequestException('Invalid Username');
+        return ret;
+    }
+
+    // Currently unusable, use func. above with the entity allowed to get username/password instead.
+    async getUserPassword(username: string): Promise<User> {
+        const ret = await getRepository(User).createQueryBuilder('user').select(['username', 'password'])
+            .where('username = :username', {username}).getOne();
+        console.log(username)
         if (!ret) throw new BadRequestException('Invalid Username');
         return ret;
     }
@@ -188,8 +200,17 @@ export class UsersService {
         return ret;
     }
 
-    async verifyUser(userId: number) {
-        return this.userRepository.update(userId, { isVerified: true });
+    async requestVerification(userId: number) {
+        return this.verifyRequestRepository.insert({ requestedUser: await this.getUserById(userId) })
+    }
+
+    async verifyUser(verifyApprovalDto: VerifyApprovalDto): Promise<any> {
+        let res: any = null;
+        if (verifyApprovalDto.approve) {
+            res = await this.userRepository.update(verifyApprovalDto.user, { isVerified: true });
+        }
+        await this.verifyRequestRepository.delete({ requestedUser: verifyApprovalDto.user });
+        return res;
     }
 
     async deleteInterestedCategory(

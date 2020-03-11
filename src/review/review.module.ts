@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Review } from '../entities/review.entity';
 import { JobsService } from '../jobs/jobs.service';
 import { Job, JobOptSkill, JobReqSkill } from '../entities/job.entity';
-import { InterestedCategory, User, UserSkill } from '../entities/user.entity';
+import { InterestedCategory, User, UserSkill, VerifyRequest } from '../entities/user.entity';
 import { Bid } from '../entities/bid.entity';
 import { BidsService } from '../bids/bids.service';
 import { UsersService } from '../users/users.service';
@@ -21,6 +21,7 @@ import { UsersService } from '../users/users.service';
             Bid,
             User,
             UserSkill,
+            VerifyRequest
         ]),
     ],
     controllers: [ReviewController],
