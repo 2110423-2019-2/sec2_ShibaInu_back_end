@@ -45,7 +45,7 @@ export class Job {
     @Column('enum', { enum: Status, default: Status.OPEN })
     status: Status;
 
-    @Column('enum', { enum: Catergory })
+    @Column('enum', { enum: Catergory, default: Catergory.OTHER })
     catergory: Catergory;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
