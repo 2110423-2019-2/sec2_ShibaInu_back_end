@@ -6,6 +6,7 @@ import {
     PrimaryColumn,
     JoinColumn,
     ManyToOne,
+    OneToOne,
 } from 'typeorm';
 import { Job } from './job.entity';
 import { Bid } from './bid.entity';
@@ -180,9 +181,10 @@ export class VerifyRequest {
     @PrimaryGeneratedColumn()
     requestId: number;
 
-    @ManyToOne(
+    @OneToOne(
         () => User,
         requestedUser => requestedUser.userId,
+        { eager: true },
     )
     @JoinColumn()
     requestedUser: User;
