@@ -47,14 +47,10 @@ export class JobsService {
     ): Promise<Job[]> {
         if (!name) name = '';
         if (!cat) cat = '';
-        if (!w1 || !w2) {
-            w1 = 0;
-            w2 = 9999999999999;
-        }
-        if (!t1 || !t2) {
-            t1 = 0;
-            t2 = 2147483647;
-        }
+        if (!w1) w1 = 0;
+        if (!w2) w2 = 9999999999999;
+        if (!t1) t1 = 0;
+        if(!t2) t2 = 2147483647;
         let a = await this.jobRepository.find({
             select: ['jobId'],
             where: {
