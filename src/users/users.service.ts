@@ -36,62 +36,14 @@ export class UsersService {
     ) {}
 
     async getAllUsers(): Promise<User[]> {
-        let ret = await this.userRepository.find({
-            select: [
-                'userId',
-                'firstName',
-                'lastName',
-                'phone',
-                'email',
-                'education',
-                'createdTime',
-                'isVerified',
-                'identificationCardPic',
-                'identificationCardWithFacePic',
-                'identificationNumber',
-                'isVisible',
-                'about',
-                'location',
-                'profilePicture',
-                'dateOfBirth',
-                'website',
-                'experience',
-                'resume',
-                'money',
-                'headline',
-            ],
-        });
+        let ret = await this.userRepository.find();
         if (ret.length == 0)
             throw new BadRequestException('Not found any User');
         return ret;
     }
 
     async getUserById(userId: number): Promise<User> {
-        let ret = await this.userRepository.findOne(userId, {
-            select: [
-                'userId',
-                'firstName',
-                'lastName',
-                'phone',
-                'email',
-                'education',
-                'createdTime',
-                'isVerified',
-                'identificationCardPic',
-                'identificationCardWithFacePic',
-                'identificationNumber',
-                'isVisible',
-                'about',
-                'location',
-                'profilePicture',
-                'dateOfBirth',
-                'website',
-                'experience',
-                'resume',
-                'money',
-                'headline',
-            ],
-        });
+        let ret = await this.userRepository.findOne(userId);
         if (!ret) throw new BadRequestException('Invalid User');
         return ret;
     }

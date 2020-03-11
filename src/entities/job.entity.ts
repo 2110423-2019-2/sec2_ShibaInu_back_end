@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
+import { Review } from './review.entity';
 
 export enum Status {
     OPEN = 'open',
@@ -84,6 +85,12 @@ export class Job {
     )
     @JoinColumn({ referencedColumnName: 'skill' })
     optionalSkills: JobOptSkill[];
+
+    @OneToMany(
+        type => Review,
+        review => review.job,
+    )
+    reviews: Review[];
 }
 
 @Entity()
