@@ -9,7 +9,7 @@ import { Job } from '../entities/job.entity';
 export class ContractsService {
     constructor(
         @InjectRepository(Contract)
-        private readonly contractRepository: Repository<Contract>
+        private readonly contractRepository: Repository<Contract>,
     ) {}
 
     async getContractById(contractId: number): Promise<Contract> {

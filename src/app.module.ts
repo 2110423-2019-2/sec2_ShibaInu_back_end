@@ -38,7 +38,7 @@ require('dotenv').config();
         ReviewModule,
         MulterModule.register({
             dest: './files',
-          }),
+        }),
         AnnouncementModule,
     ],
     controllers: [AppController, NotificationController, ReviewController],

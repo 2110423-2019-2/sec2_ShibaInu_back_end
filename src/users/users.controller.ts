@@ -22,9 +22,9 @@ import {
     CreateSkillDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { FileInterceptor } from '@nestjs/platform-express'
+import { FileInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from 'src/util/file-uploading.utils';
-import { diskStorage } from "multer";
+import { diskStorage } from 'multer';
 import { file } from '@babel/types';
 import { LoadUser } from '../decorators/users.decorator';
 import { AdminGuard } from '../guards/admin.guard';
