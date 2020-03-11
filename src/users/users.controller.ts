@@ -8,6 +8,7 @@ import {
     UseGuards,
     Delete,
     Req,
+    SetMetadata,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -19,6 +20,7 @@ import {
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { LoadUser } from '../decorators/users.decorator';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -80,6 +82,14 @@ export class UsersController {
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {
         return this.userService.createNewUser(createUserDto);
+    }
+
+    @Patch('verify/:id')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
+    async verifyUser(@Param('id') userId: number) {
+        return this.userService.verifyUser(userId);
     }
 
     @Post('category/:userId')
