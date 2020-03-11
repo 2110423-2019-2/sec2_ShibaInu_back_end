@@ -30,6 +30,9 @@ export class UpdateJobDto {
     status?: Status;
     createdTime?: Date;
     updatedTime?: Date;
+    acceptedTime?: Date;
+    startWorkingTime?: Date;
+    doneTime?: Date;
     requiredSkills?: JobReqSkill[];
     optionalSkills?: JobOptSkill[];
 }
