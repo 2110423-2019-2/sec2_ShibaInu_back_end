@@ -10,6 +10,7 @@ import { BidsModule } from './bids/bids.module';
 import { NotificationModule } from './notification/notification.module';
 import { ReviewController } from './review/review.controller';
 import { ReviewModule } from './review/review.module';
+import { MulterModule } from '@nestjs/platform-express';
 import { AnnouncementModule } from './announcement/announcement.module';
 
 require('dotenv').config();
@@ -35,6 +36,9 @@ require('dotenv').config();
         AuthModule,
         NotificationModule,
         ReviewModule,
+        MulterModule.register({
+            dest: './files',
+        }),
         AnnouncementModule,
     ],
     controllers: [AppController, NotificationController, ReviewController],
