@@ -37,10 +37,10 @@ export class User {
     @Column('varchar', { length: 50, nullable: true })
     email: string;
 
-    @Column('varchar', { length: 50 })
+    @Column('varchar', { length: 50, select: false })
     username: string;
 
-    @Column('varchar', { length: 100 })
+    @Column('varchar', { length: 100, select: false })
     password: string;
 
     @Column('text', { nullable: true })
