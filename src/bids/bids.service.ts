@@ -29,9 +29,7 @@ export class BidsService {
         if (temp.length == 0) {
             return [];
         }
-        return this.jobRepository.find({
-            where: temp,
-        });
+        return this.jobRepository.findByIds(temp);
     }
 
     async getBidById(bidId: number): Promise<Bid> {

@@ -8,6 +8,9 @@ import {
     UseGuards,
     Delete,
     Req,
+    UseInterceptors,
+    UploadedFile,
+    Res,
     SetMetadata,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -19,6 +22,10 @@ import {
     CreateSkillDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { editFileName, imageFileFilter } from 'src/util/file-uploading.utils';
+import { diskStorage } from 'multer';
+import { file } from '@babel/types';
 import { LoadUser } from '../decorators/users.decorator';
 import { AdminGuard } from '../guards/admin.guard';
 
@@ -61,7 +68,8 @@ export class UsersController {
     @UseGuards(AuthGuard())
     @Get('money/:userId')
     async getMoneyById(@Param('userId') userId: number) {
-        return this.userService.getMoneyById(userId);
+        let ret = await this.userService.getMoneyById(userId);
+        return ret[0];
     }
 
     @Get('username/:username')
@@ -148,5 +156,34 @@ export class UsersController {
             userId,
             deleteUserSkillDto.skill,
         );
+    }
+
+    @Post('profilePicture/:userId')
+    @UseInterceptors(
+        FileInterceptor('image', {
+            storage: diskStorage({
+                destination: './profile_picture',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async uploadProfilePicture(
+        @UploadedFile() file,
+        @Param('userId') userId: number,
+    ) {
+        const response = {
+            originalname: file.originalname,
+            filename: file.filename,
+        };
+        return this.userService.uploadProfilePic(userId, file.filename);
+    }
+
+    @Get('profilePicture/:userId')
+    async getProfilePicture(@Param('userId') userId: number, @Res() res) {
+        let temp = await this.userService.getProfilePicById(userId);
+        return res.sendFile(temp[0].profilePicture, {
+            root: './profile_picture',
+        });
     }
 }
