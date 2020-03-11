@@ -22,8 +22,4 @@ describe('AnnouncementService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
-  it('should create an announcement', () => {
-    expect(service.createAnnouncement).toBeCalled()
-  })
 });
