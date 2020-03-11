@@ -11,6 +11,7 @@ import {
     UseInterceptors,
     UploadedFile,
     Res,
+    SetMetadata,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -21,11 +22,12 @@ import {
     CreateSkillDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '../decorators/users.decorator';
 import { FileInterceptor } from '@nestjs/platform-express'
 import { editFileName, imageFileFilter } from 'src/util/file-uploading.utils';
 import { diskStorage } from "multer";
 import { file } from '@babel/types';
+import { LoadUser } from '../decorators/users.decorator';
+import { AdminGuard } from '../guards/admin.guard';
 
 @Controller('users')
 export class UsersController {
@@ -33,18 +35,24 @@ export class UsersController {
 
     @UseGuards(AuthGuard())
     @Get('test')
-    async testUserDecorator(@User() user: any, @Req() req: any) {
+    async testUserDecorator(@LoadUser() user: any, @Req() req: any) {
         console.log(user);
     }
 
     @Get('testnojwt')
-    async testUserDecoratorNoJwt(@User() user: any) {
+    async testUserDecoratorNoJwt(@LoadUser() user: any) {
         console.log(user);
     }
 
     @Get()
     async getAllUsers() {
         return this.userService.getAllUsers();
+    }
+
+    @UseGuards(AuthGuard())
+    @Get('fromtoken')
+    async getUserDataFromToken(@LoadUser() user: any) {
+        return this.userService.getUserById(user.id);
     }
 
     @Get('login')
@@ -83,6 +91,14 @@ export class UsersController {
         return this.userService.createNewUser(createUserDto);
     }
 
+    @Patch('verify/:id')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
+    async verifyUser(@Param('id') userId: number) {
+        return this.userService.verifyUser(userId);
+    }
+
     @Post('category/:userId')
     async createNewUserInterestedCategory(
         @Param('userId') userId: number,
@@ -99,7 +115,10 @@ export class UsersController {
         @Param('userId') userId: number,
         @Body() createSkillDto: CreateSkillDto,
     ) {
-        return this.userService.createNewUserSkill(userId,createSkillDto.skill);
+        return this.userService.createNewUserSkill(
+            userId,
+            createSkillDto.skill,
+        );
     }
 
     @Patch(':userId')

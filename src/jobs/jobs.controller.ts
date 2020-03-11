@@ -7,6 +7,7 @@ import {
     Delete,
     Patch,
     UseGuards,
+    Query,
 } from '@nestjs/common';
 import { JobsService } from './jobs.service';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
@@ -17,8 +18,36 @@ export class JobsController {
     constructor(private readonly jobService: JobsService) {}
 
     @Get()
-    async getAllJobs() {
-        return this.jobService.getAllJobs();
+    async getAllJobs(
+        @Query('name') name: string,
+        @Query('w1') w1: number,
+        @Query('w2') w2: number,
+        @Query('t1') t1: number,
+        @Query('t2') t2: number,
+        @Query('cat') cat: string,
+        @Query('rs1') rs1: string,
+        @Query('rs2') rs2: string,
+        @Query('rs3') rs3: string,
+        @Query('os1') os1: string,
+        @Query('os2') os2: string,
+        @Query('os3') os3: string,
+        @Query('sort') sort: number,
+    ) {
+        return this.jobService.getAllJobs(
+            name,
+            w1,
+            w2,
+            t1,
+            t2,
+            cat,
+            rs1,
+            rs2,
+            rs3,
+            os1,
+            os2,
+            os3,
+            sort,
+        );
     }
 
     @Get(':jobId')
