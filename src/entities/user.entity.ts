@@ -52,6 +52,9 @@ export class User {
     @Column('boolean', { default: false })
     isVerified: boolean;
 
+    @Column('boolean', { default: false })
+    isAdmin: boolean;
+
     @Column('text', { nullable: true }) //link to photo
     identificationCardPic: string;
 
