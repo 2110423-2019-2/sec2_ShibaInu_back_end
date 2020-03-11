@@ -1,10 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { User } from './user.entity';
+import { Job } from './job.entity';
 
 @Entity()
 export class Review {
     @PrimaryGeneratedColumn()
     reviewId: number;
+
+    @Column('integer')
+    score: number;
 
     @Column('text')
     description: string;
@@ -20,4 +24,13 @@ export class Review {
         user => user.reviews,
     )
     reviewer: User;
+
+    @ManyToOne(
+        type => Job,
+        job => job.reviews,
+    )
+    job: Job;
+
+    @Column('varchar', { length: 150 })
+    jobName: string;
 }

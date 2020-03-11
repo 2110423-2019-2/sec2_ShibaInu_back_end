@@ -3,12 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Review } from 'src/entities/review.entity';
 import { CreateReviewDto, EditReviewDto } from './review.dto';
+import { JobsService } from 'src/jobs/jobs.service';
 
 @Injectable()
 export class ReviewService {
     constructor(
         @InjectRepository(Review)
         private readonly reviewRepository: Repository<Review>,
+        private readonly jobService: JobsService
     ) {}
 
     async getAllReviews(): Promise<Review[]> {
@@ -37,6 +39,8 @@ export class ReviewService {
     }
 
     async createNewReview(createReviewDto: CreateReviewDto) {
+        let job = createReviewDto.job;
+        createReviewDto.jobName = (await this.jobService.getJobById(job.jobId)).name;
         return this.reviewRepository.insert(createReviewDto);
     }
 
