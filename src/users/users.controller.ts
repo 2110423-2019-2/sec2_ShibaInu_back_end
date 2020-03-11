@@ -40,6 +40,12 @@ export class UsersController {
         return this.userService.getAllUsers();
     }
 
+    @UseGuards(AuthGuard())
+    @Get('fromtoken')
+    async getUserDataFromToken(@LoadUser() user: any) {
+        return this.userService.getUserById(user.id);
+    }
+
     @Get('login')
     async getUserId(@Body() userNamePasswordDto: UserNamePasswordDto) {
         return this.userService.getUserId(userNamePasswordDto);
