@@ -202,7 +202,7 @@ export class UsersService {
     }
 
     async verifyUser(userId: number) {
-        return this.userRepository.update(userId, { isVerified: true })
+        return this.userRepository.update(userId, { isVerified: true });
     }
 
     async deleteInterestedCategory(
