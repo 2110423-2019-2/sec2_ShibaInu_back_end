@@ -33,4 +33,7 @@ export class Review {
 
     @Column('varchar', { length: 150 })
     jobName: string;
+
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+    createdTime: Date;
 }

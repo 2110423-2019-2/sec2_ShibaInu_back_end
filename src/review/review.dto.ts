@@ -8,6 +8,7 @@ export class CreateReviewDto {
     reviewer: User;
     job: Job;
     jobName?: string;
+    createdTime?: Date;
 }
 
 export class EditReviewDto {

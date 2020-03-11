@@ -41,6 +41,7 @@ export class ReviewService {
     async createNewReview(createReviewDto: CreateReviewDto) {
         let job = createReviewDto.job;
         createReviewDto.jobName = (await this.jobService.getJobById(job.jobId)).name;
+        createReviewDto.createdTime = new Date();
         return this.reviewRepository.insert(createReviewDto);
     }
 
