@@ -20,7 +20,7 @@ import { UsersService } from '../users/users.service';
             JobReqSkill,
             Bid,
             User,
-            UserSkill
+            UserSkill,
         ]),
     ],
     controllers: [ReviewController],

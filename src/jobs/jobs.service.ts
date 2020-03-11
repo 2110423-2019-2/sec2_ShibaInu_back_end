@@ -57,7 +57,7 @@ export class JobsService {
         if (!w1) w1 = 0;
         if (!w2) w2 = 9999999999999;
         if (!t1) t1 = 0;
-        if(!t2) t2 = 2147483647;
+        if (!t2) t2 = 2147483647;
         let a = await this.jobRepository.find({
             select: ['jobId'],
             where: {
@@ -184,11 +184,11 @@ export class JobsService {
             }
             delete updateJobDto.optionalSkills;
         }
-        if(updateJobDto.status === Status.ACCEPTED){
+        if (updateJobDto.status === Status.ACCEPTED) {
             updateJobDto.acceptedTime = new Date();
-        } else if(updateJobDto.status === Status.WORKING){
+        } else if (updateJobDto.status === Status.WORKING) {
             updateJobDto.startWorkingTime = new Date();
-        } else if(updateJobDto.status === Status.DONE){
+        } else if (updateJobDto.status === Status.DONE) {
             updateJobDto.doneTime = new Date();
         }
         updateJobDto.updatedTime = new Date();
@@ -227,8 +227,11 @@ export class JobsService {
         );
     }
 
-    async getInterestedFreelancersById(jobId: number):Promise<User[]>{
-        let userIds = await this.bidRepository.find({select: ['userId'], where: {jobId:jobId}});
+    async getInterestedFreelancersById(jobId: number): Promise<User[]> {
+        let userIds = await this.bidRepository.find({
+            select: ['userId'],
+            where: { jobId: jobId },
+        });
         return this.userRepository.findByIds(userIds);
     }
 }

@@ -59,17 +59,17 @@ export class Job {
     updatedTime: Date;
 
     @Column('timestamp', {
-        default: null
+        default: null,
     })
     acceptedTime: Date;
 
     @Column('timestamp', {
-        default: null
+        default: null,
     })
     startWorkingTime: Date;
 
     @Column('timestamp', {
-        default: null
+        default: null,
     })
     doneTime: Date;
 

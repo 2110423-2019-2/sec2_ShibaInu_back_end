@@ -90,7 +90,7 @@ export class JobsController {
     }
 
     @Get('freelancers/:jobId')
-    async getInterestedFreelancersById(@Param('jobId') jobId: number){
+    async getInterestedFreelancersById(@Param('jobId') jobId: number) {
         return this.jobService.getInterestedFreelancersById(jobId);
     }
 }

@@ -16,11 +16,11 @@ import { BidsService } from '../bids/bids.service';
             Job,
             JobOptSkill,
             JobReqSkill,
-            User
+            User,
         ]),
         PassportModule.register({ defaultStrategy: 'jwt' }),
     ],
     controllers: [JobsController],
-    providers: [JobsService,BidsService],
+    providers: [JobsService, BidsService],
 })
 export class JobsModule {}
