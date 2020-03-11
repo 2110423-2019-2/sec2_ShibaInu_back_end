@@ -10,7 +10,7 @@ export class ReviewService {
     constructor(
         @InjectRepository(Review)
         private readonly reviewRepository: Repository<Review>,
-        private readonly jobService: JobsService
+        private readonly jobService: JobsService,
     ) {}
 
     async getAllReviews(): Promise<Review[]> {
@@ -40,7 +40,9 @@ export class ReviewService {
 
     async createNewReview(createReviewDto: CreateReviewDto) {
         let job = createReviewDto.job;
-        createReviewDto.jobName = (await this.jobService.getJobById(job.jobId)).name;
+        createReviewDto.jobName = (
+            await this.jobService.getJobById(job.jobId)
+        ).name;
         createReviewDto.createdTime = new Date();
         return this.reviewRepository.insert(createReviewDto);
     }

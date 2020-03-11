@@ -9,12 +9,18 @@ import { Job, JobOptSkill, JobReqSkill } from 'src/entities/job.entity';
 import { InterestedCategory } from 'src/entities/user.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Review,Job,InterestedCategory,
-        Job,
-        JobOptSkill,
-        JobReqSkill,])],
+    imports: [
+        TypeOrmModule.forFeature([
+            Review,
+            Job,
+            InterestedCategory,
+            Job,
+            JobOptSkill,
+            JobReqSkill,
+        ]),
+    ],
     controllers: [ReviewController],
-    providers: [ReviewService,JobsService],
+    providers: [ReviewService, JobsService],
     exports: [ReviewService],
 })
 export class ReviewModule {}
