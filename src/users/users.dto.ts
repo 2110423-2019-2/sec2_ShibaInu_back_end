@@ -84,3 +84,8 @@ export class BanUserDto {
     isBanned: boolean;
 }
 
+export class VerifyAdminDto {
+    user: User;
+    isAdmin: boolean;
+}
+

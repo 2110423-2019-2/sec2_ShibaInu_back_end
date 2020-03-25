@@ -22,6 +22,7 @@ import {
     CreateSkillDto,
     VerifyApprovalDto,
     BanUserDto,
+    VerifyAdminDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -126,6 +127,14 @@ export class UsersController {
     @UseGuards(AuthGuard())
     async banUser(@Body() banUserDto: BanUserDto) {
         return this.userService.banUser(banUserDto);
+    }
+
+    @Patch('verify/admin')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
+    async verifyAdmin(@Body() verifyAdminDto: VerifyAdminDto) {
+        return this.userService.verifyAdmin(verifyAdminDto);
     }
 
     @Post('category/:userId')

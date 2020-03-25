@@ -14,6 +14,7 @@ import {
     UserNamePasswordDto,
     VerifyApprovalDto,
     BanUserDto,
+    VerifyAdminDto,
 } from './users.dto';
 import bcrypt = require('bcrypt');
 
@@ -243,6 +244,15 @@ export class UsersService {
         let res: any = null;
         res = await this.userRepository.update(banUser.user, {
                 isBanned: banUser.isBanned,
+            });
+        if (res.raw.affectedRows==0) throw new BadRequestException('Invalid UserId');
+        return res;
+    }
+
+    async verifyAdmin(verifyAdminDto: VerifyAdminDto): Promise<any> {
+        let res: any = null;
+        res = await this.userRepository.update(verifyAdminDto.user, {
+                isAdmin: verifyAdminDto.isAdmin,
             });
         if (!res) throw new BadRequestException('Invalid UserId');
         return res;
