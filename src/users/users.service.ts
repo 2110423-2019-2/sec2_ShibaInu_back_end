@@ -13,6 +13,7 @@ import {
     EditUserDto,
     UserNamePasswordDto,
     VerifyApprovalDto,
+    BanUserDto,
 } from './users.dto';
 import bcrypt = require('bcrypt');
 
@@ -77,7 +78,6 @@ export class UsersService {
                 username: username,
             },
         });
-        if (!ret) throw new BadRequestException('Invalid Username');
         return ret;
     }
 
@@ -121,7 +121,6 @@ export class UsersService {
     }
 
     async createNewUser(createUserDto: CreateUserDto) {
-        console.log(createUserDto);
         const hashedPass = await bcrypt.hash(createUserDto.password, 10);
         createUserDto.password = hashedPass;
 
@@ -129,6 +128,9 @@ export class UsersService {
         createUserDto.isVerified = false;
         createUserDto.isVisible = true;
         createUserDto.money = 0;
+        createUserDto.sumReviewedScore = 0;
+        createUserDto.reviewedNumber = 0;
+        createUserDto.isBanned = false;
 
         if (await this.getUserByUsername(createUserDto.username)) {
             throw new BadRequestException(`This username has been used.`);
@@ -184,7 +186,6 @@ export class UsersService {
                 );
             }
         }
-        console.log(editUserDto);
         let ret = await this.userRepository.save(editUserDto);
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
@@ -235,6 +236,15 @@ export class UsersService {
         await this.verifyRequestRepository.delete({
             requestedUser: verifyApprovalDto.user,
         });
+        return res;
+    }
+
+    async banUser(banUser: BanUserDto): Promise<any> {
+        let res: any = null;
+        res = await this.userRepository.update(banUser.user, {
+                isBanned: banUser.isBanned,
+            });
+        if (!res) throw new BadRequestException('Invalid UserId');
         return res;
     }
 

@@ -151,6 +151,9 @@ export class User {
 
     @Column('integer')
     reviewedNumber: number;
+
+    @Column('boolean', { default: false })
+    isBanned: boolean;
 }
 
 @Entity()
