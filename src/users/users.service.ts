@@ -254,7 +254,7 @@ export class UsersService {
         res = await this.userRepository.update(verifyAdminDto.user, {
                 isAdmin: verifyAdminDto.isAdmin,
             });
-        if (!res) throw new BadRequestException('Invalid UserId');
+        if (res.raw.affectedRows==0) throw new BadRequestException('Invalid UserId');
         return res;
     }
 
