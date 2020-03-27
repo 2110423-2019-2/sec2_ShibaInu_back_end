@@ -17,3 +17,17 @@ export class CreatePaymentDto{
     paid_at: string;
     expires_at: string;
 }
+
+export class CreateRecipientDto{
+    name: string;
+    bank_account: {
+        name: string;
+        number: string;
+        brand: string;
+    }
+}
+
+export class CreateTransferDto{
+    recipient: string;
+    amount: number;
+}

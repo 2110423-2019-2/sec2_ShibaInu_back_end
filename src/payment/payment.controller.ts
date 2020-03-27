@@ -1,10 +1,15 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { PaymentService } from './payment.service';
-import { ChargeDto } from './payment.dto';
+import { ChargeDto, CreateRecipientDto, CreateTransferDto } from './payment.dto';
 
 @Controller('payment')
 export class PaymentController {
     constructor(private readonly paymentService: PaymentService) {}
+
+    @Get('testPayment')
+    async test(){
+        return await this.paymentService.test();
+    }
 
     @Get('testPayment/charge')
     async testCharge(){
@@ -19,14 +24,25 @@ export class PaymentController {
         return ret;
     }
 
+    
+
     @Get()
     async getAllPayment(){
-        return this.paymentService.getAllPayments();
+        return await this.paymentService.getAllPayments();
     }
 
     @Post()
     async charge(@Body() chargeDto: ChargeDto){
-        return this.paymentService.charge(chargeDto);
+        return await this.paymentService.charge(chargeDto);
     }
 
+    @Post('recipient')
+    async createRecipient(@Body() createRecipientDTo:CreateRecipientDto){
+        return await this.paymentService.createRecipient(createRecipientDTo);
+    }
+
+    @Post('transfer')
+    async transfer(@Body() createTransferDto:CreateTransferDto){
+        return await this.paymentService.transfer(createTransferDto);
+    }
 }
