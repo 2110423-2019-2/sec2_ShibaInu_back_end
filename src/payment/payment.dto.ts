@@ -5,14 +5,14 @@ export class ChargeDto{
     currency: string;
 }
 
-export class CreatePaymentDto{
+export class CreateChargeDto{
     paymentId: string;
     amount: number;
     net: number;
     currency: string;
     description: string;
     card: object;
-    transaction: string;
+    transactionId: string;
     created_at: string;
     paid_at: string;
     expires_at: string;
@@ -28,6 +28,14 @@ export class CreateRecipientDto{
 }
 
 export class CreateTransferDto{
-    recipient: string;
+    recipientId: string;
     amount: number;
+    transferId?: string;
+    net?: number;
+    currency?: string;
+    bank_account?: object;
+    created_at?: string;
+    sent_at?: string;
+    paid_at?: string;
+    sendable?: boolean;
 }

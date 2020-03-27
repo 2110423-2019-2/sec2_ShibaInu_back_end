@@ -26,12 +26,12 @@ export class PaymentController {
 
     
 
-    @Get()
+    @Get('charge')
     async getAllPayment(){
         return await this.paymentService.getAllPayments();
     }
 
-    @Post()
+    @Post('charge')
     async charge(@Body() chargeDto: ChargeDto){
         return await this.paymentService.charge(chargeDto);
     }
@@ -39,6 +39,11 @@ export class PaymentController {
     @Post('recipient')
     async createRecipient(@Body() createRecipientDTo:CreateRecipientDto){
         return await this.paymentService.createRecipient(createRecipientDTo);
+    }
+
+    @Get('transfer')
+    async getAllTransfer(){
+        return await this.paymentService.getAllTransfer();
     }
 
     @Post('transfer')

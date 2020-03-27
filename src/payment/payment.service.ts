@@ -1,16 +1,18 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ChargeDto,CreatePaymentDto, CreateRecipientDto, CreateTransferDto } from './payment.dto';
-import { Payment } from '../entities/payment.entity';
-import { response } from 'express';
+import { CreateChargeDto, ChargeDto, CreateRecipientDto, CreateTransferDto } from './payment.dto';
+import { PaymentCharge, PaymentTransfer } from '../entities/payment.entity';
 
 @Injectable()
 export class PaymentService {
 
     constructor(
-        @InjectRepository(Payment)
-        private readonly paymentRepository: Repository<Payment>,
+        @InjectRepository(PaymentCharge)
+        private readonly paymentChargeRepository: Repository<PaymentCharge>,
+
+        @InjectRepository(PaymentTransfer)
+        private readonly paymentTransferRepository: Repository<PaymentTransfer>,
     ) { }
     
 
@@ -71,10 +73,10 @@ export class PaymentService {
         return tmp;
     }
 
-    async getAllPayments(): Promise<Payment[]> {
-        let resp = await this.paymentRepository.find();
+    async getAllPayments(): Promise<PaymentCharge[]> {
+        let resp = await this.paymentChargeRepository.find();
         if (resp.length == 0)
-            throw new BadRequestException('Not found any Payment');
+            throw new BadRequestException('Not found any Charge');
         return resp;
     }
 
@@ -97,22 +99,22 @@ export class PaymentService {
         
         if(charge.transaction) {
 
-          let createPaymentDto:CreatePaymentDto;
+          let createChargeDto:CreateChargeDto;
 
-          createPaymentDto = {
+          createChargeDto = {
               paymentId: charge.id,
               amount: charge.amount,
               net: charge.net,
               currency: charge.currency,
               description: charge.description,
               card: charge.card,
-              transaction: charge.transaction,
+              transactionId: charge.transaction,
               created_at: charge.created_at,
               paid_at: charge.paid_at,
               expires_at: charge.expires_at
           }
           
-          return this.paymentRepository.insert(createPaymentDto);
+          return this.paymentChargeRepository.insert(createChargeDto);
         }
         else{
             let err = new BadRequestException(charge.failure_code);
@@ -153,16 +155,29 @@ export class PaymentService {
     }
 
     async test(){
-      return this.omise.recipients.retrieve("recp_test_5jco81hoi5n2bp2igq5", function(err, resp){
+      let resp = await this.omise.transfers.list({order: "reverse_chronological" ,limit:100},function(error, list) {
         /* Response. */
       });
+      resp = resp.data;
+      resp.forEach(transfer => {
+        if(transfer.paid == false){
+          console.log(transfer.id);
+          let urlTransfersMarkAsPaid = "https://api.omise.co/transfers/" + transfer.id + "/mark_as_paid";
+          this.markTransfer(urlTransfersMarkAsPaid);
+        }
+      });
+      return resp;
     }
 
     async transfer(createTransferDto: CreateTransferDto){
 
+      let recipient = await this.getRecipientById(createTransferDto.recipientId);
+      if(!recipient.verified) throw new BadRequestException("Recipient is not verified");
+      if(!recipient.active) throw new BadRequestException("Recipient is not activated");
+
       let resp;
       try {
-        resp = await this.omise.transfers.create({'amount': createTransferDto.amount, 'recipient': createTransferDto.recipient}, function(error, transfer) {
+        resp = await this.omise.transfers.create({'amount': createTransferDto.amount, 'recipient': createTransferDto.recipientId}, function(error, transfer) {
           /* Response. */
           return transfer;
         });
@@ -173,13 +188,26 @@ export class PaymentService {
 
       if(resp.object == 'error') throw new BadRequestException(resp.code);
 
-      let recipient = await this.getRecipientById(resp.recipient);
-      if(!recipient.verified) throw new BadRequestException("Recipient is not verified");
-      if(!recipient.active) throw new BadRequestException("Recipient is not activated");
-
       let urlTransfersMarkAsSent = "https://api.omise.co/transfers/" + resp.id + "/mark_as_sent";
       this.markTransfer(urlTransfersMarkAsSent);
-      
-      return resp;
+
+      console.log(resp);
+      createTransferDto.transferId = resp.id;
+      createTransferDto.net = resp.net;
+      createTransferDto.currency = resp.currency
+      createTransferDto.bank_account = resp.bank_account
+      createTransferDto.created_at = resp.created_at;
+      createTransferDto.sent_at = resp.sent_at;
+      createTransferDto.paid_at = resp.paid_at;
+      createTransferDto.sendable = resp.sendable;
+
+      return this.paymentTransferRepository.insert(createTransferDto);
+    }
+
+    async getAllTransfer(): Promise<PaymentTransfer[]> {
+      let resp = await this.paymentTransferRepository.find();
+        if (resp.length == 0)
+            throw new BadRequestException('Not found any Transfer');
+        return resp;
     }
 }
