@@ -6,10 +6,12 @@ import {
     OneToMany,
     PrimaryColumn,
     JoinColumn,
+    OneToOne,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
+import { PaymentCharge, PaymentTransfer } from './payment.entity';
 
 export enum Status {
     OPEN = 'open',

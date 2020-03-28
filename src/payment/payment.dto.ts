@@ -1,3 +1,6 @@
+import { Job } from "src/entities/job.entity";
+import { User } from "src/entities/user.entity";
+
 export class ChargeDto{
     token : string;
     description: string;
@@ -16,6 +19,7 @@ export class CreateChargeDto{
     created_at: string;
     paid_at: string;
     expires_at: string;
+    client?: User;
 }
 
 export class CreateRecipientDto{
@@ -38,4 +42,5 @@ export class CreateTransferDto{
     sent_at?: string;
     paid_at?: string;
     sendable?: boolean;
+    freelancer?: User;
 }

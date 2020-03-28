@@ -12,6 +12,7 @@ import { Job } from './job.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
 import { Announcement } from './announcement.entity';
+import { PaymentCharge, PaymentTransfer } from './payment.entity';
 
 export enum InterestedCategoryEnum {
     game = 'game',
@@ -154,6 +155,18 @@ export class User {
 
     @Column('boolean', { default: false })
     isBanned: boolean;
+
+    @ManyToOne(
+        type => PaymentCharge,
+        paymentCharge => paymentCharge.client
+    )
+    charges : PaymentCharge[];
+
+    @ManyToOne(
+        type => PaymentTransfer,
+        paymentTransfer => paymentTransfer.freelancer
+    )
+    transfers : PaymentTransfer[];
 }
 
 @Entity()

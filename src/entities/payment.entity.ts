@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryColumn, OneToOne, ManyToOne } from "typeorm";
+import { Job } from "./job.entity";
+import { User } from "./user.entity";
 
 
 @Entity()
@@ -33,6 +35,13 @@ export class PaymentCharge {
 
     @Column('datetime')
     expires_at: string;
+
+    @ManyToOne(
+        type => User,
+        user => user.charges,
+        { eager: true },
+    )
+    client: User;
 }
 
 @Entity()
@@ -67,4 +76,11 @@ export class PaymentTransfer {
 
     @Column('boolean')
     sendable: boolean;
+
+    @ManyToOne(
+        type => User,
+        user => user.transfers,
+        { eager: true },
+    )
+    freelancer: User;
 }

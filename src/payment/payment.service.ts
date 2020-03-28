@@ -73,14 +73,14 @@ export class PaymentService {
         return tmp;
     }
 
-    async getAllPayments(): Promise<PaymentCharge[]> {
+    async getAllPaymentCharge(): Promise<PaymentCharge[]> {
         let resp = await this.paymentChargeRepository.find();
         if (resp.length == 0)
             throw new BadRequestException('Not found any Charge');
         return resp;
     }
 
-    async charge(chargeDto: ChargeDto) {
+    async charge(chargeDto: ChargeDto,client: any) {
         let charge = await this.omise.charges.create({
             'description': chargeDto.description,
             'amount': chargeDto.amount,
@@ -111,7 +111,8 @@ export class PaymentService {
               transactionId: charge.transaction,
               created_at: charge.created_at,
               paid_at: charge.paid_at,
-              expires_at: charge.expires_at
+              expires_at: charge.expires_at,
+              client: client.id
           }
           
           return this.paymentChargeRepository.insert(createChargeDto);
@@ -169,7 +170,7 @@ export class PaymentService {
       return resp;
     }
 
-    async transfer(createTransferDto: CreateTransferDto){
+    async transfer(createTransferDto: CreateTransferDto,freelancer: any){
 
       let recipient = await this.getRecipientById(createTransferDto.recipientId);
       if(!recipient.verified) throw new BadRequestException("Recipient is not verified");
@@ -200,6 +201,7 @@ export class PaymentService {
       createTransferDto.sent_at = resp.sent_at;
       createTransferDto.paid_at = resp.paid_at;
       createTransferDto.sendable = resp.sendable;
+      createTransferDto.freelancer = freelancer.id;
 
       return this.paymentTransferRepository.insert(createTransferDto);
     }
@@ -209,5 +211,27 @@ export class PaymentService {
         if (resp.length == 0)
             throw new BadRequestException('Not found any Transfer');
         return resp;
+    }
+
+    async getChargeByUser(client: any) :Promise<PaymentCharge[]> {
+      let ret = await this.paymentChargeRepository.find({
+        where: {
+            client: client.id
+        },
+      });
+      if (!ret || ret.length == 0)
+            throw new BadRequestException('Not found any charge');
+      return ret;
+    }
+
+    async getTransferByUser(freelancer: any) :Promise<PaymentTransfer[]> {
+      let ret = await this.paymentTransferRepository.find({
+        where: {
+            freelancer: freelancer.id
+        },
+      });
+      if (!ret || ret.length == 0)
+            throw new BadRequestException('Not found any transfer');
+      return ret;
     }
 }
