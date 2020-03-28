@@ -1,14 +1,14 @@
-import { Job } from "src/entities/job.entity";
-import { User } from "src/entities/user.entity";
+import { Job } from 'src/entities/job.entity';
+import { User } from 'src/entities/user.entity';
 
-export class ChargeDto{
-    token : string;
+export class ChargeDto {
+    token: string;
     description: string;
     amount: number;
     currency: string;
 }
 
-export class CreateChargeDto{
+export class CreateChargeDto {
     paymentId: string;
     amount: number;
     net: number;
@@ -22,16 +22,16 @@ export class CreateChargeDto{
     client?: User;
 }
 
-export class CreateRecipientDto{
+export class CreateRecipientDto {
     name: string;
     bank_account: {
         name: string;
         number: string;
         brand: string;
-    }
+    };
 }
 
-export class CreateTransferDto{
+export class CreateTransferDto {
     recipientId: string;
     amount: number;
     transferId?: string;

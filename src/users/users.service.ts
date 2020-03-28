@@ -243,18 +243,20 @@ export class UsersService {
     async banUser(banUser: BanUserDto): Promise<any> {
         let res: any = null;
         res = await this.userRepository.update(banUser.user, {
-                isBanned: banUser.isBanned,
-            });
-        if (res.raw.affectedRows==0) throw new BadRequestException('Invalid UserId');
+            isBanned: banUser.isBanned,
+        });
+        if (res.raw.affectedRows == 0)
+            throw new BadRequestException('Invalid UserId');
         return res;
     }
 
     async verifyAdmin(verifyAdminDto: VerifyAdminDto): Promise<any> {
         let res: any = null;
         res = await this.userRepository.update(verifyAdminDto.user, {
-                isAdmin: verifyAdminDto.isAdmin,
-            });
-        if (res.raw.affectedRows==0) throw new BadRequestException('Invalid UserId');
+            isAdmin: verifyAdminDto.isAdmin,
+        });
+        if (res.raw.affectedRows == 0)
+            throw new BadRequestException('Invalid UserId');
         return res;
     }
 

@@ -88,4 +88,3 @@ export class VerifyAdminDto {
     user: User;
     isAdmin: boolean;
 }
-
