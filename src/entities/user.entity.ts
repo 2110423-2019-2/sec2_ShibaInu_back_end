@@ -158,15 +158,15 @@ export class User {
 
     @ManyToOne(
         type => PaymentCharge,
-        paymentCharge => paymentCharge.client
+        paymentCharge => paymentCharge.client,
     )
-    charges : PaymentCharge[];
+    charges: PaymentCharge[];
 
     @ManyToOne(
         type => PaymentTransfer,
-        paymentTransfer => paymentTransfer.freelancer
+        paymentTransfer => paymentTransfer.freelancer,
     )
-    transfers : PaymentTransfer[];
+    transfers: PaymentTransfer[];
 }
 
 @Entity()
