@@ -7,16 +7,15 @@ import {
     CreateRecipientDto,
     CreateTransferDto,
 } from './payment.dto';
-import { PaymentCharge, PaymentTransfer } from '../entities/payment.entity';
+import { Payment, PaymentTypeEnum } from 'src/entities/payment.entity';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class PaymentService {
     constructor(
-        @InjectRepository(PaymentCharge)
-        private readonly paymentChargeRepository: Repository<PaymentCharge>,
-
-        @InjectRepository(PaymentTransfer)
-        private readonly paymentTransferRepository: Repository<PaymentTransfer>,
+        @InjectRepository(Payment)
+        private readonly paymentRepository: Repository<Payment>,
+        private readonly userService: UsersService,
     ) {}
 
     private readonly omise = require('omise')({
@@ -85,10 +84,10 @@ export class PaymentService {
         return tmp;
     }
 
-    async getAllPaymentCharge(): Promise<PaymentCharge[]> {
-        let resp = await this.paymentChargeRepository.find();
+    async getAllPayment(): Promise<Payment[]> {
+        let resp = await this.paymentRepository.find();
         if (resp.length == 0)
-            throw new BadRequestException('Not found any Charge');
+            throw new BadRequestException('Not found any Payment');
         return resp;
     }
 
@@ -126,10 +125,11 @@ export class PaymentService {
                 created_at: charge.created_at,
                 paid_at: charge.paid_at,
                 expires_at: charge.expires_at,
-                client: client.id,
+                user: client.id,
+                type: PaymentTypeEnum.charge,
             };
 
-            return this.paymentChargeRepository.insert(createChargeDto);
+            return this.paymentRepository.insert(createChargeDto);
         } else {
             let err = new BadRequestException(charge.failure_code);
             throw err;
@@ -182,7 +182,6 @@ export class PaymentService {
         resp = resp.data;
         resp.forEach(transfer => {
             if (transfer.paid == false) {
-                console.log(transfer.id);
                 let urlTransfersMarkAsPaid =
                     'https://api.omise.co/transfers/' +
                     transfer.id +
@@ -224,8 +223,7 @@ export class PaymentService {
             'https://api.omise.co/transfers/' + resp.id + '/mark_as_sent';
         this.markTransfer(urlTransfersMarkAsSent);
 
-        console.log(resp);
-        createTransferDto.transferId = resp.id;
+        createTransferDto.paymentId = resp.id;
         createTransferDto.net = resp.net;
         createTransferDto.currency = resp.currency;
         createTransferDto.bank_account = resp.bank_account;
@@ -233,37 +231,98 @@ export class PaymentService {
         createTransferDto.sent_at = resp.sent_at;
         createTransferDto.paid_at = resp.paid_at;
         createTransferDto.sendable = resp.sendable;
-        createTransferDto.freelancer = freelancer.id;
+        createTransferDto.user = freelancer.id;
+        createTransferDto.type = PaymentTypeEnum.transfer;
+        createTransferDto.amount = resp.amount;
 
-        return this.paymentTransferRepository.insert(createTransferDto);
+        return this.paymentRepository.insert(createTransferDto);
     }
 
-    async getAllTransfer(): Promise<PaymentTransfer[]> {
-        let resp = await this.paymentTransferRepository.find();
+    async getAllPaymentCharge(): Promise<Payment[]> {
+        let resp = await this.paymentRepository.find({
+            where: {
+                type: PaymentTypeEnum.charge,
+            },
+        });
+        if (resp.length == 0)
+            throw new BadRequestException('Not found any Charge');
+        return resp;
+    }
+
+    async getAllPaymentTransfer(): Promise<Payment[]> {
+        let resp = await this.paymentRepository.find({
+            where: {
+                type: PaymentTypeEnum.transfer,
+            },
+        });
         if (resp.length == 0)
             throw new BadRequestException('Not found any Transfer');
         return resp;
     }
 
-    async getChargeByUser(client: any): Promise<PaymentCharge[]> {
-        let ret = await this.paymentChargeRepository.find({
+    async getPaymentByUser(user: any): Promise<Payment[]> {
+        let ret = await this.paymentRepository.find({
             where: {
-                client: client.id,
+                user: user.id,
             },
         });
         if (!ret || ret.length == 0)
-            throw new BadRequestException('Not found any charge');
+            throw new BadRequestException('Not found any payment');
         return ret;
     }
 
-    async getTransferByUser(freelancer: any): Promise<PaymentTransfer[]> {
-        let ret = await this.paymentTransferRepository.find({
+    async getPaymentChargeByUser(user: any): Promise<Payment[]> {
+        let ret = await this.paymentRepository.find({
             where: {
-                freelancer: freelancer.id,
+                user: user.id,
+                type: PaymentTypeEnum.charge,
             },
         });
         if (!ret || ret.length == 0)
-            throw new BadRequestException('Not found any transfer');
+            throw new BadRequestException('Not found any payment charge');
         return ret;
+    }
+
+    async getPaymentTransferByUser(user: any): Promise<Payment[]> {
+        let ret = await this.paymentRepository.find({
+            where: {
+                user: user.id,
+                type: PaymentTypeEnum.transfer,
+            },
+        });
+        if (!ret || ret.length == 0)
+            throw new BadRequestException('Not found any payment transfer');
+        return ret;
+    }
+
+    async getSumPaymentByUser(user: any) {
+        let payments = await this.getPaymentByUser(user);
+        if (!payments) throw new BadRequestException('Not found any user');
+        let sum = 0;
+        payments.forEach(payment => {
+            if (payment.type == PaymentTypeEnum.charge) sum += payment.amount;
+            else sum -= payment.amount;
+        });
+        return { sum: sum };
+    }
+
+    async getSumChargeByClient(client: any) {
+        let payments = await this.getPaymentChargeByUser(client);
+        if (!payments) throw new BadRequestException('Not found any user');
+        let sum = 0;
+        payments.forEach(payment => {
+            sum += payment.amount;
+        });
+        return { sum: sum };
+    }
+
+    async getSumTransferByFreelancer(freelancer: any) {
+        let payments = await this.getPaymentTransferByUser(freelancer);
+        if (!payments) throw new BadRequestException('Not found any user');
+        let sum = 0;
+        payments.forEach(payment => {
+            sum -= payment.amount;
+        });
+        return { sum: sum };
     }
 }
