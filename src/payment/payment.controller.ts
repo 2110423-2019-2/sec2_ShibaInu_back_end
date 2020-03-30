@@ -68,7 +68,6 @@ export class PaymentController {
         return await this.paymentService.getPaymentChargeByUser(user);
     }
 
-
     @UseGuards(AuthGuard())
     @Get('transfer')
     async getPaymentTransferByUser(@LoadUser() user: any) {
@@ -108,25 +107,19 @@ export class PaymentController {
 
     @UseGuards(AuthGuard())
     @Get('sum')
-    async getSumPaymentByUser(
-        @LoadUser() user: any,
-    ) {
+    async getSumPaymentByUser(@LoadUser() user: any) {
         return await this.paymentService.getSumPaymentByUser(user);
     }
 
     @UseGuards(AuthGuard())
     @Get('sum/charge')
-    async getSumChargeByClient(
-        @LoadUser() client: any,
-    ) {
+    async getSumChargeByClient(@LoadUser() client: any) {
         return await this.paymentService.getSumChargeByClient(client);
     }
 
     @UseGuards(AuthGuard())
     @Get('sum/transfer')
-    async getSumTransferByFreelancer(
-        @LoadUser() freelancer: any,
-    ) {
+    async getSumTransferByFreelancer(@LoadUser() freelancer: any) {
         return await this.paymentService.getSumTransferByFreelancer(freelancer);
     }
 }

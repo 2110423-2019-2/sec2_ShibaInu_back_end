@@ -2,8 +2,8 @@ import { Entity, Column, PrimaryColumn, OneToOne, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
 
 export enum PaymentTypeEnum {
-    charge  = 'charge',
-    transfer = 'transfer'
+    charge = 'charge',
+    transfer = 'transfer',
 }
 
 @Entity()
@@ -21,13 +21,13 @@ export class Payment {
     @Column('varchar', { length: 3 }) //ex THB
     currency: string;
 
-    @Column('text' , {nullable : true})
+    @Column('text', { nullable: true })
     description: string;
 
-    @Column('json', {nullable : true})
+    @Column('json', { nullable: true })
     card: object;
 
-    @Column('text', {nullable : true})
+    @Column('text', { nullable: true })
     transactionId: string;
 
     @Column('datetime')
@@ -36,7 +36,7 @@ export class Payment {
     @Column('datetime', { nullable: true })
     paid_at: string;
 
-    @Column('datetime', {nullable : true})
+    @Column('datetime', { nullable: true })
     expires_at: string;
 
     @ManyToOne(
@@ -45,23 +45,23 @@ export class Payment {
         { eager: true },
     )
     user: User;
-    
+
     //transfer
 
-    @Column('json', {nullable : true})
+    @Column('json', { nullable: true })
     bank_account: object;
 
     @Column('datetime', { nullable: true })
     sent_at: string;
 
-    @Column('text', {nullable : true})
+    @Column('text', { nullable: true })
     recipientId: string;
 
-    @Column('boolean', {nullable : true})
+    @Column('boolean', { nullable: true })
     sendable: boolean;
 
     @Column('enum', {
-        enum: PaymentTypeEnum
+        enum: PaymentTypeEnum,
     })
     type: PaymentTypeEnum;
 }
