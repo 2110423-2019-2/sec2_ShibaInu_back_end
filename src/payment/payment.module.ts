@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import { PaymentController } from './payment.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { PaymentTransfer, PaymentCharge } from '../entities/payment.entity';
 import { PassportModule } from '@nestjs/passport';
 import { UsersService } from 'src/users/users.service';
 import {
@@ -11,12 +10,12 @@ import {
     VerifyRequest,
     InterestedCategory,
 } from 'src/entities/user.entity';
+import { Payment } from 'src/entities/payment.entity';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([
-            PaymentCharge,
-            PaymentTransfer,
+            Payment,
             User,
             UserSkill,
             VerifyRequest,

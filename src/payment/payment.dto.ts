@@ -1,5 +1,6 @@
 import { Job } from 'src/entities/job.entity';
 import { User } from 'src/entities/user.entity';
+import { PaymentTypeEnum } from 'src/entities/payment.entity';
 
 export class ChargeDto {
     token: string;
@@ -19,7 +20,8 @@ export class CreateChargeDto {
     created_at: string;
     paid_at: string;
     expires_at: string;
-    client?: User;
+    user?: User;
+    type?: PaymentTypeEnum;
 }
 
 export class CreateRecipientDto {
@@ -32,9 +34,9 @@ export class CreateRecipientDto {
 }
 
 export class CreateTransferDto {
+    paymentId?: string;
     recipientId: string;
     amount: number;
-    transferId?: string;
     net?: number;
     currency?: string;
     bank_account?: object;
@@ -42,5 +44,6 @@ export class CreateTransferDto {
     sent_at?: string;
     paid_at?: string;
     sendable?: boolean;
-    freelancer?: User;
+    user?: User;
+    type?: PaymentTypeEnum;
 }
