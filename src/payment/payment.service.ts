@@ -91,14 +91,42 @@ export class PaymentService {
         return resp;
     }
 
+    async createCardToken(data: any) {
+        return this.omise.tokens.create(
+            {
+                card: {
+                    name: data.name,
+                    city: data.city,
+                    postal_code: data.postal_code,
+                    number: data.number,
+                    expiration_month: data.expiration_month,
+                    expiration_year: data.expiration_year,
+                    security_code: data.security_code,
+                },
+            },
+            function(error, token) {
+                /* Response. */
+            },
+        );
+    }
+
     async charge(chargeDto: ChargeDto, client: any) {
+        let card = await this.createCardToken({
+            name: chargeDto.name,
+            city: chargeDto.city,
+            postal_code: chargeDto.postal_code,
+            number: chargeDto.number,
+            expiration_month: chargeDto.expiration_month,
+            expiration_year: chargeDto.expiration_year,
+            security_code: chargeDto.security_code,
+        });
         let charge = await this.omise.charges.create(
             {
                 description: chargeDto.description,
                 amount: chargeDto.amount,
                 currency: chargeDto.currency,
                 capture: true,
-                card: chargeDto.token,
+                card: card.id,
             },
             function(err, resp) {
                 if (!err) {

@@ -3,10 +3,17 @@ import { User } from 'src/entities/user.entity';
 import { PaymentTypeEnum } from 'src/entities/payment.entity';
 
 export class ChargeDto {
-    token: string;
     description: string;
     amount: number;
     currency: string;
+
+    name: string;
+    city: string;
+    postal_code: number;
+    number: string;
+    expiration_month: number;
+    expiration_year: number;
+    security_code: number;
 }
 
 export class CreateChargeDto {
