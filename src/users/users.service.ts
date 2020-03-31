@@ -121,6 +121,31 @@ export class UsersService {
         return user.sumReviewedScore / user.reviewedNumber;
     }
 
+    async handleFacebookUser(profile: any) {
+        const user = await this.userRepository.findOne({username: `fb${profile.id}`})
+        if (user) return user;
+
+        let firstName: string;
+        if (profile.name.middleName.length > 0) {
+            firstName = `${profile.name.givenName} ${profile.name.middleName}`
+        }
+        else {
+            firstName = profile.name.givenName
+        }
+
+        await this.createNewUser({
+            firstName: firstName,
+            lastName: profile.name.familyName,
+            username: `fb${profile.id}`,
+            password: `passwordunused`,
+            email: profile.emails[0].value,
+            profilePicture: profile.photos[0].value,
+            isSNSAccount: true
+        })
+
+        return await this.userRepository.findOne({username: `fb${profile.id}`})
+    }
+
     async createNewUser(createUserDto: CreateUserDto) {
         const hashedPass = await bcrypt.hash(createUserDto.password, 10);
         createUserDto.password = hashedPass;
