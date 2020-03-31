@@ -122,15 +122,16 @@ export class UsersService {
     }
 
     async handleFacebookUser(profile: any) {
-        const user = await this.userRepository.findOne({username: `fb${profile.id}`})
+        const user = await this.userRepository.findOne({
+            username: `fb${profile.id}`,
+        });
         if (user) return user;
 
         let firstName: string;
         if (profile.name.middleName.length > 0) {
-            firstName = `${profile.name.givenName} ${profile.name.middleName}`
-        }
-        else {
-            firstName = profile.name.givenName
+            firstName = `${profile.name.givenName} ${profile.name.middleName}`;
+        } else {
+            firstName = profile.name.givenName;
         }
 
         await this.createNewUser({
@@ -140,10 +141,12 @@ export class UsersService {
             password: `passwordunused`,
             email: profile.emails[0].value,
             profilePicture: profile.photos[0].value,
-            isSNSAccount: true
-        })
+            isSNSAccount: true,
+        });
 
-        return await this.userRepository.findOne({username: `fb${profile.id}`})
+        return await this.userRepository.findOne({
+            username: `fb${profile.id}`,
+        });
     }
 
     async createNewUser(createUserDto: CreateUserDto) {
