@@ -11,9 +11,15 @@ import { FacebookStrategy } from './facebook.strategy';
 @Module({
     imports: [
         UsersModule,
-        PassportModule.register({ defaultStrategy: 'jwt' }),
-        JwtModule.register({
-            secret: `${process.env.JWT_SECRET}`,
+        PassportModule.registerAsync({
+            useFactory: () => ({
+                defaultStrategy: 'jwt',
+            }),
+        }),
+        JwtModule.registerAsync({
+            useFactory: () => ({
+                secret: `${process.env.JWT_SECRET}`,
+            }),
         }),
     ],
     controllers: [AuthController],
