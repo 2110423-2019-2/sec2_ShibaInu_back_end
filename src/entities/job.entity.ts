@@ -11,6 +11,8 @@ import {
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
+import { Contract } from './contract.entity';
+import { type } from 'os';
 
 export enum Status {
     OPEN = 'open',
@@ -94,6 +96,13 @@ export class Job {
         bid => bid.jobId,
     )
     bid: Bid[];
+
+    @OneToOne(
+        type => Contract,
+        contract => contract.job,
+    )
+    @JoinColumn({ name: 'contractId'})
+    contract: Contract;
 
     @OneToMany(
         type => JobOptSkill,
