@@ -7,11 +7,11 @@ export class FacebookStrategy extends PassportStrategy(Strategy) {
     constructor() {
         super({
             clientID: process.env.FACEBOOK_APP_ID,
-            clientSecret: process.env.FACEBOOK_APP_SECRET
-        })
+            clientSecret: process.env.FACEBOOK_APP_SECRET,
+        });
     }
 
     async validate(accessToken: string, refreshToken: string, profile: any) {
-        return profile
+        return profile;
     }
 }

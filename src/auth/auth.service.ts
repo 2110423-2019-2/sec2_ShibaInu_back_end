@@ -16,7 +16,10 @@ export class AuthService {
         if (!user) {
             throw new UnauthorizedException(`Invalid username`);
         }
-        if (user.isSNSAccount) throw new UnauthorizedException(`This account is created via third-party login providers`)
+        if (user.isSNSAccount)
+            throw new UnauthorizedException(
+                `This account is created via third-party login providers`,
+            );
         if (await bcrypt.compare(password, user.password)) {
             user.username = username;
             return user;
