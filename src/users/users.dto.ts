@@ -32,6 +32,7 @@ export class CreateUserDto {
     sumReviewedScore?: number;
     reviewedNumber?: number;
     isBanned?: boolean;
+    isSNSAccount?: boolean;
 }
 
 export class EditUserDto {

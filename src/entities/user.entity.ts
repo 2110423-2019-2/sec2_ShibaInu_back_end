@@ -156,6 +156,9 @@ export class User {
     @Column('boolean', { default: false })
     isBanned: boolean;
 
+    @Column('boolean', { default: false })
+    isSNSAccount: boolean;
+
     @ManyToOne(
         type => Payment,
         payment => payment.user,
