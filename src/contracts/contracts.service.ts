@@ -20,4 +20,14 @@ export class ContractsService {
         createContractDto.createdTime = new Date();
         return this.contractRepository.insert(createContractDto);
     }
+
+    async acceptContract(status: number): Promise<any>{
+        let res: any = null;
+        if (verifyApprovalDto.approve) {
+            res = await this.contractRepository.update(verifyApprovalDto.user, {
+                isVerified: true,
+            });
+        }
+        return res;
+    }
 }
