@@ -11,6 +11,7 @@ import {
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
+import { Payment } from './payment.entity';
 
 export enum Status {
     OPEN = 'open',
@@ -108,6 +109,12 @@ export class Job {
         review => review.job,
     )
     reviews: Review[];
+
+    @OneToMany(
+        type => Payment,
+        payment => payment.job,
+    )
+    payments: Payment[];
 }
 
 @Entity()

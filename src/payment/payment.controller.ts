@@ -5,13 +5,12 @@ import {
     Body,
     UseGuards,
     SetMetadata,
-    Param,
 } from '@nestjs/common';
 import { PaymentService } from './payment.service';
 import {
-    ChargeDto,
-    CreateRecipientDto,
-    CreateTransferDto,
+    CreateCreditCardDto,
+    CreateBankAccountDto,
+    CreatePaymentDto
 } from './payment.dto';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
@@ -76,13 +75,8 @@ export class PaymentController {
 
     @UseGuards(AuthGuard())
     @Post('charge')
-    async charge(@Body() chargeDto: ChargeDto, @LoadUser() client: any) {
-        return await this.paymentService.charge(chargeDto, client);
-    }
-
-    @Post('recipient')
-    async createRecipient(@Body() createRecipientDTo: CreateRecipientDto) {
-        return await this.paymentService.createRecipient(createRecipientDTo);
+    async charge(@Body() createPaymentDto: CreatePaymentDto, @LoadUser() client: any) {
+        return await this.paymentService.charge(createPaymentDto, client);
     }
 
     @UseGuards(AdminGuard)
@@ -95,13 +89,10 @@ export class PaymentController {
 
     @UseGuards(AuthGuard())
     @Post('transfer')
-    async transfer(
-        @Body() createTransferDto: CreateTransferDto,
-        @LoadUser() freelancer: any,
-    ) {
+    async transfer(@Body() createPaymentDto: CreatePaymentDto,@LoadUser() freelancer: any) {
         return await this.paymentService.transfer(
-            createTransferDto,
-            freelancer,
+            createPaymentDto,
+            freelancer
         );
     }
 
@@ -121,5 +112,29 @@ export class PaymentController {
     @Get('sum/transfer')
     async getSumTransferByFreelancer(@LoadUser() freelancer: any) {
         return await this.paymentService.getSumTransferByFreelancer(freelancer);
+    }
+
+    @UseGuards(AuthGuard())
+    @Get('creditCard')
+    async getCreditCardByUser(@LoadUser() user: any) {
+        return await this.paymentService.getCreditCardByUser(user);
+    }
+
+    @UseGuards(AuthGuard())
+    @Get('bankAccount')
+    async getBankAccountByUser(@LoadUser() user: any) {
+        return await this.paymentService.getBankAccountByUser(user);
+    }
+
+    @UseGuards(AuthGuard())
+    @Post('creditCard')
+    async createCreditCardByUser(@LoadUser() user: any,@Body() createCreditCardDto:CreateCreditCardDto) {
+        return await this.paymentService.createCreditCardByUser(user,createCreditCardDto);
+    }
+
+    @UseGuards(AuthGuard())
+    @Post('bankAccount')
+    async createBankAccountByUser(@LoadUser() user: any,@Body() createBankAccountDto:CreateBankAccountDto) {
+        return await this.paymentService.createBankAccountByUser(user,createBankAccountDto);
     }
 }
