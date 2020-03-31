@@ -10,7 +10,7 @@ import {
     VerifyRequest,
     InterestedCategory,
 } from 'src/entities/user.entity';
-import { Payment } from 'src/entities/payment.entity';
+import { Payment, CreditCard, BankAccount } from 'src/entities/payment.entity';
 
 @Module({
     imports: [
@@ -20,6 +20,8 @@ import { Payment } from 'src/entities/payment.entity';
             UserSkill,
             VerifyRequest,
             InterestedCategory,
+            CreditCard,
+            BankAccount,
         ]),
         PassportModule.register({ defaultStrategy: 'jwt' }),
     ],

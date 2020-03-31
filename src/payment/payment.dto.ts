@@ -1,56 +1,33 @@
-import { Job } from 'src/entities/job.entity';
 import { User } from 'src/entities/user.entity';
-import { PaymentTypeEnum } from 'src/entities/payment.entity';
+import {
+    PaymentTypeEnum,
+    CreditCard,
+    BankAccount,
+} from 'src/entities/payment.entity';
+import { Job } from 'src/entities/job.entity';
 
-export class ChargeDto {
-    description: string;
+export class CreatePaymentDto {
     amount: number;
-    currency: string;
-
-    name: string;
-    city: string;
-    postal_code: number;
-    number: string;
-    expiration_month: number;
-    expiration_year: number;
-    security_code: number;
-}
-
-export class CreateChargeDto {
-    paymentId: string;
-    amount: number;
-    net: number;
-    currency: string;
-    description: string;
-    card: object;
-    transactionId: string;
-    created_at: string;
-    paid_at: string;
-    expires_at: string;
-    user?: User;
+    creditCard?: CreditCard;
+    createdAt?: Date;
+    bankAccount?: BankAccount;
     type?: PaymentTypeEnum;
+    user: User;
+    job: Job;
 }
 
-export class CreateRecipientDto {
+export class CreateCreditCardDto {
+    cardNumber: string;
     name: string;
-    bank_account: {
-        name: string;
-        number: string;
-        brand: string;
-    };
+    expirationMonthYear: string;
+    securityCode: number;
+    user?: User;
 }
 
-export class CreateTransferDto {
-    paymentId?: string;
-    recipientId: string;
-    amount: number;
-    net?: number;
-    currency?: string;
-    bank_account?: object;
-    created_at?: string;
-    sent_at?: string;
-    paid_at?: string;
-    sendable?: boolean;
+export class CreateBankAccountDto {
+    accountNumber: string;
+    name: string;
+    bankCode: string;
+    branchName: string;
     user?: User;
-    type?: PaymentTypeEnum;
 }

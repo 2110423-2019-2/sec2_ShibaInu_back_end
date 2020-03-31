@@ -36,6 +36,6 @@ export class Contract {
     updatedTime: Date;
 
     @OneToOne(() => Job)
-    @JoinColumn({ name: 'jobId'})
+    @JoinColumn({ name: 'jobId' })
     job: Job;
 }

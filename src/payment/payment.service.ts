@@ -2,20 +2,28 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
-    CreateChargeDto,
-    ChargeDto,
-    CreateRecipientDto,
-    CreateTransferDto,
+    CreateCreditCardDto,
+    CreateBankAccountDto,
+    CreatePaymentDto,
 } from './payment.dto';
-import { Payment, PaymentTypeEnum } from 'src/entities/payment.entity';
-import { UsersService } from 'src/users/users.service';
+import {
+    Payment,
+    PaymentTypeEnum,
+    CreditCard,
+    BankAccount,
+} from 'src/entities/payment.entity';
 
 @Injectable()
 export class PaymentService {
     constructor(
         @InjectRepository(Payment)
         private readonly paymentRepository: Repository<Payment>,
-        private readonly userService: UsersService,
+
+        @InjectRepository(CreditCard)
+        private readonly creditCardRepository: Repository<CreditCard>,
+
+        @InjectRepository(BankAccount)
+        private readonly bankAccountRepository: Repository<BankAccount>,
     ) {}
 
     private readonly omise = require('omise')({
@@ -110,57 +118,16 @@ export class PaymentService {
         );
     }
 
-    async charge(chargeDto: ChargeDto, client: any) {
-        let card = await this.createCardToken({
-            name: chargeDto.name,
-            city: chargeDto.city,
-            postal_code: chargeDto.postal_code,
-            number: chargeDto.number,
-            expiration_month: chargeDto.expiration_month,
-            expiration_year: chargeDto.expiration_year,
-            security_code: chargeDto.security_code,
-        });
-        let charge = await this.omise.charges.create(
-            {
-                description: chargeDto.description,
-                amount: chargeDto.amount,
-                currency: chargeDto.currency,
-                capture: true,
-                card: card.id,
-            },
-            function(err, resp) {
-                if (!err) {
-                    //Success
-                    return resp;
-                } else {
-                    //Handle failure
-                    return err;
-                }
-            },
-        );
-
-        if (charge.transaction) {
-            let createChargeDto: CreateChargeDto;
-
-            createChargeDto = {
-                paymentId: charge.id,
-                amount: charge.amount,
-                net: charge.net,
-                currency: charge.currency,
-                description: charge.description,
-                card: charge.card,
-                transactionId: charge.transaction,
-                created_at: charge.created_at,
-                paid_at: charge.paid_at,
-                expires_at: charge.expires_at,
-                user: client.id,
-                type: PaymentTypeEnum.charge,
-            };
-
-            return this.paymentRepository.insert(createChargeDto);
+    async charge(createPaymentDto: CreatePaymentDto, client: any) {
+        let creditCard = await this.getCreditCardByUser(client);
+        if (creditCard) {
+            createPaymentDto.creditCard = creditCard;
+            createPaymentDto.type = PaymentTypeEnum.charge;
+            createPaymentDto.user = client.id;
+            createPaymentDto.createdAt = new Date();
+            return this.paymentRepository.insert(createPaymentDto);
         } else {
-            let err = new BadRequestException(charge.failure_code);
-            throw err;
+            throw new BadRequestException('Not found credit cacrd');
         }
     }
 
@@ -186,20 +153,6 @@ export class PaymentService {
         });
     }
 
-    async createRecipient(createRecipientDto: CreateRecipientDto) {
-        let recipient = await this.omise.recipients.create(
-            {
-                name: createRecipientDto.name,
-                type: 'individual',
-                bank_account: createRecipientDto.bank_account,
-            },
-            function(err, resp) {
-                /* Response. */
-            },
-        );
-        return await recipient;
-    }
-
     async test() {
         let resp = await this.omise.transfers.list(
             { order: 'reverse_chronological', limit: 100 },
@@ -220,50 +173,17 @@ export class PaymentService {
         return resp;
     }
 
-    async transfer(createTransferDto: CreateTransferDto, freelancer: any) {
-        let recipient = await this.getRecipientById(
-            createTransferDto.recipientId,
-        );
-        if (!recipient.verified)
-            throw new BadRequestException('Recipient is not verified');
-        if (!recipient.active)
-            throw new BadRequestException('Recipient is not activated');
-
-        let resp;
-        try {
-            resp = await this.omise.transfers.create(
-                {
-                    amount: createTransferDto.amount,
-                    recipient: createTransferDto.recipientId,
-                },
-                function(error, transfer) {
-                    /* Response. */
-                    return transfer;
-                },
-            );
-        } catch (err) {
-            resp = err;
+    async transfer(createPaymentDto: CreatePaymentDto, freelancer: any) {
+        let bankAccount = await this.getBankAccountByUser(freelancer);
+        if (bankAccount) {
+            createPaymentDto.bankAccount = bankAccount;
+            createPaymentDto.type = PaymentTypeEnum.transfer;
+            createPaymentDto.user = freelancer.id;
+            createPaymentDto.createdAt = new Date();
+            return this.paymentRepository.insert(createPaymentDto);
+        } else {
+            throw new BadRequestException('Not found bank account');
         }
-
-        if (resp.object == 'error') throw new BadRequestException(resp.code);
-
-        let urlTransfersMarkAsSent =
-            'https://api.omise.co/transfers/' + resp.id + '/mark_as_sent';
-        this.markTransfer(urlTransfersMarkAsSent);
-
-        createTransferDto.paymentId = resp.id;
-        createTransferDto.net = resp.net;
-        createTransferDto.currency = resp.currency;
-        createTransferDto.bank_account = resp.bank_account;
-        createTransferDto.created_at = resp.created_at;
-        createTransferDto.sent_at = resp.sent_at;
-        createTransferDto.paid_at = resp.paid_at;
-        createTransferDto.sendable = resp.sendable;
-        createTransferDto.user = freelancer.id;
-        createTransferDto.type = PaymentTypeEnum.transfer;
-        createTransferDto.amount = resp.amount;
-
-        return this.paymentRepository.insert(createTransferDto);
     }
 
     async getAllPaymentCharge(): Promise<Payment[]> {
@@ -288,7 +208,7 @@ export class PaymentService {
         return resp;
     }
 
-    async getPaymentByUser(user: any): Promise<Payment[]> {
+    async getPaymentByUser(user: any): Promise<any[]> {
         let ret = await this.paymentRepository.find({
             where: {
                 user: user.id,
@@ -296,7 +216,14 @@ export class PaymentService {
         });
         if (!ret || ret.length == 0)
             throw new BadRequestException('Not found any payment');
-        return ret;
+        let ans = [];
+        ret.forEach(payment => {
+            ans.push({
+                amount: payment.amount,
+                jobName: payment.job.name,
+            });
+        });
+        return ans;
     }
 
     async getPaymentChargeByUser(user: any): Promise<Payment[]> {
@@ -308,7 +235,14 @@ export class PaymentService {
         });
         if (!ret || ret.length == 0)
             throw new BadRequestException('Not found any payment charge');
-        return ret;
+        let ans = [];
+        ret.forEach(payment => {
+            ans.push({
+                amount: payment.amount,
+                jobName: payment.job.name,
+            });
+        });
+        return ans;
     }
 
     async getPaymentTransferByUser(user: any): Promise<Payment[]> {
@@ -320,7 +254,15 @@ export class PaymentService {
         });
         if (!ret || ret.length == 0)
             throw new BadRequestException('Not found any payment transfer');
-        return ret;
+
+        let ans = [];
+        ret.forEach(payment => {
+            ans.push({
+                amount: payment.amount,
+                jobName: payment.job.name,
+            });
+        });
+        return ans;
     }
 
     async getSumPaymentByUser(user: any) {
@@ -352,5 +294,61 @@ export class PaymentService {
             sum -= payment.amount;
         });
         return { sum: sum };
+    }
+
+    async getCreditCardByUser(user: any): Promise<CreditCard> {
+        let resp = await this.creditCardRepository.findOne({
+            where: {
+                user: user.id,
+            },
+        });
+        if (!resp) throw new BadRequestException('Not found any credit card');
+        return resp;
+    }
+
+    async getBankAccountByUser(user: any): Promise<BankAccount> {
+        let resp = await this.bankAccountRepository.findOne({
+            where: {
+                user: user.id,
+            },
+        });
+        if (!resp) throw new BadRequestException('Not found any bank account');
+        return resp;
+    }
+
+    async createCreditCardByUser(
+        user: any,
+        createCreditCardDto: CreateCreditCardDto,
+    ) {
+        let creditCard = await this.creditCardRepository.findOne({
+            where: {
+                user: user.id,
+            },
+        });
+        if (creditCard) {
+            await this.creditCardRepository.delete({
+                user: user.id,
+            });
+        }
+        createCreditCardDto.user = user.id;
+        return this.creditCardRepository.insert(createCreditCardDto);
+    }
+
+    async createBankAccountByUser(
+        user: any,
+        createBankAccountDto: CreateBankAccountDto,
+    ) {
+        let bankAccount = await this.bankAccountRepository.findOne({
+            where: {
+                user: user.id,
+            },
+        });
+        if (bankAccount) {
+            await this.bankAccountRepository.delete({
+                user: user.id,
+            });
+        }
+        createBankAccountDto.user = user.id;
+        return this.bankAccountRepository.insert(createBankAccountDto);
     }
 }

@@ -12,7 +12,7 @@ import { Job } from './job.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
 import { Announcement } from './announcement.entity';
-import { Payment } from './payment.entity';
+import { Payment, CreditCard, BankAccount } from './payment.entity';
 
 export enum InterestedCategoryEnum {
     game = 'game',
@@ -164,6 +164,18 @@ export class User {
         payment => payment.user,
     )
     payments: Payment[];
+
+    @OneToOne(
+        type => CreditCard,
+        creditCard => creditCard.user,
+    )
+    creditCard: CreditCard;
+
+    @OneToOne(
+        type => BankAccount,
+        bankAccount => bankAccount.user,
+    )
+    bankAccount: BankAccount;
 }
 
 @Entity()
