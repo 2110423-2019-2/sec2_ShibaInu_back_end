@@ -1,25 +1,26 @@
 import { Job } from '../entities/job.entity';
 import { Timestamp } from 'typeorm';
+import { ContractStatus, Contract } from 'src/entities/contract.entity';
 
 export class CreateContractDto {
     contractId: number;
-    clientId: number;
-    freelancerId: number;
     jobId: number;
+    status?: ContractStatus;
     description: string;
     createdTime?: Date;
-    modifiedTime?: Date;
+    updatedTime?: Date;
 }
 
 export class UpdateContractDto {
-
-    contractId: number;
-    clientId: number;
-    freelancerId: number;
-    jobId: number;
-    description: string;
+    contractId?: number;
+    jobId?: number;
+    status?: ContractStatus;
+    description?: string;
     createdTime?: Date;
-    modifiedTime?: Date;
+    updatedTime?: Date;
 }
 
-export class 
+export class AcceptContractDto {
+    contractId?: number;
+    status: ContractStatus;
+}
