@@ -13,7 +13,7 @@ import { FacebookStrategy } from './facebook.strategy';
         UsersModule,
         PassportModule.register({ defaultStrategy: 'jwt' }),
         JwtModule.register({
-            secret: process.env.JWT_SECRET,
+            secret: `${process.env.JWT_SECRET}`,
         }),
     ],
     controllers: [AuthController],
