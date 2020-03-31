@@ -1,4 +1,12 @@
-import { Entity, Column, OneToOne, ManyToOne, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Entity,
+    Column,
+    OneToOne,
+    ManyToOne,
+    JoinColumn,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { User } from './user.entity';
 import { Job } from './job.entity';
 
@@ -13,27 +21,27 @@ export class BankAccount {
     cardId: number;
 
     @Column('varchar', { length: 16 })
-    accountNumber : string;
+    accountNumber: string;
 
-    @Column('varchar',{length: 50})
-    name : string;
-    
-    @Column('varchar',{length : 50}) //ex bbl kbank ktb tmb scb gsb
-    bankCode : string;
+    @Column('varchar', { length: 50 })
+    name: string;
 
-    @Column('varchar', {length: 50, nullable: true})
+    @Column('varchar', { length: 50 }) //ex bbl kbank ktb tmb scb gsb
+    bankCode: string;
+
+    @Column('varchar', { length: 50, nullable: true })
     branchName: string;
 
     @OneToOne(
         type => User,
-        user => user.bankAccount
+        user => user.bankAccount,
     )
-    @JoinColumn({ name: "user"})
-    user:User;
+    @JoinColumn({ name: 'user' })
+    user: User;
 
     @OneToMany(
         type => Payment,
-        payment => payment.bankAccount
+        payment => payment.bankAccount,
     )
     payments: Payment[];
 }
@@ -44,27 +52,27 @@ export class CreditCard {
     cardId: number;
 
     @Column('varchar', { length: 16 })
-    cardNumber: string ;
+    cardNumber: string;
 
-    @Column('varchar', {length: 50})
+    @Column('varchar', { length: 50 })
     name: string;
 
-    @Column('varchar', {length: 5}) // format MM/YY
+    @Column('varchar', { length: 5 }) // format MM/YY
     expirationMonthYear: string;
 
-    @Column('varchar', {length: 3})
+    @Column('varchar', { length: 3 })
     securityCode: number;
 
     @OneToOne(
         type => User,
-        user => user.creditCard
+        user => user.creditCard,
     )
-    @JoinColumn({ name: "user"})
-    user:User;
+    @JoinColumn({ name: 'user' })
+    user: User;
 
     @OneToMany(
         type => Payment,
-        payment => payment.creditCard
+        payment => payment.creditCard,
     )
     payments: Payment[];
 }
@@ -104,7 +112,7 @@ export class Payment {
         user => user.payments,
         { eager: true },
     )
-    @JoinColumn({ name: "user" })
+    @JoinColumn({ name: 'user' })
     user: User;
 
     @ManyToOne(
@@ -112,8 +120,6 @@ export class Payment {
         job => job.payments,
         { eager: true },
     )
-    @JoinColumn({ name: "job" })
+    @JoinColumn({ name: 'job' })
     job: Job;
 }
-
-

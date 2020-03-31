@@ -167,13 +167,13 @@ export class User {
 
     @OneToOne(
         type => CreditCard,
-        creditCard => creditCard.user
+        creditCard => creditCard.user,
     )
     creditCard: CreditCard;
 
     @OneToOne(
         type => BankAccount,
-        bankAccount => bankAccount.user
+        bankAccount => bankAccount.user,
     )
     bankAccount: BankAccount;
 }

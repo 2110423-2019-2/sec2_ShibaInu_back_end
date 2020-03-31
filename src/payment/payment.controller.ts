@@ -10,7 +10,7 @@ import { PaymentService } from './payment.service';
 import {
     CreateCreditCardDto,
     CreateBankAccountDto,
-    CreatePaymentDto
+    CreatePaymentDto,
 } from './payment.dto';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
@@ -75,7 +75,10 @@ export class PaymentController {
 
     @UseGuards(AuthGuard())
     @Post('charge')
-    async charge(@Body() createPaymentDto: CreatePaymentDto, @LoadUser() client: any) {
+    async charge(
+        @Body() createPaymentDto: CreatePaymentDto,
+        @LoadUser() client: any,
+    ) {
         return await this.paymentService.charge(createPaymentDto, client);
     }
 
@@ -89,11 +92,11 @@ export class PaymentController {
 
     @UseGuards(AuthGuard())
     @Post('transfer')
-    async transfer(@Body() createPaymentDto: CreatePaymentDto,@LoadUser() freelancer: any) {
-        return await this.paymentService.transfer(
-            createPaymentDto,
-            freelancer
-        );
+    async transfer(
+        @Body() createPaymentDto: CreatePaymentDto,
+        @LoadUser() freelancer: any,
+    ) {
+        return await this.paymentService.transfer(createPaymentDto, freelancer);
     }
 
     @UseGuards(AuthGuard())
@@ -128,13 +131,25 @@ export class PaymentController {
 
     @UseGuards(AuthGuard())
     @Post('creditCard')
-    async createCreditCardByUser(@LoadUser() user: any,@Body() createCreditCardDto:CreateCreditCardDto) {
-        return await this.paymentService.createCreditCardByUser(user,createCreditCardDto);
+    async createCreditCardByUser(
+        @LoadUser() user: any,
+        @Body() createCreditCardDto: CreateCreditCardDto,
+    ) {
+        return await this.paymentService.createCreditCardByUser(
+            user,
+            createCreditCardDto,
+        );
     }
 
     @UseGuards(AuthGuard())
     @Post('bankAccount')
-    async createBankAccountByUser(@LoadUser() user: any,@Body() createBankAccountDto:CreateBankAccountDto) {
-        return await this.paymentService.createBankAccountByUser(user,createBankAccountDto);
+    async createBankAccountByUser(
+        @LoadUser() user: any,
+        @Body() createBankAccountDto: CreateBankAccountDto,
+    ) {
+        return await this.paymentService.createBankAccountByUser(
+            user,
+            createBankAccountDto,
+        );
     }
 }

@@ -6,7 +6,12 @@ import {
     CreateBankAccountDto,
     CreatePaymentDto,
 } from './payment.dto';
-import { Payment, PaymentTypeEnum, CreditCard, BankAccount } from 'src/entities/payment.entity';
+import {
+    Payment,
+    PaymentTypeEnum,
+    CreditCard,
+    BankAccount,
+} from 'src/entities/payment.entity';
 
 @Injectable()
 export class PaymentService {
@@ -122,7 +127,7 @@ export class PaymentService {
             createPaymentDto.createdAt = new Date();
             return this.paymentRepository.insert(createPaymentDto);
         } else {
-            throw new BadRequestException("Not found credit cacrd");
+            throw new BadRequestException('Not found credit cacrd');
         }
     }
 
@@ -177,7 +182,7 @@ export class PaymentService {
             createPaymentDto.createdAt = new Date();
             return this.paymentRepository.insert(createPaymentDto);
         } else {
-            throw new BadRequestException("Not found bank account");
+            throw new BadRequestException('Not found bank account');
         }
     }
 
@@ -211,12 +216,12 @@ export class PaymentService {
         });
         if (!ret || ret.length == 0)
             throw new BadRequestException('Not found any payment');
-        let ans = []
+        let ans = [];
         ret.forEach(payment => {
             ans.push({
                 amount: payment.amount,
-                jobName: payment.job.name
-            })
+                jobName: payment.job.name,
+            });
         });
         return ans;
     }
@@ -230,12 +235,12 @@ export class PaymentService {
         });
         if (!ret || ret.length == 0)
             throw new BadRequestException('Not found any payment charge');
-        let ans = []
+        let ans = [];
         ret.forEach(payment => {
             ans.push({
                 amount: payment.amount,
-                jobName: payment.job.name
-            })
+                jobName: payment.job.name,
+            });
         });
         return ans;
     }
@@ -250,12 +255,12 @@ export class PaymentService {
         if (!ret || ret.length == 0)
             throw new BadRequestException('Not found any payment transfer');
 
-        let ans = []
+        let ans = [];
         ret.forEach(payment => {
             ans.push({
                 amount: payment.amount,
-                jobName: payment.job.name
-            })
+                jobName: payment.job.name,
+            });
         });
         return ans;
     }
@@ -291,50 +296,56 @@ export class PaymentService {
         return { sum: sum };
     }
 
-    async getCreditCardByUser(user: any): Promise<CreditCard>{
+    async getCreditCardByUser(user: any): Promise<CreditCard> {
         let resp = await this.creditCardRepository.findOne({
-            where : {
-                user: user.id
-            }
+            where: {
+                user: user.id,
+            },
         });
-        if(!resp) throw new BadRequestException('Not found any credit card');
+        if (!resp) throw new BadRequestException('Not found any credit card');
         return resp;
     }
 
-    async getBankAccountByUser(user: any): Promise<BankAccount>{
+    async getBankAccountByUser(user: any): Promise<BankAccount> {
         let resp = await this.bankAccountRepository.findOne({
-            where : {
-                user: user.id
-            }
+            where: {
+                user: user.id,
+            },
         });
-        if(!resp) throw new BadRequestException('Not found any bank account');
+        if (!resp) throw new BadRequestException('Not found any bank account');
         return resp;
     }
 
-    async createCreditCardByUser(user:any,createCreditCardDto:CreateCreditCardDto) {
+    async createCreditCardByUser(
+        user: any,
+        createCreditCardDto: CreateCreditCardDto,
+    ) {
         let creditCard = await this.creditCardRepository.findOne({
-            where : {
-                user: user.id
-            }
+            where: {
+                user: user.id,
+            },
         });
-        if(creditCard){
+        if (creditCard) {
             await this.creditCardRepository.delete({
-                user: user.id
+                user: user.id,
             });
         }
         createCreditCardDto.user = user.id;
         return this.creditCardRepository.insert(createCreditCardDto);
     }
 
-    async createBankAccountByUser(user:any,createBankAccountDto:CreateBankAccountDto) {
+    async createBankAccountByUser(
+        user: any,
+        createBankAccountDto: CreateBankAccountDto,
+    ) {
         let bankAccount = await this.bankAccountRepository.findOne({
-            where : {
-                user: user.id
-            }
+            where: {
+                user: user.id,
+            },
         });
-        if(bankAccount){
+        if (bankAccount) {
             await this.bankAccountRepository.delete({
-                user: user.id
+                user: user.id,
             });
         }
         createBankAccountDto.user = user.id;

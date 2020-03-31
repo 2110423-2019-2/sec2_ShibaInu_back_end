@@ -21,7 +21,7 @@ import { Payment, CreditCard, BankAccount } from 'src/entities/payment.entity';
             VerifyRequest,
             InterestedCategory,
             CreditCard,
-            BankAccount
+            BankAccount,
         ]),
         PassportModule.register({ defaultStrategy: 'jwt' }),
     ],
