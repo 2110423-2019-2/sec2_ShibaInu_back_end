@@ -277,8 +277,7 @@ export class PaymentService {
         if (!payments) throw new BadRequestException('Not found any user');
         let sum = 0;
         payments.forEach(payment => {
-            if (payment.type == PaymentTypeEnum.charge) sum += payment.amount;
-            else sum -= payment.amount;
+            sum += payment.amount;
         });
         return { sum: sum };
     }
@@ -298,7 +297,7 @@ export class PaymentService {
         if (!payments) throw new BadRequestException('Not found any user');
         let sum = 0;
         payments.forEach(payment => {
-            sum -= payment.amount;
+            sum += payment.amount;
         });
         return { sum: sum };
     }

@@ -21,7 +21,7 @@ export class ContractsService {
 
     async getContractByJobId(jobIdParam: number): Promise<Contract> {
         return this.contractRepository.findOne({
-            where: { jobId: jobIdParam }
+            where: { jobId: jobIdParam },
         });
     }
 
