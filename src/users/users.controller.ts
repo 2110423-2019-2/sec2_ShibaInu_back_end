@@ -56,9 +56,9 @@ export class UsersController {
         @Query('s1') s1: string,
         @Query('s2') s2: string,
         @Query('s3') s3: string,
-        @Query('sort') sort: number)
-    { 
-        return this.userService.getAllUsers(name,cat,s1,s2,s3,sort);
+        @Query('sort') sort: number,
+    ) {
+        return this.userService.getAllUsers(name, cat, s1, s2, s3, sort);
     }
 
     @UseGuards(AuthGuard())

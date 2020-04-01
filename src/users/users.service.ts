@@ -36,7 +36,14 @@ export class UsersService {
         private readonly verifyRequestRepository: Repository<VerifyRequest>,
     ) {}
 
-    async getAllUsers(name: string, cat: string, s1: string, s2: string, s3: string, sort: number): Promise<User[]> {
+    async getAllUsers(
+        name: string,
+        cat: string,
+        s1: string,
+        s2: string,
+        s3: string,
+        sort: number,
+    ): Promise<User[]> {
         if (!name) name = '';
         let a1 = await this.userRepository.find({
             select: ['userId'],
@@ -104,7 +111,9 @@ export class UsersService {
                 sorting = { sumReviewedScore: 'DESC' };
                 break;
         }
-        let ret = await this.userRepository.findByIds(userIds, { order: sorting });
+        let ret = await this.userRepository.findByIds(userIds, {
+            order: sorting,
+        });
         if (ret.length == 0)
             throw new BadRequestException('Not found any User');
         return ret;
