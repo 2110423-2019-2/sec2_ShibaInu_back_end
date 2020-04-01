@@ -15,6 +15,11 @@ export class ContractsController {
         return this.contractService.getContractById(contractId);
     }
 
+    @Get('/jobId/:contractId')
+    async getContractByJobId(@Param('contractId') contractId: number) {
+        return this.contractService.getContractByJobId(contractId);
+    }
+
     @Post()
     async createNewContract(@Body() createContractDto: CreateContractDto) {
         return this.contractService.createNewContract(createContractDto);

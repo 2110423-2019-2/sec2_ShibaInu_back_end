@@ -19,6 +19,12 @@ export class ContractsService {
         return this.contractRepository.findOne(contractId);
     }
 
+    async getContractByJobId(jobIdParam: number): Promise<Contract> {
+        return this.contractRepository.findOne({
+            where: { jobId: jobIdParam }
+        });
+    }
+
     async createNewContract(createContractDto: CreateContractDto) {
         createContractDto.createdTime = new Date();
         return this.contractRepository.insert(createContractDto);

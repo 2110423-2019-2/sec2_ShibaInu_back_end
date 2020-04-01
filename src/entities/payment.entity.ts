@@ -92,7 +92,7 @@ export class Payment {
     )
     creditCard: CreditCard;
 
-    @Column('datetime')
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
     @ManyToOne(
