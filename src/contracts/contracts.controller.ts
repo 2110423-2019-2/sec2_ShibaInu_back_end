@@ -38,4 +38,12 @@ export class ContractsController {
     async deleteContractByJobId( @Param('jobId') jobId: number) {
         return this.contractService.deleteContractByJobId(jobId);
     }
+
+    @Patch('/updateByJobId/:jobId')
+    async editContractByJobId(
+        @Param('jobId') jobId: number,
+        @Body() updateContractDto: UpdateContractDto,
+    ) {
+        return this.contractService.updateContractByJobId(jobId, updateContractDto);
+    }
 }
