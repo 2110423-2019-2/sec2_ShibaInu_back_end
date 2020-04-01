@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Job } from './job.entity';
 import { User } from './user.entity';
+import { type } from 'os';
 
 export enum ContractStatus {
     NULL = 'null',
@@ -32,7 +33,7 @@ export class Contract {
     @Column('enum', { enum: ContractStatus, default: ContractStatus.NULL })
     status: ContractStatus;
 
-    @Column()
+    @Column('text')
     description: string;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
