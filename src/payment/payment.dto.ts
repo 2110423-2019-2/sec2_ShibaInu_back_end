@@ -8,9 +8,9 @@ import { Job } from '../entities/job.entity';
 
 export class CreatePaymentDto {
     amount: number;
-    creditCard?: CreditCard;
+    creditCard?: number;
     createdAt?: Date;
-    bankAccount?: BankAccount;
+    bankAccount?: number;
     type?: PaymentTypeEnum;
     user: User;
     job: Job;
