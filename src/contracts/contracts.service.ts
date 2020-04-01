@@ -24,9 +24,11 @@ export class ContractsService {
     }
 
     async getContractByJobId(jobIdParam: number): Promise<Contract> {
-        return this.contractRepository.findOne({
+        let res: any = await this.contractRepository.findOne({
             where: { jobId: jobIdParam },
         });
+        if(!res) throw new BadRequestException("Invalid jobId");
+        return res;
     }
 
     async createNewContract(createContractDto: CreateContractDto) {
