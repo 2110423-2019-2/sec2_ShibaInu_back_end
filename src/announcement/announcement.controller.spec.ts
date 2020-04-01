@@ -18,12 +18,12 @@ describe('Announcement Controller', () => {
                 PassportModule,
                 {
                     provide: 'AuthModule',
-                    useValue: AuthModule
+                    useValue: AuthModule,
                 },
                 {
                     provide: 'UsersService',
-                    useValue: UsersService
-                }
+                    useValue: UsersService,
+                },
             ],
             controllers: [AnnouncementController],
         }).compile();
