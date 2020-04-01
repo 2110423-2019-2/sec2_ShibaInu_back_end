@@ -1,4 +1,4 @@
-name: Test and deploy to dev
+name: Test before merging with dev
 
 on:
   pull_request:
