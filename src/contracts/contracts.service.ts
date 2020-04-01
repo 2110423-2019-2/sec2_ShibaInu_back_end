@@ -2,7 +2,7 @@ import { Injectable, Get, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateContractDto, AcceptContractDto } from './contracts.dto';
-import { Contract } from '../entities/contract.entity';
+import { Contract, ContractStatus } from '../entities/contract.entity';
 import { Job, Status } from '../entities/job.entity';
 
 @Injectable()
@@ -37,6 +37,19 @@ export class ContractsService {
             acceptContractDto,
         );
         if (!res) throw new BadRequestException('Invalid ContractId');
+        return res;
+    }
+
+    async deleteContractByJobId(jobIdParam: number): Promise<any>{
+        let contract: Contract = await this.contractRepository.findOne({
+            where: { jobId: jobIdParam }
+        });
+        if (!contract) throw new BadRequestException('Invalid JobId');
+        let res: any = null;
+        if (contract.status != ContractStatus.ACCEPTED) {
+            res = await this.contractRepository.delete({ jobId: jobIdParam })
+        }
+        if (!res) throw new BadRequestException('Invalid status: ACCEPTED');
         return res;
     }
 }
