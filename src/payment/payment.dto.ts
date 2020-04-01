@@ -1,16 +1,16 @@
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 import {
     PaymentTypeEnum,
     CreditCard,
     BankAccount,
-} from 'src/entities/payment.entity';
-import { Job } from 'src/entities/job.entity';
+} from '../entities/payment.entity';
+import { Job } from '../entities/job.entity';
 
 export class CreatePaymentDto {
     amount: number;
-    creditCard?: CreditCard;
+    creditCard?: number;
     createdAt?: Date;
-    bankAccount?: BankAccount;
+    bankAccount?: number;
     type?: PaymentTypeEnum;
     user: User;
     job: Job;
