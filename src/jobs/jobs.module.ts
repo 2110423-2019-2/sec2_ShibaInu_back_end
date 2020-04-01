@@ -7,6 +7,7 @@ import { Job, JobOptSkill, JobReqSkill } from '../entities/job.entity';
 import { PassportModule } from '@nestjs/passport';
 import { Bid } from '../entities/bid.entity';
 import { BidsService } from '../bids/bids.service';
+import { Contract } from '../entities/contract.entity';
 
 @Module({
     imports: [
@@ -17,8 +18,13 @@ import { BidsService } from '../bids/bids.service';
             JobOptSkill,
             JobReqSkill,
             User,
+            Contract,
         ]),
-        PassportModule.register({ defaultStrategy: 'jwt' }),
+        PassportModule.registerAsync({
+            useFactory: () => ({
+                defaultStrategy: 'jwt',
+            }),
+        }),
     ],
     controllers: [JobsController],
     providers: [JobsService, BidsService],

@@ -513,6 +513,11 @@
   resolved "https://registry.yarnpkg.com/@types/bcrypt/-/bcrypt-3.0.0.tgz#851489a9065a067cb7f3c9cbe4ce9bed8bba0876"
   integrity sha512-nohgNyv+1ViVcubKBh0+XiNJ3dO8nYu///9aJ4cgSqv70gBL+94SNy/iC2NLzKPT2Zt/QavrOkBVbZRLZmw6NQ==
 
+"@types/bluebird@^3.5.15":
+  version "3.5.30"
+  resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.5.30.tgz#ee034a0eeea8b84ed868b1aa60d690b08a6cfbc5"
+  integrity sha512-8LhzvcjIoqoi1TghEkRMkbbmM+jhHnBokPGkJWjclMK+Ks0MxEBow3/p2/iFTZ+OIbJHQDSfpgdZEb+af3gfVw==
+
 "@types/body-parser@*":
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.17.1.tgz#18fcf61768fb5c30ccc508c21d6fd2e8b3bf7897"
@@ -627,6 +632,19 @@
   version "13.5.3"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.5.3.tgz#37f1f539b7535b9fb4ef77d59db1847a837b7f17"
   integrity sha512-ZPnWX9PW992w6DUsz3JIXHaSb5v7qmKCVzC3km6SxcDGxk7zmLfYaCJTbktIa5NeywJkkZDhGldKqDIvC5DRrA==
+
+"@types/node@^8.0.34":
+  version "8.10.59"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.59.tgz#9e34261f30183f9777017a13d185dfac6b899e04"
+  integrity sha512-8RkBivJrDCyPpBXhVZcjh7cQxVBSmRk9QM7hOketZzp6Tg79c0N8kkpAIito9bnJ3HCVCHVYz+KHTEbfQNfeVQ==
+
+"@types/passport-facebook-token@^0.4.34":
+  version "0.4.34"
+  resolved "https://registry.yarnpkg.com/@types/passport-facebook-token/-/passport-facebook-token-0.4.34.tgz#47dc204f985efb24f0bbfab7b33c6e6ce47400da"
+  integrity sha512-/gUzSTXw30YtpfJkGCBcNUyZiMDbsNLe19NnIsobnYGvldCBFDUNTeC7jwVH6ooP15naecz/bUgbeeQrmN6FdQ==
+  dependencies:
+    "@types/express" "*"
+    "@types/passport" "*"
 
 "@types/passport-jwt@^3.0.3":
   version "3.0.3"
@@ -1004,6 +1022,13 @@ acorn@^7.1.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.1.0.tgz#949d36f2c292535da602283586c2477c57eb2d6c"
   integrity sha512-kL5CuoXA/dgxlBbVrflsflzQ3PAas7RYZB52NOm/6839iVYJgKMJ3cQJD+t2i5+qFa8h3MDpEOJiS64E8JLnSQ==
 
+agent-base@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.3.0.tgz#8165f01c436009bccad0b1d122f05ed770efc6ee"
+  integrity sha512-salcGninV0nPrwpGNn4VTXBb1SOuXQBiqbrNXoeizJsHrsL6ERFM2Ne3JUSBWRE6aeNJI2ROP/WEEIDUiDe3cg==
+  dependencies:
+    es6-promisify "^5.0.0"
+
 ajv-errors@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
@@ -1314,6 +1339,11 @@ base64-js@^1.0.2:
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.1.tgz#58ece8cb75dd07e71ed08c736abc5fac4dbf8df1"
   integrity sha512-mLQ4i2QO1ytvGWFWmcngKO//JXAQueZvwEKtjgQFM4jIK0kU+ytMfplL8j+n5mspOfjHwoAg+9yhb7BwAHm36g==
 
+base64url@3.x.x:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/base64url/-/base64url-3.0.1.tgz#6399d572e2bc3f90a9a8b22d5dbb0a32d33f788d"
+  integrity sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==
+
 base@^0.11.1:
   version "0.11.2"
   resolved "https://registry.yarnpkg.com/base/-/base-0.11.2.tgz#7bde5ced145b6d551a90db87f83c558b4eb48a8f"
@@ -1363,6 +1393,11 @@ bindings@^1.5.0:
   integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
   dependencies:
     file-uri-to-path "1.0.0"
+
+bluebird@^2.9.12:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-2.11.0.tgz#534b9033c022c9579c56ba3b3e5a5caafbb650e1"
+  integrity sha1-U0uQM8AiyVecVro7Plpcqvu2UOE=
 
 bluebird@^3.5.5:
   version "3.7.2"
@@ -2446,6 +2481,18 @@ es6-iterator@^2.0.3, es6-iterator@~2.0.3:
     es5-ext "^0.10.35"
     es6-symbol "^3.1.1"
 
+es6-promise@^4.0.3:
+  version "4.2.8"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.2.8.tgz#4eb21594c972bc40553d276e510539143db53e0a"
+  integrity sha512-HJDGx5daxeIvxdBxvG2cb9g4tEvwIk3i8+nhX0yGrYmZUzbkdg8QbDevheDB8gd0//uPj4c1EQua8Q+MViT0/w==
+
+es6-promisify@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/es6-promisify/-/es6-promisify-5.0.0.tgz#5109d62f3e56ea967c4b63505aef08291c8a5203"
+  integrity sha1-UQnWLz5W6pZ8S2NQWu8IKRyKUgM=
+  dependencies:
+    es6-promise "^4.0.3"
+
 es6-symbol@^3.1.1, es6-symbol@~3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/es6-symbol/-/es6-symbol-3.1.3.tgz#bad5d3c1bcdac28269f4cb331e431c78ac705d18"
@@ -3196,7 +3243,7 @@ har-schema@^2.0.0:
   resolved "https://registry.yarnpkg.com/har-schema/-/har-schema-2.0.0.tgz#a94c2224ebcac04782a0d9035521f24735b7ec92"
   integrity sha1-qUwiJOvKwEeCoNkDVSHyRzW37JI=
 
-har-validator@~5.1.0:
+har-validator@~5.1.0, har-validator@~5.1.3:
   version "5.1.3"
   resolved "https://registry.yarnpkg.com/har-validator/-/har-validator-5.1.3.tgz#1ef89ebd3e4996557675eed9893110dc350fa080"
   integrity sha512-sNvOCzEQNr/qrvJgc3UG/kD4QtlHycrzwS+6mfTrrSq97BvaYcPZZI1ZSqGSPR73Cxn4LKTD4PttRwfU7jWq5g==
@@ -3351,6 +3398,14 @@ https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/https-browserify/-/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
   integrity sha1-7AbBDgo0wPL68Zn3/X/Hj//QPHM=
+
+https-proxy-agent@^2.2.4:
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/https-proxy-agent/-/https-proxy-agent-2.2.4.tgz#4ee7a737abd92678a293d9b34a1af4d0d08c787b"
+  integrity sha512-OmvfoQ53WLjtA9HeYP9RNrWMJzzAz1JGaSFr1nijg0PVR1JaD/xbJq1mdEIIlxGpXp9eSe/O2LgU9DJmTPd0Eg==
+  dependencies:
+    agent-base "^4.3.0"
+    debug "^3.1.0"
 
 iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"
@@ -5054,6 +5109,11 @@ oauth-sign@~0.9.0:
   resolved "https://registry.yarnpkg.com/oauth-sign/-/oauth-sign-0.9.0.tgz#47a7b016baa68b5fa0ecf3dee08a85c679ac6455"
   integrity sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==
 
+oauth@0.9.x:
+  version "0.9.15"
+  resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.15.tgz#bd1fefaf686c96b75475aed5196412ff60cfb9c1"
+  integrity sha1-vR/vr2hslrdUda7VGWQS/2DPucE=
+
 object-assign@^4, object-assign@^4.0.1, object-assign@^4.1.0, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/object-assign/-/object-assign-4.1.1.tgz#2109adc7965887cfc05cbbd442cac8bfbb360863"
@@ -5124,6 +5184,17 @@ object.values@^1.1.0:
     es-abstract "^1.17.0-next.1"
     function-bind "^1.1.1"
     has "^1.0.3"
+
+omise@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/omise/-/omise-0.6.0.tgz#5d71a07919da62637d2daf4fe86050896202762f"
+  integrity sha512-ZQYOJhU3A+wajRqiXFRfCA7o9uK5zfJpbKxz/WI+LcUMMoUCuYdtHIg5eBn+L5wMdM+hpfE/hLZ7Fc5qXEWHOA==
+  dependencies:
+    "@types/bluebird" "^3.5.15"
+    "@types/node" "^8.0.34"
+    bluebird "^2.9.12"
+    https-proxy-agent "^2.2.4"
+    lodash "^4.17.15"
 
 on-finished@^2.3.0, on-finished@~2.3.0:
   version "2.3.0"
@@ -5357,6 +5428,13 @@ pascalcase@^0.1.1:
   resolved "https://registry.yarnpkg.com/pascalcase/-/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
   integrity sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ=
 
+passport-facebook-token@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/passport-facebook-token/-/passport-facebook-token-3.3.0.tgz#7404ca6fdd3790e11060cc60c562b21f0d0481ee"
+  integrity sha1-dATKb903kOEQYMxgxWKyHw0Ege4=
+  dependencies:
+    passport-oauth "1.0.0"
+
 passport-jwt@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/passport-jwt/-/passport-jwt-4.0.0.tgz#7f0be7ba942e28b9f5d22c2ebbb8ce96ef7cf065"
@@ -5371,6 +5449,34 @@ passport-local@^1.0.0:
   integrity sha1-H+YyaMkudWBmJkN+O5BmYsFbpu4=
   dependencies:
     passport-strategy "1.x.x"
+
+passport-oauth1@1.x.x:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/passport-oauth1/-/passport-oauth1-1.1.0.tgz#a7de988a211f9cf4687377130ea74df32730c918"
+  integrity sha1-p96YiiEfnPRoc3cTDqdN8ycwyRg=
+  dependencies:
+    oauth "0.9.x"
+    passport-strategy "1.x.x"
+    utils-merge "1.x.x"
+
+passport-oauth2@1.x.x:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/passport-oauth2/-/passport-oauth2-1.5.0.tgz#64babbb54ac46a4dcab35e7f266ed5294e3c4108"
+  integrity sha512-kqBt6vR/5VlCK8iCx1/KpY42kQ+NEHZwsSyt4Y6STiNjU+wWICG1i8ucc1FapXDGO15C5O5VZz7+7vRzrDPXXQ==
+  dependencies:
+    base64url "3.x.x"
+    oauth "0.9.x"
+    passport-strategy "1.x.x"
+    uid2 "0.0.x"
+    utils-merge "1.x.x"
+
+passport-oauth@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-oauth/-/passport-oauth-1.0.0.tgz#90aff63387540f02089af28cdad39ea7f80d77df"
+  integrity sha1-kK/2M4dUDwIImvKM2tOep/gNd98=
+  dependencies:
+    passport-oauth1 "1.x.x"
+    passport-oauth2 "1.x.x"
 
 passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
@@ -5871,6 +5977,32 @@ request@^2.87.0:
     qs "~6.5.2"
     safe-buffer "^5.1.2"
     tough-cookie "~2.4.3"
+    tunnel-agent "^0.6.0"
+    uuid "^3.3.2"
+
+request@^2.88.2:
+  version "2.88.2"
+  resolved "https://registry.yarnpkg.com/request/-/request-2.88.2.tgz#d73c918731cb5a87da047e207234146f664d12b3"
+  integrity sha512-MsvtOrfG9ZcrOwAW+Qi+F6HbD0CWXEh9ou77uOb7FM2WPhwT7smM833PzanhJLsgXjN89Ir6V2PczXNnMpwKhw==
+  dependencies:
+    aws-sign2 "~0.7.0"
+    aws4 "^1.8.0"
+    caseless "~0.12.0"
+    combined-stream "~1.0.6"
+    extend "~3.0.2"
+    forever-agent "~0.6.1"
+    form-data "~2.3.2"
+    har-validator "~5.1.3"
+    http-signature "~1.2.0"
+    is-typedarray "~1.0.0"
+    isstream "~0.1.2"
+    json-stringify-safe "~5.0.1"
+    mime-types "~2.1.19"
+    oauth-sign "~0.9.0"
+    performance-now "^2.1.0"
+    qs "~6.5.2"
+    safe-buffer "^5.1.2"
+    tough-cookie "~2.5.0"
     tunnel-agent "^0.6.0"
     uuid "^3.3.2"
 
@@ -6748,7 +6880,7 @@ toidentifier@1.0.0:
   resolved "https://registry.yarnpkg.com/toidentifier/-/toidentifier-1.0.0.tgz#7e1be3470f1e77948bc43d94a3c8f4d7752ba553"
   integrity sha512-yaOH/Pk/VEhBWWTlhI+qXxDFXlejDGcQipMlyxda9nthulaxLZUNcUqFxokp0vcYnvteJln5FNQDRrxj3YcbVw==
 
-tough-cookie@^2.3.3, tough-cookie@^2.3.4:
+tough-cookie@^2.3.3, tough-cookie@^2.3.4, tough-cookie@~2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/tough-cookie/-/tough-cookie-2.5.0.tgz#cd9fb2a0aa1d5a12b473bd9fb96fa3dcff65ade2"
   integrity sha512-nlLsUzgm1kfLXSXfRZMc1KLAugd4hqJHDTvc2hDIwS3mZAfMEuMbc03SujMF+GEcpaX/qboeycw6iO8JwVv2+g==
@@ -6953,6 +7085,11 @@ typescript@^3.6.4, typescript@^3.7.4:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
   integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
 
+uid2@0.0.x:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/uid2/-/uid2-0.0.3.tgz#483126e11774df2f71b8b639dcd799c376162b82"
+  integrity sha1-SDEm4Rd03y9xuLY53NeZw3YWK4I=
+
 union-value@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/union-value/-/union-value-1.0.1.tgz#0b6fe7b835aecda61c6ea4d4f02c14221e109847"
@@ -7054,7 +7191,7 @@ util@^0.11.0:
   dependencies:
     inherits "2.0.3"
 
-utils-merge@1.0.1:
+utils-merge@1.0.1, utils-merge@1.x.x:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=

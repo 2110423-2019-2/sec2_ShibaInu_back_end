@@ -11,4 +11,10 @@ export class AuthController {
     async login(@Request() req: any) {
         return this.authService.login(req.user);
     }
+
+    @UseGuards(AuthGuard('facebook-token'))
+    @Post('login-fb')
+    async fbLogin(@Request() req: any) {
+        return this.authService.fbLogin(req.user);
+    }
 }

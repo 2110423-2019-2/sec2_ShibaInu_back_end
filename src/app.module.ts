@@ -12,6 +12,8 @@ import { ReviewController } from './review/review.controller';
 import { ReviewModule } from './review/review.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AnnouncementModule } from './announcement/announcement.module';
+import { PaymentModule } from './payment/payment.module';
+import { ContractsModule } from './contracts/contracts.module';
 
 require('dotenv').config();
 
@@ -20,6 +22,7 @@ require('dotenv').config();
         JobsModule,
         UsersModule,
         BidsModule,
+        ContractsModule,
         TypeOrmModule.forRootAsync({
             useFactory: () => ({
                 type: 'mysql',
@@ -40,6 +43,7 @@ require('dotenv').config();
             dest: './files',
         }),
         AnnouncementModule,
+        PaymentModule,
     ],
     controllers: [AppController, NotificationController, ReviewController],
     providers: [AppService],

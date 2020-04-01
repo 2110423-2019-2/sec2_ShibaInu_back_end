@@ -12,6 +12,7 @@ import { Job } from './job.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
 import { Announcement } from './announcement.entity';
+import { Payment, CreditCard, BankAccount } from './payment.entity';
 
 export enum InterestedCategoryEnum {
     game = 'game',
@@ -151,6 +152,30 @@ export class User {
 
     @Column('integer')
     reviewedNumber: number;
+
+    @Column('boolean', { default: false })
+    isBanned: boolean;
+
+    @Column('boolean', { default: false })
+    isSNSAccount: boolean;
+
+    @ManyToOne(
+        type => Payment,
+        payment => payment.user,
+    )
+    payments: Payment[];
+
+    @OneToOne(
+        type => CreditCard,
+        creditCard => creditCard.user,
+    )
+    creditCard: CreditCard;
+
+    @OneToOne(
+        type => BankAccount,
+        bankAccount => bankAccount.user,
+    )
+    bankAccount: BankAccount;
 }
 
 @Entity()

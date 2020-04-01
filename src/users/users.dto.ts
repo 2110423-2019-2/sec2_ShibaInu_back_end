@@ -31,6 +31,8 @@ export class CreateUserDto {
     headline?: string;
     sumReviewedScore?: number;
     reviewedNumber?: number;
+    isBanned?: boolean;
+    isSNSAccount?: boolean;
 }
 
 export class EditUserDto {
@@ -76,4 +78,14 @@ export class CreateSkillDto {
 export class VerifyApprovalDto {
     user: User;
     approve: boolean;
+}
+
+export class BanUserDto {
+    user: User;
+    isBanned: boolean;
+}
+
+export class VerifyAdminDto {
+    user: User;
+    isAdmin: boolean;
 }

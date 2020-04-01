@@ -12,6 +12,7 @@ import {
     UploadedFile,
     Res,
     SetMetadata,
+    Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -21,14 +22,17 @@ import {
     CreateInterestedCategoryDto,
     CreateSkillDto,
     VerifyApprovalDto,
+    BanUserDto,
+    VerifyAdminDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { editFileName, imageFileFilter } from 'src/util/file-uploading.utils';
+import { editFileName, imageFileFilter } from '../util/file-uploading.utils';
 import { diskStorage } from 'multer';
 import { file } from '@babel/types';
 import { LoadUser } from '../decorators/users.decorator';
 import { AdminGuard } from '../guards/admin.guard';
+import { get } from 'http';
 
 @Controller('users')
 export class UsersController {
@@ -46,8 +50,15 @@ export class UsersController {
     }
 
     @Get()
-    async getAllUsers() {
-        return this.userService.getAllUsers();
+    async getAllUsers(
+        @Query('name') name: string,
+        @Query('cat') cat: string,
+        @Query('s1') s1: string,
+        @Query('s2') s2: string,
+        @Query('s3') s3: string,
+        @Query('sort') sort: number,
+    ) {
+        return this.userService.getAllUsers(name, cat, s1, s2, s3, sort);
     }
 
     @UseGuards(AuthGuard())
@@ -117,6 +128,22 @@ export class UsersController {
     @UseGuards(AuthGuard())
     async verifyUser(@Body() verifyApprovalDto: VerifyApprovalDto) {
         return this.userService.verifyUser(verifyApprovalDto);
+    }
+
+    @Patch('ban')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
+    async banUser(@Body() banUserDto: BanUserDto) {
+        return this.userService.banUser(banUserDto);
+    }
+
+    @Patch('verify/admin')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
+    async verifyAdmin(@Body() verifyAdminDto: VerifyAdminDto) {
+        return this.userService.verifyAdmin(verifyAdminDto);
     }
 
     @Post('category/:userId')

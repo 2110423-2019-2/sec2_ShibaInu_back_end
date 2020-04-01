@@ -6,10 +6,14 @@ import {
     OneToMany,
     PrimaryColumn,
     JoinColumn,
+    OneToOne,
 } from 'typeorm';
 import { User } from './user.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
+import { Contract } from './contract.entity';
+import { type } from 'os';
+import { Payment } from './payment.entity';
 
 export enum Status {
     OPEN = 'open',
@@ -94,6 +98,13 @@ export class Job {
     )
     bid: Bid[];
 
+    @OneToOne(
+        type => Contract,
+        contract => contract.job,
+    )
+    @JoinColumn({ name: 'contractId' })
+    contract: Contract;
+
     @OneToMany(
         type => JobOptSkill,
         jobOptSkill => jobOptSkill.job,
@@ -107,6 +118,12 @@ export class Job {
         review => review.job,
     )
     reviews: Review[];
+
+    @OneToMany(
+        type => Payment,
+        payment => payment.job,
+    )
+    payments: Payment[];
 }
 
 @Entity()

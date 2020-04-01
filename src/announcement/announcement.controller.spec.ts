@@ -1,6 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AnnouncementController } from './announcement.controller';
 import { AnnouncementService } from './announcement.service';
+import { PassportModule } from '@nestjs/passport';
+import { AuthModule } from '../auth/auth.module';
+import { UsersService } from '../users/users.service';
 
 describe('Announcement Controller', () => {
     let controller: AnnouncementController;
@@ -11,6 +14,15 @@ describe('Announcement Controller', () => {
                 {
                     provide: 'AnnouncementService',
                     useValue: AnnouncementService,
+                },
+                PassportModule,
+                {
+                    provide: 'AuthModule',
+                    useValue: AuthModule,
+                },
+                {
+                    provide: 'UsersService',
+                    useValue: UsersService,
                 },
             ],
             controllers: [AnnouncementController],

@@ -1,16 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadGatewayException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory, User } from '../entities/user.entity';
-import {
-    Job,
-    JobReqSkill,
-    JobOptSkill,
-    Catergory,
-    Status,
-} from '../entities/job.entity';
+import { Job, JobReqSkill, JobOptSkill, Status } from '../entities/job.entity';
 import { Repository, Like, Between } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
-import { NamingStrategyMetadataArgs } from 'typeorm/metadata-args/NamingStrategyMetadataArgs';
 import { Bid } from '../entities/bid.entity';
 
 @Injectable()
@@ -146,7 +139,9 @@ export class JobsService {
     }
 
     async getJobById(jobId: number): Promise<Job> {
-        return this.jobRepository.findOne(jobId);
+        let res: any = await this.jobRepository.findOne(jobId);
+        if(!res) throw new BadRequestException("invalid jobId");
+        return res;
     }
 
     async getJobByUserId(userId: number): Promise<Job[]> {
