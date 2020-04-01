@@ -12,6 +12,7 @@ import {
     UploadedFile,
     Res,
     SetMetadata,
+    Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
@@ -49,8 +50,15 @@ export class UsersController {
     }
 
     @Get()
-    async getAllUsers() {
-        return this.userService.getAllUsers();
+    async getAllUsers(
+        @Query('name') name: string,
+        @Query('cat') cat: string,
+        @Query('s1') s1: string,
+        @Query('s2') s2: string,
+        @Query('s3') s3: string,
+        @Query('sort') sort: number)
+    { 
+        return this.userService.getAllUsers(name,cat,s1,s2,s3,sort);
     }
 
     @UseGuards(AuthGuard())
