@@ -224,6 +224,7 @@ export class PaymentService {
             else signedAmount = -payment.amount;
             ans.push({
                 amount: signedAmount,
+                jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
@@ -244,6 +245,7 @@ export class PaymentService {
         ret.forEach(payment => {
             ans.push({
                 amount: payment.amount,
+                jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
@@ -265,6 +267,7 @@ export class PaymentService {
         ret.forEach(payment => {
             ans.push({
                 amount: -payment.amount,
+                jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
