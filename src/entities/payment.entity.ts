@@ -23,13 +23,13 @@ export class Payment {
     @Column('integer') //ex 100000 for 1000.00 THB
     amount: number;
 
-    @Column('integer', {nullable: true})
+    @Column('integer', { nullable: true })
     creditCard: number; //creditCard id
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdAt: Date;
 
-    @Column('integer', {nullable: true})
+    @Column('integer', { nullable: true })
     bankAccount: number; // bankAccount id
 
     @Column('enum', {
@@ -53,7 +53,6 @@ export class Payment {
     @JoinColumn({ name: 'job' })
     job: Job;
 }
-
 
 @Entity()
 export class BankAccount {
