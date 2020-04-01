@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory, User } from '../entities/user.entity';
 import {
@@ -147,7 +147,9 @@ export class JobsService {
     }
 
     async getJobById(jobId: number): Promise<Job> {
-        return this.jobRepository.findOne(jobId);
+        let ret = await this.jobRepository.findOne(jobId);
+        if (!ret) throw new BadRequestException('Invalid JobId');
+        return ret;
     }
 
     async getJobByUserId(userId: number): Promise<Job[]> {
