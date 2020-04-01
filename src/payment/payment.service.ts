@@ -218,9 +218,14 @@ export class PaymentService {
             throw new BadRequestException('Not found any payment');
         let ans = [];
         ret.forEach(payment => {
+            let signedAmount;
+            if (payment.type == PaymentTypeEnum.charge)
+                signedAmount = payment.amount;
+            else signedAmount = -payment.amount;
             ans.push({
-                amount: payment.amount,
+                amount: signedAmount,
                 jobName: payment.job.name,
+                type: payment.type,
             });
         });
         return ans;
@@ -240,6 +245,7 @@ export class PaymentService {
             ans.push({
                 amount: payment.amount,
                 jobName: payment.job.name,
+                type: payment.type,
             });
         });
         return ans;
@@ -258,8 +264,9 @@ export class PaymentService {
         let ans = [];
         ret.forEach(payment => {
             ans.push({
-                amount: payment.amount,
+                amount: -payment.amount,
                 jobName: payment.job.name,
+                type: payment.type,
             });
         });
         return ans;
