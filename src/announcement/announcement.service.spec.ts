@@ -19,12 +19,12 @@ describe('AnnouncementService', () => {
                 PassportModule,
                 {
                     provide: 'AuthModule',
-                    useValue: AuthModule
+                    useValue: AuthModule,
                 },
                 {
                     provide: 'UsersService',
-                    useValue: UsersService
-                }
+                    useValue: UsersService,
+                },
             ],
         }).compile();
 
