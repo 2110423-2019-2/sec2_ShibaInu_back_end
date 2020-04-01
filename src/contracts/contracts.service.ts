@@ -39,4 +39,8 @@ export class ContractsService {
         if (!res) throw new BadRequestException('Invalid ContractId');
         return res;
     }
+
+    async deleteContractByJobId(jobIdParam: number){
+        return this.contractRepository.delete({ jobId: jobIdParam });
+    }
 }
