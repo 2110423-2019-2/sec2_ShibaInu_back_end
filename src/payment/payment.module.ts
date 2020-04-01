@@ -3,14 +3,14 @@ import { PaymentService } from './payment.service';
 import { PaymentController } from './payment.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 import {
     User,
     UserSkill,
     VerifyRequest,
     InterestedCategory,
-} from 'src/entities/user.entity';
-import { Payment, CreditCard, BankAccount } from 'src/entities/payment.entity';
+} from '../entities/user.entity';
+import { Payment, CreditCard, BankAccount } from '../entities/payment.entity';
 
 @Module({
     imports: [
@@ -23,7 +23,11 @@ import { Payment, CreditCard, BankAccount } from 'src/entities/payment.entity';
             CreditCard,
             BankAccount,
         ]),
-        PassportModule.register({ defaultStrategy: 'jwt' }),
+        PassportModule.registerAsync({
+            useFactory: () => ({
+                defaultStrategy: 'jwt',
+            }),
+        }),
     ],
     controllers: [PaymentController],
     providers: [PaymentService, UsersService],

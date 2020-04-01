@@ -12,9 +12,9 @@ import {
     CreateBankAccountDto,
     CreatePaymentDto,
 } from './payment.dto';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
-import { LoadUser } from 'src/decorators/users.decorator';
+import { LoadUser } from '../decorators/users.decorator';
 
 @Controller('payment')
 export class PaymentController {

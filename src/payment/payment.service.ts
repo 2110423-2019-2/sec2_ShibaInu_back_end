@@ -11,7 +11,7 @@ import {
     PaymentTypeEnum,
     CreditCard,
     BankAccount,
-} from 'src/entities/payment.entity';
+} from '../entities/payment.entity';
 
 @Injectable()
 export class PaymentService {

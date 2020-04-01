@@ -27,7 +27,7 @@ import {
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { editFileName, imageFileFilter } from 'src/util/file-uploading.utils';
+import { editFileName, imageFileFilter } from '../util/file-uploading.utils';
 import { diskStorage } from 'multer';
 import { file } from '@babel/types';
 import { LoadUser } from '../decorators/users.decorator';

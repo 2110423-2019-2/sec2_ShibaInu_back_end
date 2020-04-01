@@ -1,10 +1,10 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Review } from 'src/entities/review.entity';
+import { Review } from '../entities/review.entity';
 import { CreateReviewDto, EditReviewDto } from './review.dto';
-import { JobsService } from 'src/jobs/jobs.service';
-import { UsersService } from 'src/users/users.service';
+import { JobsService } from '../jobs/jobs.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ReviewService {

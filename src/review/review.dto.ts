@@ -1,5 +1,5 @@
-import { User } from 'src/entities/user.entity';
-import { Job } from 'src/entities/job.entity';
+import { User } from '../entities/user.entity';
+import { Job } from '../entities/job.entity';
 
 export class CreateReviewDto {
     description: string;

@@ -1,18 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory, User } from '../entities/user.entity';
-import {
-    Job,
-    JobReqSkill,
-    JobOptSkill,
-    Catergory,
-    Status,
-} from '../entities/job.entity';
+import { Job, JobReqSkill, JobOptSkill, Status } from '../entities/job.entity';
 import { Repository, Like, Between } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
-import { NamingStrategyMetadataArgs } from 'typeorm/metadata-args/NamingStrategyMetadataArgs';
 import { Bid } from '../entities/bid.entity';
-import { Contract } from 'src/entities/contract.entity';
 
 @Injectable()
 export class JobsService {
