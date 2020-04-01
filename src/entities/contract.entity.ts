@@ -23,6 +23,12 @@ export class Contract {
     @Column()
     jobId: number;
 
+    @Column()
+    freelancerId: number;
+
+    @Column()
+    price: number;
+
     @Column('enum', { enum: ContractStatus, default: ContractStatus.NULL })
     status: ContractStatus;
 
