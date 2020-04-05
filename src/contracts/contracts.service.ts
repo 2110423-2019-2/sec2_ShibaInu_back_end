@@ -1,10 +1,7 @@
 import { Injectable, Get, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-    CreateContractDto,
-    UpdateContractDto,
-} from './contracts.dto';
+import { CreateContractDto, UpdateContractDto } from './contracts.dto';
 import { Contract, ContractStatus } from '../entities/contract.entity';
 import { Job, Status } from '../entities/job.entity';
 
@@ -26,23 +23,23 @@ export class ContractsService {
         let res: any = await this.contractRepository.findOne({
             where: { jobId: jobIdParam },
         });
-        if(!res) throw new BadRequestException("Invalid jobId");
+        if (!res) throw new BadRequestException('Invalid jobId');
         return res;
     }
 
     async createNewContract(createContractDto: CreateContractDto) {
         createContractDto.createdTime = new Date();
         let res: any = await this.contractRepository.insert(createContractDto);
-        this.jobRepository.update(createContractDto.jobId,{
-            contractId: createContractDto.contractId
+        this.jobRepository.update(createContractDto.jobId, {
+            contractId: createContractDto.contractId,
         });
-        if(!res) throw new BadRequestException("Failed to create contract");
+        if (!res) throw new BadRequestException('Failed to create contract');
         return res;
     }
 
     async acceptContract(updateContractDto: UpdateContractDto): Promise<any> {
         let res: any = null;
-        if(updateContractDto.status==ContractStatus.ACCEPTED)
+        if (updateContractDto.status == ContractStatus.ACCEPTED)
             updateContractDto.acceptedTime = new Date();
         res = await this.contractRepository.update(
             updateContractDto.contractId,

@@ -32,13 +32,18 @@ export class BidsService {
         return this.jobRepository.findByIds(temp);
     }
 
-    async getBidByJobUserId(jobIdParam: number, userIdParam: number): Promise<Bid> {
+    async getBidByJobUserId(
+        jobIdParam: number,
+        userIdParam: number,
+    ): Promise<Bid> {
         let res = await this.bidRepository.find({
             where: {
                 jobId: jobIdParam,
-                userId: userIdParam            }
+                userId: userIdParam,
+            },
         });
-        if(res.length==0) throw new BadRequestException("Invalid jobId or userId");
+        if (res.length == 0)
+            throw new BadRequestException('Invalid jobId or userId');
         return res[0];
     }
 
