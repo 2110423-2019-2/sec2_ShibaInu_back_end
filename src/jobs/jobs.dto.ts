@@ -16,6 +16,7 @@ export class CreateJobDto {
     createdTime?: Date;
     updatedTime?: Date;
     client: User;
+    contractId?: number;
     requiredSkills: JobReqSkill[];
     optionalSkills: JobOptSkill[];
 }
@@ -30,6 +31,7 @@ export class UpdateJobDto {
     status?: Status;
     createdTime?: Date;
     updatedTime?: Date;
+    contractId?: number;
     acceptedTime?: Date;
     startWorkingTime?: Date;
     doneTime?: Date;

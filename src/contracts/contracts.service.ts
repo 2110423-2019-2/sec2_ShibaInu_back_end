@@ -33,7 +33,12 @@ export class ContractsService {
 
     async createNewContract(createContractDto: CreateContractDto) {
         createContractDto.createdTime = new Date();
-        return this.contractRepository.insert(createContractDto);
+        let res: any = await this.contractRepository.insert(createContractDto);
+        this.jobRepository.update(createContractDto.jobId,{
+            contractId: createContractDto.contractId
+        });
+        if(!res) throw new BadRequestException("Failed to create contract");
+        return res;
     }
 
     async acceptContract(acceptContractDto: AcceptContractDto): Promise<any> {
