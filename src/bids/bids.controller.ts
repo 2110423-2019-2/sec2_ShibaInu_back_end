@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import { BidsService } from './bids.service';
-import { CreateBidDto } from './bids.dto';
+import { CreateBidDto, UpdateBidDto } from './bids.dto';
 
 @Controller('bids')
 export class BidsController {
