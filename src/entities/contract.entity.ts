@@ -42,7 +42,7 @@ export class Contract {
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     updatedTime: Date;
 
-    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP'})
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     acceptedTime: Date;
 
     @OneToOne(() => Job)

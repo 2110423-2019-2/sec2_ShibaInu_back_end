@@ -1,4 +1,8 @@
-import { Injectable, BadGatewayException, BadRequestException } from '@nestjs/common';
+import {
+    Injectable,
+    BadGatewayException,
+    BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory, User } from '../entities/user.entity';
 import { Job, JobReqSkill, JobOptSkill, Status } from '../entities/job.entity';
@@ -140,7 +144,7 @@ export class JobsService {
 
     async getJobById(jobId: number): Promise<Job> {
         let res: any = await this.jobRepository.findOne(jobId);
-        if(!res) throw new BadRequestException("invalid jobId");
+        if (!res) throw new BadRequestException('invalid jobId');
         return res;
     }
 

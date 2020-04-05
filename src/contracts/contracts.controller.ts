@@ -8,10 +8,7 @@ import {
     Delete,
 } from '@nestjs/common';
 import { ContractsService } from './contracts.service';
-import {
-    CreateContractDto,
-    UpdateContractDto,
-} from './contracts.dto';
+import { CreateContractDto, UpdateContractDto } from './contracts.dto';
 
 @Controller('contracts')
 export class ContractsController {
