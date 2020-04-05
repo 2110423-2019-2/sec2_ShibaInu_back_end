@@ -11,6 +11,7 @@ export class CreateContractDto {
     description: string;
     createdTime?: Date;
     updatedTime?: Date;
+    acceptedTime?: Date;
 }
 
 export class UpdateContractDto {
@@ -22,4 +23,5 @@ export class UpdateContractDto {
     description?: string;
     createdTime?: Date;
     updatedTime?: Date;
+    acceptedTime?: Date;
 }

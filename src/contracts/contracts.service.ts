@@ -42,6 +42,8 @@ export class ContractsService {
 
     async acceptContract(updateContractDto: UpdateContractDto): Promise<any> {
         let res: any = null;
+        if(updateContractDto.status==ContractStatus.ACCEPTED)
+            updateContractDto.acceptedTime = new Date();
         res = await this.contractRepository.update(
             updateContractDto.contractId,
             updateContractDto,
