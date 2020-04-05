@@ -3,7 +3,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
     CreateContractDto,
-    AcceptContractDto,
     UpdateContractDto,
 } from './contracts.dto';
 import { Contract, ContractStatus } from '../entities/contract.entity';
@@ -33,14 +32,19 @@ export class ContractsService {
 
     async createNewContract(createContractDto: CreateContractDto) {
         createContractDto.createdTime = new Date();
-        return this.contractRepository.insert(createContractDto);
+        let res: any = await this.contractRepository.insert(createContractDto);
+        this.jobRepository.update(createContractDto.jobId,{
+            contractId: createContractDto.contractId
+        });
+        if(!res) throw new BadRequestException("Failed to create contract");
+        return res;
     }
 
-    async acceptContract(acceptContractDto: AcceptContractDto): Promise<any> {
+    async acceptContract(updateContractDto: UpdateContractDto): Promise<any> {
         let res: any = null;
         res = await this.contractRepository.update(
-            acceptContractDto.contractId,
-            acceptContractDto,
+            updateContractDto.contractId,
+            updateContractDto,
         );
         if (!res) throw new BadRequestException('Invalid ContractId');
         return res;

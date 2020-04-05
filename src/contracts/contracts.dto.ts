@@ -23,8 +23,3 @@ export class UpdateContractDto {
     createdTime?: Date;
     updatedTime?: Date;
 }
-
-export class AcceptContractDto {
-    contractId?: number;
-    status: ContractStatus;
-}
