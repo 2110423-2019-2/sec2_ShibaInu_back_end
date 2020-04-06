@@ -71,6 +71,10 @@ export class ContractsService {
         if (!contract) throw new BadRequestException('Invalid JobId');
         let res: any = null;
         if (contract.status != ContractStatus.ACCEPTED) {
+            await this.jobRepository.update(
+                await this.jobRepository.findOne(jobIdParam),
+                { contractId: null },
+            );
             res = await this.contractRepository.delete({ jobId: jobIdParam });
         }
         if (!res) throw new BadRequestException('Invalid status: ACCEPTED');
