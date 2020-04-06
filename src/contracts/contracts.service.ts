@@ -28,7 +28,8 @@ export class ContractsService {
     }
 
     async createNewContract(createContractDto: CreateContractDto) {
-        createContractDto.createdTime = new Date();
+        createContractDto.updatedTime = null;
+        createContractDto.acceptedTime = null;
         let res: any = await this.contractRepository.insert(createContractDto);
         this.jobRepository.update(createContractDto.jobId, {
             contractId: createContractDto.contractId,
