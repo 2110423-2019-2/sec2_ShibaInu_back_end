@@ -16,6 +16,45 @@ export enum PaymentTypeEnum {
 }
 
 @Entity()
+export class Payment {
+    @PrimaryGeneratedColumn()
+    paymentId: number;
+
+    @Column('integer') //ex 100000 for 1000.00 THB
+    amount: number;
+
+    @Column('integer', { nullable: true })
+    creditCard: number; //creditCard id
+
+    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+    createdAt: Date;
+
+    @Column('integer', { nullable: true })
+    bankAccount: number; // bankAccount id
+
+    @Column('enum', {
+        enum: PaymentTypeEnum,
+    })
+    type: PaymentTypeEnum;
+
+    @ManyToOne(
+        type => User,
+        user => user.payments,
+        { eager: true },
+    )
+    @JoinColumn({ name: 'user' })
+    user: User;
+
+    @ManyToOne(
+        type => Job,
+        job => job.payments,
+        { eager: true },
+    )
+    @JoinColumn({ name: 'job' })
+    job: Job;
+}
+
+@Entity()
 export class BankAccount {
     @PrimaryGeneratedColumn()
     cardId: number;
@@ -38,12 +77,6 @@ export class BankAccount {
     )
     @JoinColumn({ name: 'user' })
     user: User;
-
-    @OneToMany(
-        type => Payment,
-        payment => payment.bankAccount,
-    )
-    payments: Payment[];
 }
 
 @Entity()
@@ -69,57 +102,4 @@ export class CreditCard {
     )
     @JoinColumn({ name: 'user' })
     user: User;
-
-    @OneToMany(
-        type => Payment,
-        payment => payment.creditCard,
-    )
-    payments: Payment[];
-}
-
-@Entity()
-export class Payment {
-    @PrimaryGeneratedColumn()
-    paymentId: number;
-
-    @Column('integer') //ex 100000 for 1000.00 THB
-    amount: number;
-
-    @ManyToOne(
-        type => CreditCard,
-        creditCard => creditCard.payments,
-        { eager: true },
-    )
-    creditCard: CreditCard;
-
-    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
-    createdAt: Date;
-
-    @ManyToOne(
-        type => BankAccount,
-        bankAccount => bankAccount.payments,
-        { eager: true },
-    )
-    bankAccount: BankAccount;
-
-    @Column('enum', {
-        enum: PaymentTypeEnum,
-    })
-    type: PaymentTypeEnum;
-
-    @ManyToOne(
-        type => User,
-        user => user.payments,
-        { eager: true },
-    )
-    @JoinColumn({ name: 'user' })
-    user: User;
-
-    @ManyToOne(
-        type => Job,
-        job => job.payments,
-        { eager: true },
-    )
-    @JoinColumn({ name: 'job' })
-    job: Job;
 }

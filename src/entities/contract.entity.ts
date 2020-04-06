@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Job } from './job.entity';
 import { User } from './user.entity';
+import { type } from 'os';
 
 export enum ContractStatus {
     NULL = 'null',
@@ -32,14 +33,17 @@ export class Contract {
     @Column('enum', { enum: ContractStatus, default: ContractStatus.NULL })
     status: ContractStatus;
 
-    @Column()
+    @Column('text')
     description: string;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
-    @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
+    @Column('timestamp', { default: null, onUpdate: 'CURRENT_TIMESTAMP' })
     updatedTime: Date;
+
+    @Column('timestamp', { default: null })
+    acceptedTime: Date;
 
     @OneToOne(() => Job)
     @JoinColumn({ name: 'jobId' })

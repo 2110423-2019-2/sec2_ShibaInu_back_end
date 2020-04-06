@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body } from '@nestjs/common';
 import { BidsService } from './bids.service';
-import { CreateBidDto } from './bids.dto';
+import { CreateBidDto, UpdateBidDto } from './bids.dto';
 
 @Controller('bids')
 export class BidsController {
@@ -19,6 +19,14 @@ export class BidsController {
     @Get('job/:userId')
     async getJobByUserId(@Param('userId') userId: number) {
         return this.bidService.getJobByUserId(userId);
+    }
+
+    @Get('jobuser/:jobId,:userId')
+    async getBidByJobUserId(
+        @Param('jobId') jobId: number,
+        @Param('userId') userId: number,
+    ) {
+        return this.bidService.getBidByJobUserId(jobId, userId);
     }
 
     @Post()

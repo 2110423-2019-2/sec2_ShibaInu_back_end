@@ -18,7 +18,11 @@ import { PassportModule } from '@nestjs/passport';
             UserSkill,
             VerifyRequest,
         ]),
-        PassportModule.register({ defaultStrategy: 'jwt' }),
+        PassportModule.registerAsync({
+            useFactory: () => ({
+                defaultStrategy: 'jwt',
+            }),
+        }),
     ],
     controllers: [UsersController],
     providers: [UsersService],

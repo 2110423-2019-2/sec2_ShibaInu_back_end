@@ -1,10 +1,14 @@
-import { Controller, Get, Param, Post, Body, Patch, Delete } from '@nestjs/common';
-import { ContractsService } from './contracts.service';
 import {
-    CreateContractDto,
-    UpdateContractDto,
-    AcceptContractDto,
-} from './contracts.dto';
+    Controller,
+    Get,
+    Param,
+    Post,
+    Body,
+    Patch,
+    Delete,
+} from '@nestjs/common';
+import { ContractsService } from './contracts.service';
+import { CreateContractDto, UpdateContractDto } from './contracts.dto';
 
 @Controller('contracts')
 export class ContractsController {
@@ -28,14 +32,14 @@ export class ContractsController {
     @Patch('/accept/:contractId')
     async acceptContract(
         @Param('contractId') contractId: number,
-        @Body() acceptContractDto: AcceptContractDto,
+        @Body() updateContractDto: UpdateContractDto,
     ) {
-        acceptContractDto.contractId = contractId;
-        return this.contractService.acceptContract(acceptContractDto);
+        updateContractDto.contractId = contractId;
+        return this.contractService.acceptContract(updateContractDto);
     }
-    
+
     @Delete('/deleteByJobId/:jobId')
-    async deleteContractByJobId( @Param('jobId') jobId: number) {
+    async deleteContractByJobId(@Param('jobId') jobId: number) {
         return this.contractService.deleteContractByJobId(jobId);
     }
 
@@ -44,6 +48,9 @@ export class ContractsController {
         @Param('jobId') jobId: number,
         @Body() updateContractDto: UpdateContractDto,
     ) {
-        return this.contractService.updateContractByJobId(jobId, updateContractDto);
+        return this.contractService.updateContractByJobId(
+            jobId,
+            updateContractDto,
+        );
     }
 }

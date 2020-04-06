@@ -9,7 +9,11 @@ import { UsersModule } from '../users/users.module';
 @Module({
     imports: [
         TypeOrmModule.forFeature([Announcement]),
-        PassportModule.register({ defaultStrategy: 'jwt' }),
+        PassportModule.registerAsync({
+            useFactory: () => ({
+                defaultStrategy: 'jwt',
+            }),
+        }),
         UsersModule,
     ],
     controllers: [AnnouncementController],

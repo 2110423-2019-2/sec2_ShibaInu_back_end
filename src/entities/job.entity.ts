@@ -84,6 +84,11 @@ export class Job {
     )
     client: User;
 
+    @Column('integer', {
+        default: null,
+    })
+    contractId: number;
+
     @OneToMany(
         type => JobReqSkill,
         jobReqSkill => jobReqSkill.job,

@@ -11,7 +11,7 @@ import {
     PaymentTypeEnum,
     CreditCard,
     BankAccount,
-} from 'src/entities/payment.entity';
+} from '../entities/payment.entity';
 
 @Injectable()
 export class PaymentService {
@@ -121,7 +121,7 @@ export class PaymentService {
     async charge(createPaymentDto: CreatePaymentDto, client: any) {
         let creditCard = await this.getCreditCardByUser(client);
         if (creditCard) {
-            createPaymentDto.creditCard = creditCard;
+            createPaymentDto.creditCard = creditCard.cardId;
             createPaymentDto.type = PaymentTypeEnum.charge;
             createPaymentDto.user = client.id;
             createPaymentDto.createdAt = new Date();
@@ -176,7 +176,7 @@ export class PaymentService {
     async transfer(createPaymentDto: CreatePaymentDto, freelancer: any) {
         let bankAccount = await this.getBankAccountByUser(freelancer);
         if (bankAccount) {
-            createPaymentDto.bankAccount = bankAccount;
+            createPaymentDto.bankAccount = bankAccount.cardId;
             createPaymentDto.type = PaymentTypeEnum.transfer;
             createPaymentDto.user = freelancer.id;
             createPaymentDto.createdAt = new Date();
@@ -224,6 +224,7 @@ export class PaymentService {
             else signedAmount = -payment.amount;
             ans.push({
                 amount: signedAmount,
+                jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
@@ -244,6 +245,7 @@ export class PaymentService {
         ret.forEach(payment => {
             ans.push({
                 amount: payment.amount,
+                jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
@@ -265,6 +267,7 @@ export class PaymentService {
         ret.forEach(payment => {
             ans.push({
                 amount: -payment.amount,
+                jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
