@@ -45,9 +45,16 @@ export class ContractsService {
             updateContractDto,
         );
         if (!res) throw new BadRequestException('Invalid ContractId');
-        await this.jobRepository.update((await this.contractRepository.findOne(updateContractDto.contractId)).jobId,{
-            status: Status.ACCEPTED
-        });
+        await this.jobRepository.update(
+            (
+                await this.contractRepository.findOne(
+                    updateContractDto.contractId,
+                )
+            ).jobId,
+            {
+                status: Status.ACCEPTED,
+            },
+        );
         return res;
     }
 
