@@ -72,7 +72,8 @@ export class ContractsService {
         let res: any = null;
         if (contract.status != ContractStatus.ACCEPTED) {
             await this.jobRepository.update(
-                await this.jobRepository.findOne(jobIdParam),{contractId: null}
+                await this.jobRepository.findOne(jobIdParam),
+                { contractId: null },
             );
             res = await this.contractRepository.delete({ jobId: jobIdParam });
         }
