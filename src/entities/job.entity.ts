@@ -20,6 +20,7 @@ export enum Status {
     ACCEPTED = 'accepted',
     WORKING = 'working',
     DONE = 'done',
+    CLOSED = 'closed',
 }
 
 export enum Catergory {
