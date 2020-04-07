@@ -53,6 +53,7 @@ export class ContractsService {
             ).jobId,
             {
                 status: Status.ACCEPTED,
+                acceptedTime: new Date()
             },
         );
         return res;
