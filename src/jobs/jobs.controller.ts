@@ -12,6 +12,7 @@ import {
 import { JobsService } from './jobs.service';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { LoadUser } from 'src/decorators/users.decorator';
 
 @Controller('jobs')
 export class JobsController {
@@ -81,12 +82,14 @@ export class JobsController {
         return this.jobService.deleteJobById(jobId);
     }
 
+    @UseGuards(AuthGuard())
     @Patch(':jobId')
     async editJob(
+        @LoadUser() user: any,
         @Param('jobId') jobId: number,
         @Body() updateJobDto: UpdateJobDto,
     ) {
-        return this.jobService.editJob(jobId, updateJobDto);
+        return this.jobService.editJob(jobId, user.id, updateJobDto);
     }
 
     @Get('freelancers/:jobId')

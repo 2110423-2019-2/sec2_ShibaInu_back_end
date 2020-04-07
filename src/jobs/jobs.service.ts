@@ -2,6 +2,7 @@ import {
     Injectable,
     BadGatewayException,
     BadRequestException,
+    ForbiddenException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory, User } from '../entities/user.entity';
@@ -160,7 +161,8 @@ export class JobsService {
         return this.jobRepository.save(createJobDto);
     }
 
-    async editJob(jobId: number, updateJobDto: UpdateJobDto) {
+    async editJob(jobId: number, userId: number, updateJobDto: UpdateJobDto) {
+        if (userId != await (await this.jobRepository.findOne(jobId)).client.userId) throw new ForbiddenException(`Only job owner can edit this job!`);
         if (updateJobDto.requiredSkills) {
             let updateJobReqSkills = updateJobDto.requiredSkills;
             await this.jobReqSkillRepository.delete({ job: { jobId: jobId } });
