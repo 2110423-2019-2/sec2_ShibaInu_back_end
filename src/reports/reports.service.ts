@@ -13,24 +13,24 @@ export class ReportsService {
 
         @InjectRepository(Message)
         private readonly messageRepository: Repository<Message>,
-        
+
         @InjectRepository(User)
         private readonly userRepository: Repository<User>,
     ) {}
 
-    async getAllReports(){
+    async getAllReports() {
         return this.reportRepository.find();
     }
 
-    async getReportById(reportId: number){
-        return this.reportRepository.find({ where: { reportId } })
+    async getReportById(reportId: number) {
+        return this.reportRepository.find({ where: { reportId } });
     }
 
-    async getReportsByUserId(userId: number){
-        return this.reportRepository.find({ where: { user: userId } })
+    async getReportsByUserId(userId: number) {
+        return this.reportRepository.find({ where: { user: userId } });
     }
 
-    async createNewReport(createReportDto: CreateReportDto){
+    async createNewReport(createReportDto: CreateReportDto) {
         createReportDto.createdTime = new Date();
         return this.reportRepository.save(createReportDto);
     }

@@ -1,7 +1,7 @@
-import { User } from "../entities/user.entity";
-import { Report } from "../entities/report.entity";
+import { User } from '../entities/user.entity';
+import { Report } from '../entities/report.entity';
 
-export class CreateMessageDto{
+export class CreateMessageDto {
     detail: string;
     createdTime?: Date;
     user: User;

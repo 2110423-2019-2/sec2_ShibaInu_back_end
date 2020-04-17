@@ -53,7 +53,6 @@ export class Report {
     @ManyToOne(type => User, { eager: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'userId' })
     user: User;
-
 }
 
 @Entity()

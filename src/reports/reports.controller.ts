@@ -7,22 +7,22 @@ export class ReportsController {
     constructor(private readonly reportService: ReportsService) {}
 
     @Get()
-    async getAllReports(){
+    async getAllReports() {
         return this.reportService.getAllReports();
     }
 
     @Get(':reportId')
-    async getReportById(@Param('reportId') reportId: number){
+    async getReportById(@Param('reportId') reportId: number) {
         return this.reportService.getReportById(reportId);
     }
 
     @Get('user/:userId')
-    async getReportsByUserId(@Param('userId') userId: number){
+    async getReportsByUserId(@Param('userId') userId: number) {
         return this.reportService.getReportsByUserId(userId);
     }
 
     @Post()
-    async createNewReport(@Body() createReportDto: CreateReportDto){
+    async createNewReport(@Body() createReportDto: CreateReportDto) {
         return this.reportService.createNewReport(createReportDto);
     }
 }

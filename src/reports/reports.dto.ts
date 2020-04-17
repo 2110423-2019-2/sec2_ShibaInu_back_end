@@ -1,5 +1,5 @@
-import { TopicTypeEnum, ReportStatusEnum } from "../entities/report.entity";
-import { User } from "../entities/user.entity";
+import { TopicTypeEnum, ReportStatusEnum } from '../entities/report.entity';
+import { User } from '../entities/user.entity';
 
 export class CreateReportDto {
     topicName: string;

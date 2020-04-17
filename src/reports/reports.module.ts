@@ -7,19 +7,15 @@ import { Message, Report } from '../entities/report.entity';
 import { User } from '../entities/user.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-        Report,
-        Message,
-        User,
-    ]),
-    PassportModule.registerAsync({
-        useFactory: () => ({
-            defaultStrategy: 'jwt',
+    imports: [
+        TypeOrmModule.forFeature([Report, Message, User]),
+        PassportModule.registerAsync({
+            useFactory: () => ({
+                defaultStrategy: 'jwt',
+            }),
         }),
-    }),
-],
-  controllers: [ReportsController],
-  providers: [ReportsService]
+    ],
+    controllers: [ReportsController],
+    providers: [ReportsService],
 })
 export class ReportsModule {}
