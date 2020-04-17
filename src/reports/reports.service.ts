@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Report, Message } from '../entities/report.entity';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
+import { CreateReportDto } from './reports.dto';
 
 @Injectable()
 export class ReportsService {
@@ -19,5 +20,18 @@ export class ReportsService {
 
     async getAllReports(){
         return this.reportRepository.find();
+    }
+
+    async getReportById(reportId: number){
+        return this.reportRepository.find({ where: { reportId } })
+    }
+
+    async getReportsByUserId(userId: number){
+        return this.reportRepository.find({ where: { user: userId } })
+    }
+
+    async createNewReport(createReportDto: CreateReportDto){
+        createReportDto.createdTime = new Date();
+        return this.reportRepository.save(createReportDto);
     }
 }

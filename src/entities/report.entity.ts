@@ -31,8 +31,8 @@ export class Report {
     })
     topicType: string;
 
-    @Column('varchar', { length: 500, nullable: true })
-    descripton: string;
+    @Column('varchar', { length: 500 })
+    description: string;
 
     @Column('enum', {
         enum: ReportStatusEnum,
@@ -50,7 +50,7 @@ export class Report {
     )
     messages: Message[];
 
-    @ManyToOne(type => User, { onDelete: 'SET NULL' })
+    @ManyToOne(type => User, { eager: true, onDelete: 'SET NULL' })
     @JoinColumn({ name: 'userId' })
     user: User;
 

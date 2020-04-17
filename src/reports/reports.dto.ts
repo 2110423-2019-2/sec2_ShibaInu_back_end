@@ -5,7 +5,7 @@ export class CreateReportDto {
     topicName: string;
     topicType: TopicTypeEnum;
     description: string;
-    status: ReportStatusEnum;
+    status?: ReportStatusEnum;
     createdTime?: Date;
     user: User;
 }
