@@ -14,6 +14,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { AnnouncementModule } from './announcement/announcement.module';
 import { PaymentModule } from './payment/payment.module';
 import { ContractsModule } from './contracts/contracts.module';
+import { ReportsModule } from './reports/reports.module';
 
 require('dotenv').config();
 
@@ -44,6 +45,7 @@ require('dotenv').config();
         }),
         AnnouncementModule,
         PaymentModule,
+        ReportsModule,
     ],
     controllers: [AppController, NotificationController, ReviewController],
     providers: [AppService],
