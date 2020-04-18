@@ -22,6 +22,11 @@ export class ReportsController {
         return this.reportService.getReportsByUserId(userId);
     }
 
+    @Get('messages/:reportId')
+    async getMessagesByReportId(@Param() reportId: number) {
+        return this.reportService.getMessagesByReportId(reportId);
+    }
+
     @Post()
     async createNewReport(@Body() createReportDto: CreateReportDto) {
         return this.reportService.createNewReport(createReportDto);
