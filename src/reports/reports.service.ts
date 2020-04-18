@@ -45,4 +45,8 @@ export class ReportsService {
         createMessageDto.createdTime = new Date();
         return this.messageRepository.save(createMessageDto);
     }
+
+    async getMessagesByReportId(reportId: number) {
+        return this.messageRepository.find({ where: { report: reportId } });
+    }
 }
