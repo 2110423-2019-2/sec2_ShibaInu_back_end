@@ -34,4 +34,13 @@ export class ReportsService {
         createReportDto.createdTime = new Date();
         return this.reportRepository.save(createReportDto);
     }
+
+    async setReportStatus(reportId: number, status: number){
+        if(status == 0){
+            return this.reportRepository.update(reportId, { status: "open" });
+        }
+        else{
+            return this.reportRepository.update(reportId, { status: "closed" });
+        }
+    }
 }
