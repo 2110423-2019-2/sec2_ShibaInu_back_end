@@ -4,6 +4,7 @@ import { Report, Message } from '../entities/report.entity';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { CreateReportDto } from './reports.dto';
+import { CreateMessageDto } from './messages.dto';
 
 @Injectable()
 export class ReportsService {
@@ -41,5 +42,10 @@ export class ReportsService {
         } else {
             return this.reportRepository.update(reportId, { status: 'closed' });
         }
+    }
+
+    async sendMessage(createMessageDto: CreateMessageDto){
+        createMessageDto.createdTime = new Date();
+        return this.messageRepository.save(createMessageDto);
     }
 }

@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Body, Post, Patch } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { CreateReportDto } from './reports.dto';
+import { CreateMessageDto } from './messages.dto';
 
 @Controller('reports')
 export class ReportsController {
@@ -32,5 +33,10 @@ export class ReportsController {
         @Param('status') status: number,
     ) {
         return this.reportService.setReportStatus(reportId, status);
+    }
+
+    @Post('send')
+    async sendMessage(@Body() createMessageDto: CreateMessageDto){
+        return this.reportService.sendMessage(createMessageDto);
     }
 }
