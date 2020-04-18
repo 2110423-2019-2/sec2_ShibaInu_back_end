@@ -31,7 +31,7 @@ export class Report {
     })
     topicType: string;
 
-    @Column('varchar', { length: 500 })
+    @Column('text')
     description: string;
 
     @Column('enum', {
