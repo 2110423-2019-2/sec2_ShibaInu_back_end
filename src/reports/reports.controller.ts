@@ -36,7 +36,7 @@ export class ReportsController {
     }
 
     @Post('send')
-    async sendMessage(@Body() createMessageDto: CreateMessageDto){
+    async sendMessage(@Body() createMessageDto: CreateMessageDto) {
         return this.reportService.sendMessage(createMessageDto);
     }
 }

@@ -44,7 +44,7 @@ export class ReportsService {
         }
     }
 
-    async sendMessage(createMessageDto: CreateMessageDto){
+    async sendMessage(createMessageDto: CreateMessageDto) {
         createMessageDto.createdTime = new Date();
         return this.messageRepository.save(createMessageDto);
     }
