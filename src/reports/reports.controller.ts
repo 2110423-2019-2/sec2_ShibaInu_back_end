@@ -27,7 +27,10 @@ export class ReportsController {
     }
 
     @Patch(':reportId/:status')
-    async setReportStatus(@Param('reportId') reportId: number, @Param('status') status: number){
+    async setReportStatus(
+        @Param('reportId') reportId: number,
+        @Param('status') status: number,
+    ) {
         return this.reportService.setReportStatus(reportId, status);
     }
 }
