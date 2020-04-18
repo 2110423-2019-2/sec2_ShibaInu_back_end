@@ -60,7 +60,7 @@ export class Message {
     @PrimaryGeneratedColumn()
     messageId: number;
 
-    @Column('varchar', { length: 500 })
+    @Column('text')
     detail: string;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
