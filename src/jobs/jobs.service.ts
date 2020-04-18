@@ -162,7 +162,11 @@ export class JobsService {
     }
 
     async editJob(jobId: number, userId: number, updateJobDto: UpdateJobDto) {
-        if (userId != await (await this.jobRepository.findOne(jobId)).client.userId) throw new ForbiddenException(`Only job owner can edit this job!`);
+        if (
+            userId !=
+            (await (await this.jobRepository.findOne(jobId)).client.userId)
+        )
+            throw new ForbiddenException(`Only job owner can edit this job!`);
         if (updateJobDto.requiredSkills) {
             let updateJobReqSkills = updateJobDto.requiredSkills;
             await this.jobReqSkillRepository.delete({ job: { jobId: jobId } });
