@@ -14,9 +14,6 @@ export class ReportsService {
 
         @InjectRepository(Message)
         private readonly messageRepository: Repository<Message>,
-
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
     ) {}
 
     async getAllReports() {
