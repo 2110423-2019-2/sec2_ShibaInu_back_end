@@ -47,6 +47,8 @@ export class ReportsService {
     }
 
     async getMessagesByReportId(reportId: number) {
-        return this.messageRepository.find({ where: { report: reportId } });
+        return this.messageRepository.query(
+            `select * from message where reportId = ${reportId}`,
+        );
     }
 }

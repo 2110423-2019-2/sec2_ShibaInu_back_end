@@ -23,7 +23,7 @@ export class ReportsController {
     }
 
     @Get('messages/:reportId')
-    async getMessagesByReportId(@Param() reportId: number) {
+    async getMessagesByReportId(@Param('reportId') reportId: number) {
         return this.reportService.getMessagesByReportId(reportId);
     }
 
