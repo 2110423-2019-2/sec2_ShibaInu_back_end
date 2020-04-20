@@ -416,7 +416,9 @@ export class UsersService {
     }
 
     async uploadIDCard(userId, filename: string) {
-        return this.userRepository.update(userId, { identificationCardPic: filename });
+        return this.userRepository.update(userId, {
+            identificationCardPic: filename,
+        });
     }
 
     async getIDCardById(userId: number): Promise<User[]> {
@@ -431,7 +433,9 @@ export class UsersService {
     }
 
     async uploadIDCardWithFace(userId, filename: string) {
-        return this.userRepository.update(userId, { identificationCardWithFacePic: filename });
+        return this.userRepository.update(userId, {
+            identificationCardWithFacePic: filename,
+        });
     }
 
     async getIDCardWithFaceById(userId: number): Promise<User[]> {

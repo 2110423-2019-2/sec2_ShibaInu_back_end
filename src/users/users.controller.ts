@@ -238,10 +238,7 @@ export class UsersController {
             fileFilter: imageFileFilter,
         }),
     )
-    async uploadIDCard(
-        @UploadedFile() file,
-        @Param('userId') userId: number,
-    ) {
+    async uploadIDCard(@UploadedFile() file, @Param('userId') userId: number) {
         const response = {
             originalname: file.originalname,
             filename: file.filename,
