@@ -1,13 +1,18 @@
-import { Controller, Get, Param, Body, Post, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Body, Post, Patch, UseGuards, SetMetadata } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { CreateReportDto } from './reports.dto';
 import { CreateMessageDto } from './messages.dto';
+import { AdminGuard } from 'src/guards/admin.guard';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('reports')
 export class ReportsController {
     constructor(private readonly reportService: ReportsService) {}
 
     @Get()
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
     async getAllReports() {
         return this.reportService.getAllReports();
     }
@@ -33,6 +38,9 @@ export class ReportsController {
     }
 
     @Patch(':reportId/:status')
+    @UseGuards(AdminGuard)
+    @SetMetadata('isadmin', [true])
+    @UseGuards(AuthGuard())
     async setReportStatus(
         @Param('reportId') reportId: number,
         @Param('status') status: number,
