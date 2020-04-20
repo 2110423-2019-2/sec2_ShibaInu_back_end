@@ -414,4 +414,34 @@ export class UsersService {
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
+
+    async uploadIDCard(userId, filename: string) {
+        return this.userRepository.update(userId, { identificationCardPic: filename });
+    }
+
+    async getIDCardById(userId: number): Promise<User[]> {
+        let ret = await this.userRepository.find({
+            select: ['identificationCardPic'],
+            where: {
+                userId: userId,
+            },
+        });
+        if (!ret) throw new BadRequestException('Invalid UserId');
+        return ret;
+    }
+
+    async uploadIDCardWithFace(userId, filename: string) {
+        return this.userRepository.update(userId, { identificationCardWithFacePic: filename });
+    }
+
+    async getIDCardWithFaceById(userId: number): Promise<User[]> {
+        let ret = await this.userRepository.find({
+            select: ['identificationCardWithFacePic'],
+            where: {
+                userId: userId,
+            },
+        });
+        if (!ret) throw new BadRequestException('Invalid UserId');
+        return ret;
+    }
 }

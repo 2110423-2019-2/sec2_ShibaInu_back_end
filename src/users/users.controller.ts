@@ -227,4 +227,62 @@ export class UsersController {
             root: './profile_picture',
         });
     }
+
+    @Post('IDCard/:userId')
+    @UseInterceptors(
+        FileInterceptor('image', {
+            storage: diskStorage({
+                destination: './idcard',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async uploadIDCard(
+        @UploadedFile() file,
+        @Param('userId') userId: number,
+    ) {
+        const response = {
+            originalname: file.originalname,
+            filename: file.filename,
+        };
+        return this.userService.uploadIDCard(userId, file.filename);
+    }
+
+    @Get('IDCard/:userId')
+    async getIDCard(@Param('userId') userId: number, @Res() res) {
+        let temp = await this.userService.getIDCardById(userId);
+        return res.sendFile(temp[0].identificationCardPic, {
+            root: './idcard',
+        });
+    }
+
+    @Post('IDCardWithFace/:userId')
+    @UseInterceptors(
+        FileInterceptor('image', {
+            storage: diskStorage({
+                destination: './idcard_with_face',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async uploadIDCardWithFace(
+        @UploadedFile() file,
+        @Param('userId') userId: number,
+    ) {
+        const response = {
+            originalname: file.originalname,
+            filename: file.filename,
+        };
+        return this.userService.uploadIDCardWithFace(userId, file.filename);
+    }
+
+    @Get('IDCardWithFace/:userId')
+    async getIDCardWithFace(@Param('userId') userId: number, @Res() res) {
+        let temp = await this.userService.getIDCardWithFaceById(userId);
+        return res.sendFile(temp[0].identificationCardWithFacePic, {
+            root: './idcard_with_face',
+        });
+    }
 }
