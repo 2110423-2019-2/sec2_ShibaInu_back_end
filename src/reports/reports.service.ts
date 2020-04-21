@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Report, Message } from '../entities/report.entity';
 import { Repository } from 'typeorm';
-import { User } from '../entities/user.entity';
 import { CreateReportDto } from './reports.dto';
 import { CreateMessageDto } from './messages.dto';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ReportsService {
@@ -14,6 +14,8 @@ export class ReportsService {
 
         @InjectRepository(Message)
         private readonly messageRepository: Repository<Message>,
+
+        private readonly userService: UsersService,
     ) {}
 
     async getAllReports() {
