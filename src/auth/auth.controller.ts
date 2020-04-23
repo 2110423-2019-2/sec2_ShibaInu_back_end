@@ -25,8 +25,8 @@ export class AuthController {
         return this.authService.fbLogin(req.user);
     }
 
-    @Get('checkban/:username')
-    async checkBanState(@Param('username') username: string) {
-        return this.authService.checkBanState(username);
+    @Get('checkban/:id')
+    async checkBanState(@Param('id') userId: number) {
+        return this.authService.checkBanState(userId);
     }
 }
