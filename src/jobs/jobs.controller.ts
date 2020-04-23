@@ -71,6 +71,16 @@ export class JobsController {
         return this.jobService.getRecommendJobByFreelancerId(userId);
     }
 
+    @Patch('finishJob')
+    async finishJobByJobId(@Body() updateJobDto: UpdateJobDto) {
+        return this.jobService.finishJob(updateJobDto);
+    }
+
+    @Get('finishedLink/:jobId')
+    async getJobLinkByJobId(@Param('jobId') jobId: number) {
+        return this.jobService.getJobLinkByJobId(jobId);
+    }
+
     @UseGuards(AuthGuard())
     @Post()
     async createNewJob(@Body() createJobDto: CreateJobDto) {

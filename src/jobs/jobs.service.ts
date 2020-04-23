@@ -3,6 +3,7 @@ import {
     BadGatewayException,
     BadRequestException,
     ForbiddenException,
+    InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory, User } from '../entities/user.entity';
@@ -10,6 +11,7 @@ import { Job, JobReqSkill, JobOptSkill, Status } from '../entities/job.entity';
 import { Repository, Like, Between } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 import { Bid } from '../entities/bid.entity';
+import { url } from 'inspector';
 
 @Injectable()
 export class JobsService {
@@ -230,6 +232,19 @@ export class JobsService {
             }),
             3,
         );
+    }
+
+    async finishJob(updateJobDto: UpdateJobDto) {
+        if (await (await this.jobRepository.findOne(updateJobDto.jobId)).status != Status.WORKING) throw new InternalServerErrorException('Job status is not "working".');
+        updateJobDto.status = Status.DONE;
+        updateJobDto.updatedTime = new Date();
+        return this.jobRepository.update(updateJobDto.jobId, updateJobDto);
+    }
+
+    async getJobLinkByJobId(jobId: number): Promise<string> {
+        let res = await (await this.jobRepository.findOne(jobId)).url;
+        if (!res) throw new BadRequestException('invalid jobId');
+        return res;
     }
 
     async getInterestedFreelancersById(jobId: number): Promise<User[]> {
