@@ -14,7 +14,9 @@ import { CreateAnnouncementDto } from './announcement.dto';
 import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { LoadUser } from '../decorators/users.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Announcement')
 @Controller('announcement')
 export class AnnouncementController {
     constructor(private readonly announcementService: AnnouncementService) {}
