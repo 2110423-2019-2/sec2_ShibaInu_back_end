@@ -91,9 +91,7 @@ export class PaymentController {
     }
 
     @Post('transfer')
-    async transfer(
-        @Body() createPaymentDto: CreatePaymentDto
-    ) {
+    async transfer(@Body() createPaymentDto: CreatePaymentDto) {
         return await this.paymentService.transfer(createPaymentDto);
     }
 

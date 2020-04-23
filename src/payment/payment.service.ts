@@ -174,9 +174,9 @@ export class PaymentService {
     }
 
     async transfer(createPaymentDto: CreatePaymentDto) {
-        let userId:any = createPaymentDto.userId;
+        let userId: any = createPaymentDto.userId;
         let bankAccount = await this.getBankAccountByUserId(userId);
-        
+
         if (bankAccount) {
             createPaymentDto.bankAccount = bankAccount.cardId;
             createPaymentDto.type = PaymentTypeEnum.transfer;
