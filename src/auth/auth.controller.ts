@@ -1,4 +1,4 @@
-import { Controller, Post, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, UseGuards, Request, Param, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -16,5 +16,10 @@ export class AuthController {
     @Post('login-fb')
     async fbLogin(@Request() req: any) {
         return this.authService.fbLogin(req.user);
+    }
+
+    @Get('checkban/:username')
+    async checkBanState(@Param('username') username: string) {
+        return this.authService.checkBanState(username);
     }
 }

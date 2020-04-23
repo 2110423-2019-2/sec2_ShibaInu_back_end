@@ -1,8 +1,7 @@
-import { Injectable, UseGuards, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ForbiddenException, BadRequestException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt = require('bcrypt');
-import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
 export class AuthService {
@@ -36,8 +35,19 @@ export class AuthService {
         };
     }
 
+    async checkBanState(username: any) {
+        const user = await this.userService.getUserByUsername(username);
+        if (!user) throw new BadRequestException(`Invalid username`);
+        if (user.isBanned) {
+            const banreason = user.banReason;
+            throw new ForbiddenException(`This user is banned from using our system\n Reason: ${banreason ? banreason : 'Unspecified'}`)
+        }
+        return user.isBanned
+    }
+
     async fbLogin(profile: any) {
         const user = await this.userService.handleFacebookUser(profile);
+        await this.checkBanState(user.username);
         return await this.login(user);
     }
 }
