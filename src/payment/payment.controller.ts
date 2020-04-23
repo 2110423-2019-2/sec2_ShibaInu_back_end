@@ -15,7 +15,9 @@ import {
 import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { LoadUser } from '../decorators/users.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Payment')
 @Controller('payment')
 export class PaymentController {
     constructor(private readonly paymentService: PaymentService) {}

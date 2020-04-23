@@ -13,7 +13,9 @@ import { JobsService } from './jobs.service';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { LoadUser } from 'src/decorators/users.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Jobs')
 @Controller('jobs')
 export class JobsController {
     constructor(private readonly jobService: JobsService) {}

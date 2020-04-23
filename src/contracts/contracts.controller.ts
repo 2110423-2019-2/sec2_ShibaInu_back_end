@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { ContractsService } from './contracts.service';
 import { CreateContractDto, UpdateContractDto } from './contracts.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Contracts')
 @Controller('contracts')
 export class ContractsController {
     constructor(private readonly contractService: ContractsService) {}
