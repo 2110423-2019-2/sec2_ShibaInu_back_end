@@ -235,7 +235,13 @@ export class JobsService {
     }
 
     async finishJob(updateJobDto: UpdateJobDto) {
-        if (await (await this.jobRepository.findOne(updateJobDto.jobId)).status != Status.WORKING) throw new InternalServerErrorException('Job status is not "working".');
+        if (
+            (await (await this.jobRepository.findOne(updateJobDto.jobId))
+                .status) != Status.WORKING
+        )
+            throw new InternalServerErrorException(
+                'Job status is not "working".',
+            );
         updateJobDto.status = Status.DONE;
         updateJobDto.updatedTime = new Date();
         return this.jobRepository.update(updateJobDto.jobId, updateJobDto);
