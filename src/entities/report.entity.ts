@@ -16,8 +16,8 @@ export enum ReportStatusEnum {
 export enum TopicTypeEnum {
     JOB = 'job',
     PERSON = 'person',
-    PROBLEM = 'problem', 
-    OTHER = 'other'
+    PROBLEM = 'problem',
+    OTHER = 'other',
 }
 
 @Entity()

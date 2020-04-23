@@ -171,7 +171,7 @@ export class User {
     @Column('boolean', { default: false })
     isBanned: boolean;
 
-    @Column('varchar', { length: 200, nullable: true})
+    @Column('varchar', { length: 200, nullable: true })
     banReason: string;
 
     @Column('boolean', { default: false })
