@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+    Injectable,
+    BadRequestException,
+    ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
     User,
@@ -346,6 +350,8 @@ export class UsersService {
 
     async banUser(banUser: BanUserDto): Promise<any> {
         let res: any = null;
+        if ((await this.userRepository.findOne(banUser.user)).isAdmin == true)
+            throw new ForbiddenException('Admin ban is prohibited');
         res = await this.userRepository.update(banUser.user, {
             isBanned: banUser.isBanned,
             banReason: banUser.banReason,
