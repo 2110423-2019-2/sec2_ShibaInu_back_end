@@ -348,6 +348,7 @@ export class UsersService {
         let res: any = null;
         res = await this.userRepository.update(banUser.user, {
             isBanned: banUser.isBanned,
+            banReason: banUser.banReason,
         });
         if (res.raw.affectedRows == 0)
             throw new BadRequestException('Invalid UserId');
