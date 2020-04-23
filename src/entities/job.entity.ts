@@ -54,7 +54,7 @@ export class Job {
     @Column('enum', { enum: Catergory, default: Catergory.OTHER })
     catergory: Catergory;
 
-    @Column('varchar', { length: 200 })
+    @Column('varchar', { default: '', length: 200 })
     url: string;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
