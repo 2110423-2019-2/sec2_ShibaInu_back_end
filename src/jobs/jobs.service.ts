@@ -3,6 +3,7 @@ import {
     BadGatewayException,
     BadRequestException,
     ForbiddenException,
+    InternalServerErrorException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory, User } from '../entities/user.entity';
@@ -231,6 +232,13 @@ export class JobsService {
             }),
             3,
         );
+    }
+
+    async finishJob(updateJobDto: UpdateJobDto) {
+        if (await (await this.jobRepository.findOne(updateJobDto.jobId)).status != Status.WORKING) throw new InternalServerErrorException('Job status is not "working".');
+        updateJobDto.status = Status.DONE;
+        updateJobDto.updatedTime = new Date();
+        return this.jobRepository.update(updateJobDto.jobId, updateJobDto);
     }
 
     async getJobLinkByJobId(jobId: number): Promise<string> {
