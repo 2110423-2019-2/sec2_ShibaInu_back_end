@@ -13,6 +13,7 @@ export class CreateJobDto {
     estimatedWage: number;
     catergory: Catergory;
     status?: Status;
+    url?: string;
     createdTime?: Date;
     updatedTime?: Date;
     client: User;
@@ -29,6 +30,7 @@ export class UpdateJobDto {
     estimatedWage?: number;
     catergory?: Catergory;
     status?: Status;
+    url?: string;
     createdTime?: Date;
     updatedTime?: Date;
     contractId?: number;

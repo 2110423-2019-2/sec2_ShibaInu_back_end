@@ -10,6 +10,7 @@ import { Job, JobReqSkill, JobOptSkill, Status } from '../entities/job.entity';
 import { Repository, Like, Between } from 'typeorm';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 import { Bid } from '../entities/bid.entity';
+import { url } from 'inspector';
 
 @Injectable()
 export class JobsService {
@@ -230,6 +231,12 @@ export class JobsService {
             }),
             3,
         );
+    }
+
+    async getJobLinkByJobId(jobId: number): Promise<string> {
+        let res = await (await this.jobRepository.findOne(jobId)).url;
+        if (!res) throw new BadRequestException('invalid jobId');
+        return res;
     }
 
     async getInterestedFreelancersById(jobId: number): Promise<User[]> {
