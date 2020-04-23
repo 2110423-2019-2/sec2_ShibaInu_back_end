@@ -82,6 +82,16 @@ export class JobsController {
     }
 
     @UseGuards(AuthGuard())
+    @Patch('confirm/:jobId,:boolean')
+    async confirmJob(
+        @LoadUser() user: any,
+        @Param('jobId') jobId: number,
+        @Param('boolean') boolean: number,
+    ) {
+        return this.jobService.confirmJob(jobId, boolean, user.id);
+    }
+
+    @UseGuards(AuthGuard())
     @Post()
     async createNewJob(@Body() createJobDto: CreateJobDto) {
         return this.jobService.createNewJob(createJobDto);

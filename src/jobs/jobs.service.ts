@@ -237,7 +237,8 @@ export class JobsService {
     }
 
     async finishJob(updateJobDto: UpdateJobDto) {
-        if ((await this.jobRepository.findOne(updateJobDto.jobId)).url != "") throw new ForbiddenException('url is already assigned');
+        if ((await this.jobRepository.findOne(updateJobDto.jobId)).url != '')
+            throw new ForbiddenException('url is already assigned');
         if (updateJobDto.status === Status.ACCEPTED) {
             updateJobDto.acceptedTime = new Date();
         } else if (updateJobDto.status === Status.WORKING) {
@@ -250,6 +251,24 @@ export class JobsService {
         updateJobDto.updatedTime = new Date();
         updateJobDto.doneTime = updateJobDto.updatedTime;
         return this.jobRepository.update(updateJobDto.jobId, updateJobDto);
+    }
+
+    async confirmJob(jobId: number, boolean: number, userId: number) {
+        let job: Job = await this.jobRepository.findOne(jobId);
+        if (userId != (await job.client.userId))
+            throw new ForbiddenException(`Only job owner can edit this job!`);
+        let res: any = null;
+        if (boolean == 0)
+            res = this.jobRepository.update(job, {
+                status: Status.WORKING,
+                url: '',
+            });
+        else
+            res = this.jobRepository.update(job, {
+                status: Status.DONE,
+                doneTime: new Date(),
+            });
+        return res;
     }
 
     async getJobLinkByJobId(jobId: number): Promise<string> {
