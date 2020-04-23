@@ -40,9 +40,9 @@ export class AuthService {
         };
     }
 
-    async checkBanState(username: any) {
-        const user = await this.userService.getUserByUsername(username);
-        if (!user) throw new BadRequestException(`Invalid username`);
+    async checkBanState(userId: any) {
+        const user = await this.userService.getUserById(userId);
+        if (!user) throw new BadRequestException(`Invalid user ID`);
         if (user.isBanned) {
             const banreason = user.banReason;
             throw new ForbiddenException(
@@ -56,7 +56,7 @@ export class AuthService {
 
     async fbLogin(profile: any) {
         const user = await this.userService.handleFacebookUser(profile);
-        await this.checkBanState(user.username);
+        await this.checkBanState(user.userId);
         return await this.login(user);
     }
 }

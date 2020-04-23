@@ -14,7 +14,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         if (!user) {
             throw new UnauthorizedException(`Invalid username or password`);
         }
-        await this.authService.checkBanState(username);
+        await this.authService.checkBanState(user.userId);
         return user;
     }
 }
