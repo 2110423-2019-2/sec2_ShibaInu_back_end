@@ -246,6 +246,7 @@ export class JobsService {
             );
         updateJobDto.status = Status.DONE;
         updateJobDto.updatedTime = new Date();
+        updateJobDto.doneTime = updateJobDto.updatedTime;
         return this.jobRepository.update(updateJobDto.jobId, updateJobDto);
     }
 
