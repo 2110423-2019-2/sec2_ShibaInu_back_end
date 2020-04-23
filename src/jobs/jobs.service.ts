@@ -197,6 +197,8 @@ export class JobsService {
             updateJobDto.startWorkingTime = new Date();
         } else if (updateJobDto.status === Status.DONE) {
             updateJobDto.doneTime = new Date();
+        } else if (updateJobDto.status === Status.CLOSED) {
+            updateJobDto.closedTime = new Date();
         }
         updateJobDto.updatedTime = new Date();
         return this.jobRepository.update(jobId, updateJobDto);

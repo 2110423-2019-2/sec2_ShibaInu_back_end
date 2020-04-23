@@ -81,6 +81,11 @@ export class Job {
     })
     doneTime: Date;
 
+    @Column('timestamp', {
+        default: null,
+    })
+    closedTime: Date;
+
     @ManyToOne(
         type => User,
         user => user.jobs,
