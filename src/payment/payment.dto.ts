@@ -14,6 +14,7 @@ export class CreatePaymentDto {
     type?: PaymentTypeEnum;
     user: User;
     job: Job;
+    userId: number;
 }
 
 export class CreateCreditCardDto {

@@ -173,12 +173,14 @@ export class PaymentService {
         return resp;
     }
 
-    async transfer(createPaymentDto: CreatePaymentDto, freelancer: any) {
-        let bankAccount = await this.getBankAccountByUser(freelancer);
+    async transfer(createPaymentDto: CreatePaymentDto) {
+        let userId:any = createPaymentDto.userId;
+        let bankAccount = await this.getBankAccountByUserId(userId);
+        
         if (bankAccount) {
             createPaymentDto.bankAccount = bankAccount.cardId;
             createPaymentDto.type = PaymentTypeEnum.transfer;
-            createPaymentDto.user = freelancer.id;
+            createPaymentDto.user = userId;
             createPaymentDto.createdAt = new Date();
             return this.paymentRepository.insert(createPaymentDto);
         } else {
@@ -319,6 +321,16 @@ export class PaymentService {
         let resp = await this.bankAccountRepository.findOne({
             where: {
                 user: user.id,
+            },
+        });
+        if (!resp) throw new BadRequestException('Not found any bank account');
+        return resp;
+    }
+
+    async getBankAccountByUserId(userId: number): Promise<BankAccount> {
+        let resp = await this.bankAccountRepository.findOne({
+            where: {
+                user: userId,
             },
         });
         if (!resp) throw new BadRequestException('Not found any bank account');

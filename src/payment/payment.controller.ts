@@ -90,13 +90,11 @@ export class PaymentController {
         return await this.paymentService.getAllPaymentTransfer();
     }
 
-    @UseGuards(AuthGuard())
     @Post('transfer')
     async transfer(
-        @Body() createPaymentDto: CreatePaymentDto,
-        @LoadUser() freelancer: any,
+        @Body() createPaymentDto: CreatePaymentDto
     ) {
-        return await this.paymentService.transfer(createPaymentDto, freelancer);
+        return await this.paymentService.transfer(createPaymentDto);
     }
 
     @UseGuards(AuthGuard())
