@@ -249,7 +249,6 @@ export class JobsService {
             updateJobDto.closedTime = new Date();
         }
         updateJobDto.updatedTime = new Date();
-        updateJobDto.doneTime = updateJobDto.updatedTime;
         return this.jobRepository.update(updateJobDto.jobId, updateJobDto);
     }
 
