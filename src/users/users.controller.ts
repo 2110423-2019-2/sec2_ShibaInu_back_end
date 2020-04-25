@@ -29,10 +29,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from '../util/file-uploading.utils';
 import { diskStorage } from 'multer';
-import { file } from '@babel/types';
 import { LoadUser } from '../decorators/users.decorator';
 import { AdminGuard } from '../guards/admin.guard';
-import { get } from 'http';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
@@ -55,12 +53,19 @@ export class UsersController {
     async getAllUsers(
         @Query('name') name: string,
         @Query('cat') cat: string,
-        @Query('s1') s1: string,
-        @Query('s2') s2: string,
-        @Query('s3') s3: string,
+        @Query('s1') skill1: string,
+        @Query('s2') skill2: string,
+        @Query('s3') skill3: string,
         @Query('sort') sort: number,
     ) {
-        return this.userService.getAllUsers(name, cat, s1, s2, s3, sort);
+        return this.userService.getAllUsers(
+            name,
+            cat,
+            skill1,
+            skill2,
+            skill3,
+            sort,
+        );
     }
 
     @UseGuards(AuthGuard())
