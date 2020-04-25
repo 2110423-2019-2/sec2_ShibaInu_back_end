@@ -1,7 +1,7 @@
-import { Injectable, Get, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateBidDto, UpdateBidDto } from './bids.dto';
+import { CreateBidDto } from './bids.dto';
 import { Bid } from '../entities/bid.entity';
 import { Job } from '../entities/job.entity';
 

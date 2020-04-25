@@ -31,6 +31,16 @@ export class ReviewController {
         return this.reviewService.getReviewsByUserId(revieweeId);
     }
 
+    @Get('/client/:jobId')
+    async getClientReviewsByJobId(@Param('jobId') jobId: number) {
+        return this.reviewService.getClientReviewsByJobId(jobId);
+    }
+
+    @Get('/freelancer/:jobId')
+    async getFreelancerReviewsByJobId(@Param('jobId') jobId: number) {
+        return this.reviewService.getFreelancerReviewsByJobId(jobId);
+    }
+
     @Post()
     async createNewReview(@Body() createReviewDto: CreateReviewDto) {
         return this.reviewService.createNewReview(createReviewDto);

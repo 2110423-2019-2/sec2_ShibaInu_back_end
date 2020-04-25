@@ -13,8 +13,6 @@ import { CreateReportDto } from './reports.dto';
 import { CreateMessageDto } from './messages.dto';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
-import { LoadUser } from 'src/decorators/users.decorator';
-import { User } from 'src/entities/user.entity';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Reports')

@@ -5,6 +5,7 @@ import { Review } from '../entities/review.entity';
 import { CreateReviewDto, EditReviewDto } from './review.dto';
 import { JobsService } from '../jobs/jobs.service';
 import { UsersService } from '../users/users.service';
+import { Job } from 'src/entities/job.entity';
 
 @Injectable()
 export class ReviewService {
@@ -13,6 +14,9 @@ export class ReviewService {
         private readonly reviewRepository: Repository<Review>,
         private readonly jobService: JobsService,
         private readonly userService: UsersService,
+
+        @InjectRepository(Job)
+        private readonly jobRepository: Repository<Job>,
     ) {}
 
     async getAllReviews(): Promise<Review[]> {
@@ -35,6 +39,32 @@ export class ReviewService {
             where: { reviewee: revieweeId },
         });
 
+        if (ret.length == 0)
+            throw new BadRequestException('Not found any Review');
+        return ret;
+    }
+
+    async getClientReviewsByJobId(jobId: number): Promise<Review[]> {
+        let ret = await this.reviewRepository.find({
+            where: {
+                job: jobId,
+                reviewer: await (await this.jobRepository.findOne(jobId)).client
+                    .userId,
+            },
+        });
+        if (ret.length == 0)
+            throw new BadRequestException('Not found any Review');
+        return ret;
+    }
+
+    async getFreelancerReviewsByJobId(jobId: number): Promise<Review[]> {
+        let ret = await this.reviewRepository.find({
+            where: {
+                job: jobId,
+                reviewee: await (await this.jobRepository.findOne(jobId)).client
+                    .userId,
+            },
+        });
         if (ret.length == 0)
             throw new BadRequestException('Not found any Review');
         return ret;

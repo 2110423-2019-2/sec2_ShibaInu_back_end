@@ -40,7 +40,7 @@ export class UsersController {
 
     @UseGuards(AuthGuard())
     @Get('test')
-    async testUserDecorator(@LoadUser() user: any, @Req() req: any) {
+    async testUserDecorator(@LoadUser() user: any) {
         console.log(user);
     }
 
@@ -220,10 +220,6 @@ export class UsersController {
         @UploadedFile() file,
         @Param('userId') userId: number,
     ) {
-        const response = {
-            originalname: file.originalname,
-            filename: file.filename,
-        };
         return this.userService.uploadProfilePic(userId, file.filename);
     }
 
@@ -246,10 +242,6 @@ export class UsersController {
         }),
     )
     async uploadIDCard(@UploadedFile() file, @Param('userId') userId: number) {
-        const response = {
-            originalname: file.originalname,
-            filename: file.filename,
-        };
         return this.userService.uploadIDCard(userId, file.filename);
     }
 
@@ -275,10 +267,6 @@ export class UsersController {
         @UploadedFile() file,
         @Param('userId') userId: number,
     ) {
-        const response = {
-            originalname: file.originalname,
-            filename: file.filename,
-        };
         return this.userService.uploadIDCardWithFace(userId, file.filename);
     }
 
