@@ -51,9 +51,11 @@ export class JobsService {
         os2: string,
         os3: string,
         sort: number,
+        status: string,
     ): Promise<Job[]> {
         if (!name) name = '';
         if (!cat) cat = '';
+        if (!status) status = '';
         if (!w1) w1 = 0;
         if (!w2) w2 = 9999999999999;
         if (!t1) t1 = 0;
@@ -65,6 +67,7 @@ export class JobsService {
                 estimatedWage: Between(w1, w2),
                 estimatedDuration: Between(t1, t2),
                 catergory: Like(`%${cat}%`),
+                status: Like(`%${status}%`),
             },
         });
         let data = [[]];

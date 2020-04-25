@@ -35,6 +35,7 @@ export class JobsController {
         @Query('os2') os2: string,
         @Query('os3') os3: string,
         @Query('sort') sort: number,
+        @Query('status') status: string,
     ) {
         return this.jobService.getAllJobs(
             name,
@@ -50,6 +51,7 @@ export class JobsController {
             os2,
             os3,
             sort,
+            status,
         );
     }
 
