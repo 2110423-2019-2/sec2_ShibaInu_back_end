@@ -1,12 +1,11 @@
 import { User } from '../entities/user.entity';
-import { Job } from '../entities/job.entity';
 
 export class CreateReviewDto {
     description: string;
     score: number;
-    reviewee: User;
+    reviewee: any;
     reviewer: User;
-    job: Job;
+    job: any;
     jobName?: string;
     createdTime?: Date;
 }

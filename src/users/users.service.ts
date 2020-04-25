@@ -43,80 +43,82 @@ export class UsersService {
     async getAllUsers(
         name: string,
         cat: string,
-        s1: string,
-        s2: string,
-        s3: string,
+        skill1: string,
+        skill2: string,
+        skill3: string,
         sort: number,
     ): Promise<User[]> {
         if (!name) name = '';
-        let a1 = await this.userRepository.find({
+        const usersFromFirstName = await this.userRepository.find({
             select: ['userId'],
             where: {
                 firstName: Like(`%${name}%`),
             },
         });
-        let a2 = await this.userRepository.find({
+        const usersFromLastName = await this.userRepository.find({
             select: ['userId'],
             where: {
                 lastName: Like(`%${name}%`),
             },
         });
         let data = [[]];
-        for (let i = 0; i < a1.length; i++) data[0].push(a1[i].userId);
-        for (let i = 0; i < a2.length; i++) data[0].push(a2[i].userId);
+        for (let i = 0; i < usersFromFirstName.length; i++)
+            data[0].push(usersFromFirstName[i].userId);
+        for (let i = 0; i < usersFromLastName.length; i++)
+            data[0].push(usersFromLastName[i].userId);
         if (cat) {
-            let cat0 = await this.userRepository.query(
+            const usersFromCategory = await this.userRepository.query(
                 `select userId from interested_category where interestedCategory = '${cat}'`,
             );
             data.push([]);
-            for (let i = 0; i < cat0.length; i++)
-                data[data.length - 1].push(cat0[i].userId);
+            for (let i = 0; i < usersFromCategory.length; i++)
+                data[data.length - 1].push(usersFromCategory[i].userId);
         }
-        if (s1) {
-            let sk1 = await this.userRepository.query(
-                `select userId from user_skill where skill = '${s1}'`,
+        if (skill1) {
+            const usersFromSkill1 = await this.userRepository.query(
+                `select userId from user_skill where skill = '${skill1}'`,
             );
             data.push([]);
-            for (let i = 0; i < sk1.length; i++)
-                data[data.length - 1].push(sk1[i].userId);
+            for (let i = 0; i < usersFromSkill1.length; i++)
+                data[data.length - 1].push(usersFromSkill1[i].userId);
         }
-        if (s2) {
-            let sk2 = await this.userRepository.query(
-                `select userId from user_skill where skill = '${s2}'`,
+        if (skill2) {
+            const usersFromSkill2 = await this.userRepository.query(
+                `select userId from user_skill where skill = '${skill2}'`,
             );
             data.push([]);
-            for (let i = 0; i < sk2.length; i++)
-                data[data.length - 1].push(sk2[i].userId);
+            for (let i = 0; i < usersFromSkill2.length; i++)
+                data[data.length - 1].push(usersFromSkill2[i].userId);
         }
-        if (s3) {
-            let sk3 = await this.userRepository.query(
-                `select userId from user_skill where skill = '${s3}'`,
+        if (skill3) {
+            const usersFromSkill3 = await this.userRepository.query(
+                `select userId from user_skill where skill = '${skill3}'`,
             );
             data.push([]);
-            for (let i = 0; i < sk3.length; i++)
-                data[data.length - 1].push(sk3[i].userId);
+            for (let i = 0; i < usersFromSkill3.length; i++)
+                data[data.length - 1].push(usersFromSkill3[i].userId);
         }
-        let userIds = data.reduce((a, b) => a.filter(c => b.includes(c)));
-        let sorting: Object;
+        const userIds = data.reduce((a, b) => a.filter(c => b.includes(c)));
+        let sortingMethod: Object;
         switch (Number(sort)) {
             case 0:
-                sorting = { userId: 'DESC' };
+                sortingMethod = { userId: 'DESC' };
                 break;
             case 1:
-                sorting = { userId: 'ASC' };
+                sortingMethod = { userId: 'ASC' };
                 break;
             case 2:
-                sorting = { sumReviewedScore: 'DESC' };
+                sortingMethod = { sumReviewedScore: 'DESC' };
                 break;
             case 3:
-                sorting = { sumReviewedScore: 'ASC' };
+                sortingMethod = { sumReviewedScore: 'ASC' };
                 break;
             default:
-                sorting = { sumReviewedScore: 'DESC' };
+                sortingMethod = { sumReviewedScore: 'DESC' };
                 break;
         }
-        let ret = await this.userRepository.findByIds(userIds, {
-            order: sorting,
+        const ret = await this.userRepository.findByIds(userIds, {
+            order: sortingMethod,
         });
         if (ret.length == 0)
             throw new BadRequestException('Not found any User');
@@ -124,13 +126,13 @@ export class UsersService {
     }
 
     async getUserById(userId: number): Promise<User> {
-        let ret = await this.userRepository.findOne(userId);
+        const ret = await this.userRepository.findOne(userId);
         if (!ret) throw new BadRequestException('Invalid User');
         return ret;
     }
 
     async getUserId(userNamePasswordDto: UserNamePasswordDto) {
-        let ret = await this.userRepository.find({
+        const ret = await this.userRepository.find({
             where: {
                 username: userNamePasswordDto.username,
                 password: userNamePasswordDto.password,
@@ -154,7 +156,7 @@ export class UsersService {
     }
 
     async getUserByUsername(username: string): Promise<User> {
-        let ret = await this.userRepository.findOne({
+        const ret = await this.userRepository.findOne({
             where: {
                 username: username,
             },
@@ -175,7 +177,7 @@ export class UsersService {
     }
 
     async getCategoryByUserId(userId: number): Promise<InterestedCategory[]> {
-        let ret = await this.interestedCategoryRepository.find({
+        const ret = await this.interestedCategoryRepository.find({
             select: ['interestedCategory'],
             where: {
                 user: userId,
@@ -186,7 +188,7 @@ export class UsersService {
     }
 
     async getSkillByUserId(userId: number): Promise<UserSkill[]> {
-        let ret = await this.userSkillRepository.find({
+        const ret = await this.userSkillRepository.find({
             select: ['skill'],
             where: {
                 user: userId,
@@ -197,7 +199,7 @@ export class UsersService {
     }
 
     async getAverageReviewdScore(userId: number): Promise<number> {
-        let user = await this.getUserById(userId);
+        const user = await this.getUserById(userId);
         return user.sumReviewedScore / user.reviewedNumber;
     }
 
@@ -249,7 +251,7 @@ export class UsersService {
     }
 
     async createNewUserInterestedCategory(userId, interestedCategory) {
-        let ret = await this.interestedCategoryRepository.save({
+        const ret = await this.interestedCategoryRepository.save({
             user: userId,
             interestedCategory: interestedCategory,
         });
@@ -258,7 +260,7 @@ export class UsersService {
     }
 
     async createNewUserSkill(userId, skill) {
-        let ret = await this.userSkillRepository.save({
+        const ret = await this.userSkillRepository.save({
             user: userId,
             skill: skill,
         });
@@ -295,23 +297,23 @@ export class UsersService {
                 );
             }
         }
-        let ret = await this.userRepository.save(editUserDto);
+        const ret = await this.userRepository.save(editUserDto);
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
     async updateReviewData(userId: number, score: number) {
-        console.log(userId, score);
-        let user = await this.getUserById(userId);
-        let editUserDto = new EditUserDto();
-        editUserDto.userId = userId;
-        editUserDto.sumReviewedScore = user.sumReviewedScore + score;
-        editUserDto.reviewedNumber = user.reviewedNumber + 1;
+        const user = await this.getUserById(userId);
+        const editUserDto: EditUserDto = {
+            userId: userId,
+            sumReviewedScore: user.sumReviewedScore + score,
+            reviewedNumber: user.reviewedNumber + 1,
+        };
         return this.editUser(editUserDto);
     }
 
     async deleteInterestedCategoryOfUserId(userId) {
-        let ret = await this.interestedCategoryRepository.delete({
+        const ret = await this.interestedCategoryRepository.delete({
             user: userId,
         });
         if (!ret) throw new BadRequestException('Invalid UserId');
@@ -379,7 +381,7 @@ export class UsersService {
         userId,
         interestedCategory: InterestedCategoryEnum,
     ) {
-        let ret = await this.interestedCategoryRepository.delete({
+        const ret = await this.interestedCategoryRepository.delete({
             user: userId,
             interestedCategory: interestedCategory,
         });
@@ -388,13 +390,13 @@ export class UsersService {
     }
 
     async deleteUserSkillOfUserId(userId) {
-        let ret = await this.userSkillRepository.delete({ user: userId });
+        const ret = await this.userSkillRepository.delete({ user: userId });
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
     }
 
     async deleteUserSkill(userId, skill: string) {
-        let ret = await this.userSkillRepository.delete({
+        const ret = await this.userSkillRepository.delete({
             user: userId,
             skill: skill,
         });
@@ -412,7 +414,7 @@ export class UsersService {
     }
 
     async getProfilePicById(userId: number): Promise<User[]> {
-        let ret = await this.userRepository.find({
+        const ret = await this.userRepository.find({
             select: ['profilePicture'],
             where: {
                 userId: userId,
@@ -429,7 +431,7 @@ export class UsersService {
     }
 
     async getIDCardById(userId: number): Promise<User[]> {
-        let ret = await this.userRepository.find({
+        const ret = await this.userRepository.find({
             select: ['identificationCardPic'],
             where: {
                 userId: userId,
@@ -446,7 +448,7 @@ export class UsersService {
     }
 
     async getIDCardWithFaceById(userId: number): Promise<User[]> {
-        let ret = await this.userRepository.find({
+        const ret = await this.userRepository.find({
             select: ['identificationCardWithFacePic'],
             where: {
                 userId: userId,
