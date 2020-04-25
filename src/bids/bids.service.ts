@@ -22,7 +22,7 @@ export class BidsService {
     }
 
     async getJobByUserId(userId: number): Promise<Job[]> {
-        let temp = await this.bidRepository.find({
+        const temp = await this.bidRepository.find({
             where: { userId: userId },
             select: ['jobId'],
         });
@@ -36,7 +36,7 @@ export class BidsService {
         jobIdParam: number,
         userIdParam: number,
     ): Promise<Bid> {
-        let res = await this.bidRepository.find({
+        const res = await this.bidRepository.find({
             where: {
                 jobId: jobIdParam,
                 userId: userIdParam,
