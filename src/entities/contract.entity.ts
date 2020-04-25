@@ -1,14 +1,11 @@
 import {
     Entity,
     Column,
-    ManyToOne,
     PrimaryGeneratedColumn,
     JoinColumn,
     OneToOne,
 } from 'typeorm';
 import { Job } from './job.entity';
-import { User } from './user.entity';
-import { type } from 'os';
 
 export enum ContractStatus {
     NULL = 'null',

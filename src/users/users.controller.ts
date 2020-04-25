@@ -29,10 +29,8 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from '../util/file-uploading.utils';
 import { diskStorage } from 'multer';
-import { file } from '@babel/types';
 import { LoadUser } from '../decorators/users.decorator';
 import { AdminGuard } from '../guards/admin.guard';
-import { get } from 'http';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Users')
@@ -42,7 +40,7 @@ export class UsersController {
 
     @UseGuards(AuthGuard())
     @Get('test')
-    async testUserDecorator(@LoadUser() user: any, @Req() req: any) {
+    async testUserDecorator(@LoadUser() user: any) {
         console.log(user);
     }
 
@@ -215,10 +213,6 @@ export class UsersController {
         @UploadedFile() file,
         @Param('userId') userId: number,
     ) {
-        const response = {
-            originalname: file.originalname,
-            filename: file.filename,
-        };
         return this.userService.uploadProfilePic(userId, file.filename);
     }
 
@@ -241,10 +235,6 @@ export class UsersController {
         }),
     )
     async uploadIDCard(@UploadedFile() file, @Param('userId') userId: number) {
-        const response = {
-            originalname: file.originalname,
-            filename: file.filename,
-        };
         return this.userService.uploadIDCard(userId, file.filename);
     }
 
@@ -270,10 +260,6 @@ export class UsersController {
         @UploadedFile() file,
         @Param('userId') userId: number,
     ) {
-        const response = {
-            originalname: file.originalname,
-            filename: file.filename,
-        };
         return this.userService.uploadIDCardWithFace(userId, file.filename);
     }
 
