@@ -156,6 +156,9 @@ export class JobReqSkill {
     })
     @JoinColumn({ name: 'jobId' })
     public job: Job;
+
+    @PrimaryColumn('integer')
+    jobId: number;
 }
 
 @Entity()
@@ -169,4 +172,7 @@ export class JobOptSkill {
     })
     @JoinColumn({ name: 'jobId' })
     public job: Job;
+
+    @PrimaryColumn('integer')
+    jobId: number;
 }
