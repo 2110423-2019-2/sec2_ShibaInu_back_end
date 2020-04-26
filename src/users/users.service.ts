@@ -67,33 +67,25 @@ export class UsersService {
         for (let i = 0; i < usersFromLastName.length; i++)
             data[0].push(usersFromLastName[i].userId);
         if (cat) {
-            const usersFromCategory = await this.userRepository.query(
-                `select userId from interested_category where interestedCategory = '${cat}'`,
-            );
+            const usersFromCategory = await this.interestedCategoryRepository.find({where:{interestedCategory:cat}});
             data.push([]);
             for (let i = 0; i < usersFromCategory.length; i++)
                 data[data.length - 1].push(usersFromCategory[i].userId);
         }
         if (skill1) {
-            const usersFromSkill1 = await this.userRepository.query(
-                `select userId from user_skill where skill = '${skill1}'`,
-            );
+            const usersFromSkill1 = await this.userSkillRepository.find({where:{skill:skill1}});
             data.push([]);
             for (let i = 0; i < usersFromSkill1.length; i++)
                 data[data.length - 1].push(usersFromSkill1[i].userId);
         }
         if (skill2) {
-            const usersFromSkill2 = await this.userRepository.query(
-                `select userId from user_skill where skill = '${skill2}'`,
-            );
+            const usersFromSkill2 = await this.userSkillRepository.find({where:{skill:skill2}});
             data.push([]);
             for (let i = 0; i < usersFromSkill2.length; i++)
                 data[data.length - 1].push(usersFromSkill2[i].userId);
         }
         if (skill3) {
-            const usersFromSkill3 = await this.userRepository.query(
-                `select userId from user_skill where skill = '${skill3}'`,
-            );
+            const usersFromSkill3 = await this.userSkillRepository.find({where:{skill:skill3}});
             data.push([]);
             for (let i = 0; i < usersFromSkill3.length; i++)
                 data[data.length - 1].push(usersFromSkill3[i].userId);
