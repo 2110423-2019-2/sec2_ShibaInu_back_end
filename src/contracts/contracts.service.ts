@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateContractDto, UpdateContractDto } from './contracts.dto';
 import { Contract, ContractStatus } from '../entities/contract.entity';
 import { Job, Status } from '../entities/job.entity';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class ContractsService {
@@ -13,6 +14,9 @@ export class ContractsService {
 
         @InjectRepository(Job)
         private readonly jobRepository: Repository<Job>,
+
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
     ) {}
 
     async getContractById(contractId: number): Promise<Contract> {
@@ -39,24 +43,29 @@ export class ContractsService {
     }
 
     async acceptContract(updateContractDto: UpdateContractDto): Promise<any> {
-        if (updateContractDto.status == ContractStatus.ACCEPTED)
+        if (updateContractDto.status == ContractStatus.ACCEPTED){
             updateContractDto.acceptedTime = new Date();
+            const contract: Contract = await this.contractRepository.findOne(
+                updateContractDto.contractId
+            );
+            const freelancer: User = await this.userRepository.findOne(
+                contract.freelancerId
+            );
+            await this.jobRepository.update(
+                    contract.jobId,
+                {
+                    status: Status.ACCEPTED,
+                    acceptedTime: new Date(),
+                    freelancerId: freelancer.userId,
+                    freelancerFullname: (freelancer.firstName + ' ' + freelancer.lastName)
+                }
+            );
+        }
         const res: any = await this.contractRepository.update(
             updateContractDto.contractId,
             updateContractDto,
         );
         if (!res) throw new BadRequestException('Invalid ContractId');
-        await this.jobRepository.update(
-            (
-                await this.contractRepository.findOne(
-                    updateContractDto.contractId,
-                )
-            ).jobId,
-            {
-                status: Status.ACCEPTED,
-                acceptedTime: new Date(),
-            },
-        );
         return res;
     }
 
