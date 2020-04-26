@@ -92,7 +92,7 @@ export class Job {
     )
     client: User;
 
-    @Column('integer')
+    @Column('integer', { default: null })
     freelancerId: number;
 
     @Column('varchar', { default: '', length: 100 })
