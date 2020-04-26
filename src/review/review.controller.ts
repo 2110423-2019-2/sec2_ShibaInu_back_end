@@ -60,8 +60,7 @@ export class ReviewController {
         return this.reviewService.deleteReview(reviewId);
     }
 
-    
-    @Patch("test/fixReviewScore")
+    @Patch('test/fixReviewScore')
     async fixSumReviewScore() {
         return this.reviewService.fixSumReviewScore();
     }

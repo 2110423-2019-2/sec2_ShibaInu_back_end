@@ -96,12 +96,14 @@ export class ReviewService {
     }
 
     async fixSumReviewScore() {
-        const users = await this.userService.getAllUsers(null,
+        const users = await this.userService.getAllUsers(
             null,
             null,
             null,
             null,
-            null,);
+            null,
+            null,
+        );
         users.forEach(async user => {
             const userId = user.userId;
             let newSumReviewScore = 0;
@@ -109,10 +111,10 @@ export class ReviewService {
             reviews.forEach(review => {
                 newSumReviewScore += review.score;
             });
-            const editUserDto:EditUserDto = {
+            const editUserDto: EditUserDto = {
                 userId: userId,
-                sumReviewedScore: newSumReviewScore
-            }
+                sumReviewedScore: newSumReviewScore,
+            };
             this.userService.editUser(editUserDto);
         });
     }
