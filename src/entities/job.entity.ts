@@ -92,6 +92,12 @@ export class Job {
     )
     client: User;
 
+    @Column('integer')
+    freelancerId: number;
+
+    @Column('varchar', { default: '', length: 100 })
+    freelancerFullname: string;
+
     @Column('integer', {
         default: null,
     })

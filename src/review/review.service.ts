@@ -45,7 +45,7 @@ export class ReviewService {
     }
 
     async getClientReviewsByJobId(jobId: number): Promise<Review[]> {
-        let ret = await this.reviewRepository.find({
+        const ret = await this.reviewRepository.find({
             where: {
                 job: jobId,
                 reviewer: await (await this.jobRepository.findOne(jobId)).client
@@ -58,7 +58,7 @@ export class ReviewService {
     }
 
     async getFreelancerReviewsByJobId(jobId: number): Promise<Review[]> {
-        let ret = await this.reviewRepository.find({
+        const ret = await this.reviewRepository.find({
             where: {
                 job: jobId,
                 reviewee: await (await this.jobRepository.findOne(jobId)).client
