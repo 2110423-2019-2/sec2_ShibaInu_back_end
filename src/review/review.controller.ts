@@ -59,4 +59,9 @@ export class ReviewController {
     async deleteReview(@Param('reviewId') reviewId: number) {
         return this.reviewService.deleteReview(reviewId);
     }
+
+    @Patch('test/fixReviewScore')
+    async fixSumReviewScore() {
+        return this.reviewService.fixSumReviewScore();
+    }
 }
