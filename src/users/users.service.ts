@@ -180,7 +180,7 @@ export class UsersService {
         const ret = await this.interestedCategoryRepository.find({
             select: ['interestedCategory'],
             where: {
-                user: userId,
+                userId: userId,
             },
         });
         if (!ret) throw new BadRequestException('Invalid UserId');
@@ -191,7 +191,7 @@ export class UsersService {
         const ret = await this.userSkillRepository.find({
             select: ['skill'],
             where: {
-                user: userId,
+                userId: userId,
             },
         });
         if (!ret) throw new BadRequestException('Invalid UserId');
@@ -315,7 +315,7 @@ export class UsersService {
 
     async deleteInterestedCategoryOfUserId(userId) {
         const ret = await this.interestedCategoryRepository.delete({
-            user: userId,
+            userId: userId,
         });
         if (!ret) throw new BadRequestException('Invalid UserId');
         return ret;
@@ -398,7 +398,7 @@ export class UsersService {
 
     async deleteUserSkill(userId, skill: string) {
         const ret = await this.userSkillRepository.delete({
-            user: userId,
+            userId: userId,
             skill: skill,
         });
         if (!ret) throw new BadRequestException('Invalid UserId');

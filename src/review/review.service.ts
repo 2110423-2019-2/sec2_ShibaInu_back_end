@@ -6,6 +6,7 @@ import { CreateReviewDto, EditReviewDto } from './review.dto';
 import { JobsService } from '../jobs/jobs.service';
 import { UsersService } from '../users/users.service';
 import { Job } from 'src/entities/job.entity';
+import { EditUserDto } from 'src/users/users.dto';
 
 @Injectable()
 export class ReviewService {
@@ -91,6 +92,28 @@ export class ReviewService {
     async deleteReview(reviewId: number) {
         return this.reviewRepository.delete({
             reviewId: reviewId,
+        });
+    }
+
+    async fixSumReviewScore() {
+        const users = await this.userService.getAllUsers(null,
+            null,
+            null,
+            null,
+            null,
+            null,);
+        users.forEach(async user => {
+            const userId = user.userId;
+            let newSumReviewScore = 0;
+            const reviews = await this.getReviewsByUserId(userId);
+            reviews.forEach(review => {
+                newSumReviewScore += review.score;
+            });
+            const editUserDto:EditUserDto = {
+                userId: userId,
+                sumReviewedScore: newSumReviewScore
+            }
+            this.userService.editUser(editUserDto);
         });
     }
 }
