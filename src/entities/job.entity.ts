@@ -12,7 +12,6 @@ import { User } from './user.entity';
 import { Bid } from './bid.entity';
 import { Review } from './review.entity';
 import { Contract } from './contract.entity';
-import { type } from 'os';
 import { Payment } from './payment.entity';
 
 export enum Status {
@@ -20,6 +19,7 @@ export enum Status {
     ACCEPTED = 'accepted',
     WORKING = 'working',
     DONE = 'done',
+    CLOSED = 'closed',
 }
 
 export enum Catergory {
@@ -53,6 +53,9 @@ export class Job {
     @Column('enum', { enum: Catergory, default: Catergory.OTHER })
     catergory: Catergory;
 
+    @Column('varchar', { default: '', length: 200 })
+    url: string;
+
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;
 
@@ -77,15 +80,25 @@ export class Job {
     })
     doneTime: Date;
 
+    @Column('timestamp', {
+        default: null,
+    })
+    closedTime: Date;
+
     @ManyToOne(
-        type => User,
+        () => User,
         user => user.jobs,
         { eager: true },
     )
     client: User;
 
+    @Column('integer', {
+        default: null,
+    })
+    contractId: number;
+
     @OneToMany(
-        type => JobReqSkill,
+        () => JobReqSkill,
         jobReqSkill => jobReqSkill.job,
         { cascade: true, eager: true },
     )
@@ -93,20 +106,20 @@ export class Job {
     requiredSkills: JobReqSkill[];
 
     @OneToMany(
-        type => Bid,
+        () => Bid,
         bid => bid.jobId,
     )
     bid: Bid[];
 
     @OneToOne(
-        type => Contract,
+        () => Contract,
         contract => contract.job,
     )
     @JoinColumn({ name: 'contractId' })
     contract: Contract;
 
     @OneToMany(
-        type => JobOptSkill,
+        () => JobOptSkill,
         jobOptSkill => jobOptSkill.job,
         { cascade: true, eager: true },
     )
@@ -114,13 +127,13 @@ export class Job {
     optionalSkills: JobOptSkill[];
 
     @OneToMany(
-        type => Review,
+        () => Review,
         review => review.job,
     )
     reviews: Review[];
 
     @OneToMany(
-        type => Payment,
+        () => Payment,
         payment => payment.job,
     )
     payments: Payment[];
@@ -131,7 +144,7 @@ export class JobReqSkill {
     @PrimaryColumn('varchar', { length: 50 })
     skill: string;
 
-    @ManyToOne(type => Job, {
+    @ManyToOne(() => Job, {
         primary: true,
         onDelete: 'CASCADE',
     })
@@ -144,7 +157,7 @@ export class JobOptSkill {
     @PrimaryColumn('varchar', { length: 50 })
     skill: string;
 
-    @ManyToOne(type => Job, {
+    @ManyToOne(() => Job, {
         primary: true,
         onDelete: 'CASCADE',
     })

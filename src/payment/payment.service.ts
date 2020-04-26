@@ -34,7 +34,7 @@ export class PaymentService {
     private readonly request = require('request');
 
     async testCharge(): Promise<any> {
-        let tmp = await this.omise.tokens.create(
+        const tokens = await this.omise.tokens.create(
             {
                 card: {
                     name: 'JOHN DOE',
@@ -57,7 +57,7 @@ export class PaymentService {
                 amount: '100000', // 1,000 Baht
                 currency: 'thb',
                 capture: true,
-                card: tmp.id,
+                card: tokens.id,
             },
             function(err, resp) {
                 if (!err) {
@@ -72,7 +72,7 @@ export class PaymentService {
     }
 
     async testCreateToken() {
-        let tmp = await this.omise.tokens.create(
+        const tokens = await this.omise.tokens.create(
             {
                 card: {
                     name: 'JOHN DOE',
@@ -89,11 +89,11 @@ export class PaymentService {
             },
         );
 
-        return tmp;
+        return tokens;
     }
 
     async getAllPayment(): Promise<Payment[]> {
-        let resp = await this.paymentRepository.find();
+        const resp = await this.paymentRepository.find();
         if (resp.length == 0)
             throw new BadRequestException('Not found any Payment');
         return resp;
@@ -119,7 +119,7 @@ export class PaymentService {
     }
 
     async charge(createPaymentDto: CreatePaymentDto, client: any) {
-        let creditCard = await this.getCreditCardByUser(client);
+        const creditCard = await this.getCreditCardByUser(client);
         if (creditCard) {
             createPaymentDto.creditCard = creditCard.cardId;
             createPaymentDto.type = PaymentTypeEnum.charge;
@@ -132,7 +132,7 @@ export class PaymentService {
     }
 
     async markTransfer(url: string): Promise<any> {
-        let resp = await this.request.post(
+        const resp = await this.request.post(
             url,
             {
                 auth: {
@@ -154,13 +154,13 @@ export class PaymentService {
     }
 
     async test() {
-        let resp = await this.omise.transfers.list(
+        const transfers = await this.omise.transfers.list(
             { order: 'reverse_chronological', limit: 100 },
             function(error, list) {
                 /* Response. */
             },
         );
-        resp = resp.data;
+        const resp = transfers.data;
         resp.forEach(transfer => {
             if (transfer.paid == false) {
                 let urlTransfersMarkAsPaid =
@@ -173,12 +173,14 @@ export class PaymentService {
         return resp;
     }
 
-    async transfer(createPaymentDto: CreatePaymentDto, freelancer: any) {
-        let bankAccount = await this.getBankAccountByUser(freelancer);
+    async transfer(createPaymentDto: CreatePaymentDto) {
+        const userId: any = createPaymentDto.userId;
+        const bankAccount = await this.getBankAccountByUserId(userId);
+
         if (bankAccount) {
             createPaymentDto.bankAccount = bankAccount.cardId;
             createPaymentDto.type = PaymentTypeEnum.transfer;
-            createPaymentDto.user = freelancer.id;
+            createPaymentDto.user = userId;
             createPaymentDto.createdAt = new Date();
             return this.paymentRepository.insert(createPaymentDto);
         } else {
@@ -187,7 +189,7 @@ export class PaymentService {
     }
 
     async getAllPaymentCharge(): Promise<Payment[]> {
-        let resp = await this.paymentRepository.find({
+        const resp = await this.paymentRepository.find({
             where: {
                 type: PaymentTypeEnum.charge,
             },
@@ -198,7 +200,7 @@ export class PaymentService {
     }
 
     async getAllPaymentTransfer(): Promise<Payment[]> {
-        let resp = await this.paymentRepository.find({
+        const resp = await this.paymentRepository.find({
             where: {
                 type: PaymentTypeEnum.transfer,
             },
@@ -209,74 +211,74 @@ export class PaymentService {
     }
 
     async getPaymentByUser(user: any): Promise<any[]> {
-        let ret = await this.paymentRepository.find({
+        const payment = await this.paymentRepository.find({
             where: {
                 user: user.id,
             },
         });
-        if (!ret || ret.length == 0)
+        if (!payment || payment.length == 0)
             throw new BadRequestException('Not found any payment');
-        let ans = [];
-        ret.forEach(payment => {
+        let resp = [];
+        payment.forEach(payment => {
             let signedAmount;
             if (payment.type == PaymentTypeEnum.charge)
                 signedAmount = payment.amount;
             else signedAmount = -payment.amount;
-            ans.push({
+            resp.push({
                 amount: signedAmount,
                 jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
         });
-        return ans;
+        return resp;
     }
 
     async getPaymentChargeByUser(user: any): Promise<Payment[]> {
-        let ret = await this.paymentRepository.find({
+        const payment = await this.paymentRepository.find({
             where: {
                 user: user.id,
                 type: PaymentTypeEnum.charge,
             },
         });
-        if (!ret || ret.length == 0)
+        if (!payment || payment.length == 0)
             throw new BadRequestException('Not found any payment charge');
-        let ans = [];
-        ret.forEach(payment => {
-            ans.push({
+        let resp = [];
+        payment.forEach(payment => {
+            resp.push({
                 amount: payment.amount,
                 jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
         });
-        return ans;
+        return resp;
     }
 
     async getPaymentTransferByUser(user: any): Promise<Payment[]> {
-        let ret = await this.paymentRepository.find({
+        const payment = await this.paymentRepository.find({
             where: {
                 user: user.id,
                 type: PaymentTypeEnum.transfer,
             },
         });
-        if (!ret || ret.length == 0)
+        if (!payment || payment.length == 0)
             throw new BadRequestException('Not found any payment transfer');
 
-        let ans = [];
-        ret.forEach(payment => {
-            ans.push({
+        let resp = [];
+        payment.forEach(payment => {
+            resp.push({
                 amount: -payment.amount,
                 jobId: payment.job.jobId,
                 jobName: payment.job.name,
                 type: payment.type,
             });
         });
-        return ans;
+        return resp;
     }
 
     async getSumPaymentByUser(user: any) {
-        let payments = await this.getPaymentByUser(user);
+        const payments = await this.getPaymentByUser(user);
         if (!payments) throw new BadRequestException('Not found any user');
         let sum = 0;
         payments.forEach(payment => {
@@ -286,7 +288,7 @@ export class PaymentService {
     }
 
     async getSumChargeByClient(client: any) {
-        let payments = await this.getPaymentChargeByUser(client);
+        const payments = await this.getPaymentChargeByUser(client);
         if (!payments) throw new BadRequestException('Not found any user');
         let sum = 0;
         payments.forEach(payment => {
@@ -296,7 +298,7 @@ export class PaymentService {
     }
 
     async getSumTransferByFreelancer(freelancer: any) {
-        let payments = await this.getPaymentTransferByUser(freelancer);
+        const payments = await this.getPaymentTransferByUser(freelancer);
         if (!payments) throw new BadRequestException('Not found any user');
         let sum = 0;
         payments.forEach(payment => {
@@ -306,7 +308,7 @@ export class PaymentService {
     }
 
     async getCreditCardByUser(user: any): Promise<CreditCard> {
-        let resp = await this.creditCardRepository.findOne({
+        const resp = await this.creditCardRepository.findOne({
             where: {
                 user: user.id,
             },
@@ -316,9 +318,19 @@ export class PaymentService {
     }
 
     async getBankAccountByUser(user: any): Promise<BankAccount> {
-        let resp = await this.bankAccountRepository.findOne({
+        const resp = await this.bankAccountRepository.findOne({
             where: {
                 user: user.id,
+            },
+        });
+        if (!resp) throw new BadRequestException('Not found any bank account');
+        return resp;
+    }
+
+    async getBankAccountByUserId(userId: number): Promise<BankAccount> {
+        const resp = await this.bankAccountRepository.findOne({
+            where: {
+                user: userId,
             },
         });
         if (!resp) throw new BadRequestException('Not found any bank account');
@@ -329,7 +341,7 @@ export class PaymentService {
         user: any,
         createCreditCardDto: CreateCreditCardDto,
     ) {
-        let creditCard = await this.creditCardRepository.findOne({
+        const creditCard = await this.creditCardRepository.findOne({
             where: {
                 user: user.id,
             },
@@ -347,7 +359,7 @@ export class PaymentService {
         user: any,
         createBankAccountDto: CreateBankAccountDto,
     ) {
-        let bankAccount = await this.bankAccountRepository.findOne({
+        const bankAccount = await this.bankAccountRepository.findOne({
             where: {
                 user: user.id,
             },

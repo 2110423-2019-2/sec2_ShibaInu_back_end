@@ -13,6 +13,7 @@ import { Bid } from './bid.entity';
 import { Review } from './review.entity';
 import { Announcement } from './announcement.entity';
 import { Payment, CreditCard, BankAccount } from './payment.entity';
+import { Report } from './report.entity';
 
 export enum InterestedCategoryEnum {
     game = 'game',
@@ -100,8 +101,22 @@ export class User {
         () => Job,
         job => job.client,
         { nullable: true },
-    ) // note: we will create author property in the Photo class below
+    )
     jobs: Job[];
+
+    @OneToMany(
+        () => Report,
+        report => report.user,
+        { nullable: true, cascade: true },
+    )
+    reports: Report[];
+
+    @OneToMany(
+        () => Report,
+        message => message.user,
+        { nullable: true, cascade: true },
+    )
+    messages: Report[];
 
     @OneToMany(
         () => Bid,
@@ -155,6 +170,9 @@ export class User {
 
     @Column('boolean', { default: false })
     isBanned: boolean;
+
+    @Column('varchar', { length: 200, nullable: true })
+    banReason: string;
 
     @Column('boolean', { default: false })
     isSNSAccount: boolean;

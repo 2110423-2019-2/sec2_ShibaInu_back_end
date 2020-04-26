@@ -1,4 +1,8 @@
-import { Injectable, BadGatewayException, BadRequestException } from '@nestjs/common';
+import {
+    Injectable,
+    BadRequestException,
+    ForbiddenException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { InterestedCategory, User } from '../entities/user.entity';
 import { Job, JobReqSkill, JobOptSkill, Status } from '../entities/job.entity';
@@ -44,26 +48,29 @@ export class JobsService {
         os2: string,
         os3: string,
         sort: number,
+        status: string,
     ): Promise<Job[]> {
         if (!name) name = '';
         if (!cat) cat = '';
+        if (!status) status = '';
         if (!w1) w1 = 0;
         if (!w2) w2 = 9999999999999;
         if (!t1) t1 = 0;
         if (!t2) t2 = 2147483647;
-        let a = await this.jobRepository.find({
+        const a = await this.jobRepository.find({
             select: ['jobId'],
             where: {
                 name: Like(`%${name}%`),
                 estimatedWage: Between(w1, w2),
                 estimatedDuration: Between(t1, t2),
                 catergory: Like(`%${cat}%`),
+                status: Like(`%${status}%`),
             },
         });
         let data = [[]];
         for (let i = 0; i < a.length; i++) data[0].push(a[i].jobId);
         if (rs1) {
-            let reqs1 = await this.jobRepository.query(
+            const reqs1 = await this.jobRepository.query(
                 `select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs1}')`,
             );
             data.push([]);
@@ -71,7 +78,7 @@ export class JobsService {
                 data[data.length - 1].push(reqs1[i].jobId);
         }
         if (rs2) {
-            let reqs2 = await this.jobRepository.query(
+            const reqs2 = await this.jobRepository.query(
                 `select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs2}')`,
             );
             data.push([]);
@@ -79,7 +86,7 @@ export class JobsService {
                 data[data.length - 1].push(reqs2[i].jobId);
         }
         if (rs3) {
-            let reqs3 = await this.jobRepository.query(
+            const reqs3 = await this.jobRepository.query(
                 `select jobId from job where jobId in (select jobId from job_req_skill where skill = '${rs3}')`,
             );
             data.push([]);
@@ -87,7 +94,7 @@ export class JobsService {
                 data[data.length - 1].push(reqs3[i].jobId);
         }
         if (os1) {
-            let opts1 = await this.jobRepository.query(
+            const opts1 = await this.jobRepository.query(
                 `select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os1}')`,
             );
             data.push([]);
@@ -95,7 +102,7 @@ export class JobsService {
                 data[data.length - 1].push(opts1[i].jobId);
         }
         if (os2) {
-            let opts2 = await this.jobRepository.query(
+            const opts2 = await this.jobRepository.query(
                 `select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os2}')`,
             );
             data.push([]);
@@ -103,14 +110,14 @@ export class JobsService {
                 data[data.length - 1].push(opts2[i].jobId);
         }
         if (os3) {
-            let opts3 = await this.jobRepository.query(
+            const opts3 = await this.jobRepository.query(
                 `select jobId from job where jobId in (select jobId from job_opt_skill where skill = '${os3}')`,
             );
             data.push([]);
             for (let i = 0; i < opts3.length; i++)
                 data[data.length - 1].push(opts3[i].jobId);
         }
-        let jobIds = data.reduce((a, b) => a.filter(c => b.includes(c)));
+        const jobIds = data.reduce((a, b) => a.filter(c => b.includes(c)));
         let sorting: Object;
         switch (Number(sort)) {
             case 0:
@@ -139,8 +146,8 @@ export class JobsService {
     }
 
     async getJobById(jobId: number): Promise<Job> {
-        let res: any = await this.jobRepository.findOne(jobId);
-        if(!res) throw new BadRequestException("invalid jobId");
+        const res: any = await this.jobRepository.findOne(jobId);
+        if (!res) throw new BadRequestException('invalid jobId');
         return res;
     }
 
@@ -156,9 +163,14 @@ export class JobsService {
         return this.jobRepository.save(createJobDto);
     }
 
-    async editJob(jobId: number, updateJobDto: UpdateJobDto) {
+    async editJob(jobId: number, userId: number, updateJobDto: UpdateJobDto) {
+        if (
+            userId !=
+            (await (await this.jobRepository.findOne(jobId)).client.userId)
+        )
+            throw new ForbiddenException(`Only job owner can edit this job!`);
         if (updateJobDto.requiredSkills) {
-            let updateJobReqSkills = updateJobDto.requiredSkills;
+            const updateJobReqSkills = updateJobDto.requiredSkills;
             await this.jobReqSkillRepository.delete({ job: { jobId: jobId } });
             for (let i = 0; i < updateJobReqSkills.length; i++) {
                 this.jobReqSkillRepository.insert({
@@ -169,7 +181,7 @@ export class JobsService {
             delete updateJobDto.requiredSkills;
         }
         if (updateJobDto.optionalSkills) {
-            let updateJobOptSkills = updateJobDto.optionalSkills;
+            const updateJobOptSkills = updateJobDto.optionalSkills;
             await this.jobOptSkillRepository.delete({ job: { jobId: jobId } });
             for (let i = 0; i < updateJobOptSkills.length; i++) {
                 this.jobOptSkillRepository.insert({
@@ -185,6 +197,8 @@ export class JobsService {
             updateJobDto.startWorkingTime = new Date();
         } else if (updateJobDto.status === Status.DONE) {
             updateJobDto.doneTime = new Date();
+        } else if (updateJobDto.status === Status.CLOSED) {
+            updateJobDto.closedTime = new Date();
         }
         updateJobDto.updatedTime = new Date();
         return this.jobRepository.update(jobId, updateJobDto);
@@ -205,7 +219,7 @@ export class JobsService {
     async getRecommendJobByFreelancerId(
         freelancerUserId: number,
     ): Promise<Job[]> {
-        let temp = await this.interestedCategoryRepository.find({
+        const temp = await this.interestedCategoryRepository.find({
             where: { user: freelancerUserId },
         });
         let tempArray = [];
@@ -222,8 +236,48 @@ export class JobsService {
         );
     }
 
+    async finishJob(updateJobDto: UpdateJobDto) {
+        if ((await this.jobRepository.findOne(updateJobDto.jobId)).url != '')
+            throw new ForbiddenException('url is already assigned');
+        if (updateJobDto.status === Status.ACCEPTED) {
+            updateJobDto.acceptedTime = new Date();
+        } else if (updateJobDto.status === Status.WORKING) {
+            updateJobDto.startWorkingTime = new Date();
+        } else if (updateJobDto.status === Status.DONE) {
+            updateJobDto.doneTime = new Date();
+        } else if (updateJobDto.status === Status.CLOSED) {
+            updateJobDto.closedTime = new Date();
+        }
+        updateJobDto.updatedTime = new Date();
+        return this.jobRepository.update(updateJobDto.jobId, updateJobDto);
+    }
+
+    async confirmJob(jobId: number, boolean: number, userId: number) {
+        const job: Job = await this.jobRepository.findOne(jobId);
+        if (userId != job.client.userId)
+            throw new ForbiddenException(`Only job owner can edit this job!`);
+        let res: any = null;
+        if (boolean == 0)
+            res = this.jobRepository.update(job, {
+                status: Status.WORKING,
+                url: '',
+            });
+        else
+            res = this.jobRepository.update(job, {
+                status: Status.DONE,
+                doneTime: new Date(),
+            });
+        return res;
+    }
+
+    async getJobLinkByJobId(jobId: number): Promise<string> {
+        const res = (await this.jobRepository.findOne(jobId)).url;
+        if (!res) throw new BadRequestException('invalid jobId');
+        return res;
+    }
+
     async getInterestedFreelancersById(jobId: number): Promise<User[]> {
-        let userIds = await this.bidRepository.find({
+        const userIds = await this.bidRepository.find({
             select: ['userId'],
             where: { jobId: jobId },
         });

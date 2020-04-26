@@ -12,7 +12,10 @@ import {
 import { JobsService } from './jobs.service';
 import { CreateJobDto, UpdateJobDto } from './jobs.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { LoadUser } from 'src/decorators/users.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Jobs')
 @Controller('jobs')
 export class JobsController {
     constructor(private readonly jobService: JobsService) {}
@@ -32,6 +35,7 @@ export class JobsController {
         @Query('os2') os2: string,
         @Query('os3') os3: string,
         @Query('sort') sort: number,
+        @Query('status') status: string,
     ) {
         return this.jobService.getAllJobs(
             name,
@@ -47,6 +51,7 @@ export class JobsController {
             os2,
             os3,
             sort,
+            status,
         );
     }
 
@@ -70,6 +75,26 @@ export class JobsController {
         return this.jobService.getRecommendJobByFreelancerId(userId);
     }
 
+    @Patch('finishJob')
+    async finishJobByJobId(@Body() updateJobDto: UpdateJobDto) {
+        return this.jobService.finishJob(updateJobDto);
+    }
+
+    @Get('finishedLink/:jobId')
+    async getJobLinkByJobId(@Param('jobId') jobId: number) {
+        return this.jobService.getJobLinkByJobId(jobId);
+    }
+
+    @UseGuards(AuthGuard())
+    @Patch('confirm/:jobId,:boolean')
+    async confirmJob(
+        @LoadUser() user: any,
+        @Param('jobId') jobId: number,
+        @Param('boolean') boolean: number,
+    ) {
+        return this.jobService.confirmJob(jobId, boolean, user.id);
+    }
+
     @UseGuards(AuthGuard())
     @Post()
     async createNewJob(@Body() createJobDto: CreateJobDto) {
@@ -81,12 +106,14 @@ export class JobsController {
         return this.jobService.deleteJobById(jobId);
     }
 
+    @UseGuards(AuthGuard())
     @Patch(':jobId')
     async editJob(
+        @LoadUser() user: any,
         @Param('jobId') jobId: number,
         @Body() updateJobDto: UpdateJobDto,
     ) {
-        return this.jobService.editJob(jobId, updateJobDto);
+        return this.jobService.editJob(jobId, user.id, updateJobDto);
     }
 
     @Get('freelancers/:jobId')

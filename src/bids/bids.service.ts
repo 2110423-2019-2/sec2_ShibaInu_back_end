@@ -1,4 +1,4 @@
-import { Injectable, Get } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateBidDto } from './bids.dto';
@@ -30,6 +30,21 @@ export class BidsService {
             return [];
         }
         return this.jobRepository.findByIds(temp);
+    }
+
+    async getBidByJobUserId(
+        jobIdParam: number,
+        userIdParam: number,
+    ): Promise<Bid> {
+        let res = await this.bidRepository.find({
+            where: {
+                jobId: jobIdParam,
+                userId: userIdParam,
+            },
+        });
+        if (res.length == 0)
+            throw new BadRequestException('Invalid jobId or userId');
+        return res[0];
     }
 
     async getBidById(bidId: number): Promise<Bid> {

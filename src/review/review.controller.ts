@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto, EditReviewDto } from './review.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Review')
 @Controller('review')
 export class ReviewController {
     constructor(private readonly reviewService: ReviewService) {}
@@ -27,6 +29,16 @@ export class ReviewController {
     @Get('/reviewee/:revieweeId')
     async getReviewsByUserId(@Param('revieweeId') revieweeId: number) {
         return this.reviewService.getReviewsByUserId(revieweeId);
+    }
+
+    @Get('/client/:jobId')
+    async getClientReviewsByJobId(@Param('jobId') jobId: number) {
+        return this.reviewService.getClientReviewsByJobId(jobId);
+    }
+
+    @Get('/freelancer/:jobId')
+    async getFreelancerReviewsByJobId(@Param('jobId') jobId: number) {
+        return this.reviewService.getFreelancerReviewsByJobId(jobId);
     }
 
     @Post()

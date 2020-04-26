@@ -15,7 +15,9 @@ import {
 import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { LoadUser } from '../decorators/users.decorator';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Payment')
 @Controller('payment')
 export class PaymentController {
     constructor(private readonly paymentService: PaymentService) {}
@@ -90,13 +92,9 @@ export class PaymentController {
         return await this.paymentService.getAllPaymentTransfer();
     }
 
-    @UseGuards(AuthGuard())
     @Post('transfer')
-    async transfer(
-        @Body() createPaymentDto: CreatePaymentDto,
-        @LoadUser() freelancer: any,
-    ) {
-        return await this.paymentService.transfer(createPaymentDto, freelancer);
+    async transfer(@Body() createPaymentDto: CreatePaymentDto) {
+        return await this.paymentService.transfer(createPaymentDto);
     }
 
     @UseGuards(AuthGuard())

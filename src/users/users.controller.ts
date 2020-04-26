@@ -29,18 +29,18 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { editFileName, imageFileFilter } from '../util/file-uploading.utils';
 import { diskStorage } from 'multer';
-import { file } from '@babel/types';
 import { LoadUser } from '../decorators/users.decorator';
 import { AdminGuard } from '../guards/admin.guard';
-import { get } from 'http';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
     constructor(private readonly userService: UsersService) {}
 
     @UseGuards(AuthGuard())
     @Get('test')
-    async testUserDecorator(@LoadUser() user: any, @Req() req: any) {
+    async testUserDecorator(@LoadUser() user: any) {
         console.log(user);
     }
 
@@ -53,12 +53,19 @@ export class UsersController {
     async getAllUsers(
         @Query('name') name: string,
         @Query('cat') cat: string,
-        @Query('s1') s1: string,
-        @Query('s2') s2: string,
-        @Query('s3') s3: string,
+        @Query('s1') skill1: string,
+        @Query('s2') skill2: string,
+        @Query('s3') skill3: string,
         @Query('sort') sort: number,
     ) {
-        return this.userService.getAllUsers(name, cat, s1, s2, s3, sort);
+        return this.userService.getAllUsers(
+            name,
+            cat,
+            skill1,
+            skill2,
+            skill3,
+            sort,
+        );
     }
 
     @UseGuards(AuthGuard())
@@ -213,10 +220,6 @@ export class UsersController {
         @UploadedFile() file,
         @Param('userId') userId: number,
     ) {
-        const response = {
-            originalname: file.originalname,
-            filename: file.filename,
-        };
         return this.userService.uploadProfilePic(userId, file.filename);
     }
 
@@ -225,6 +228,53 @@ export class UsersController {
         let temp = await this.userService.getProfilePicById(userId);
         return res.sendFile(temp[0].profilePicture, {
             root: './profile_picture',
+        });
+    }
+
+    @Post('IDCard/:userId')
+    @UseInterceptors(
+        FileInterceptor('image', {
+            storage: diskStorage({
+                destination: './idcard',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async uploadIDCard(@UploadedFile() file, @Param('userId') userId: number) {
+        return this.userService.uploadIDCard(userId, file.filename);
+    }
+
+    @Get('IDCard/:userId')
+    async getIDCard(@Param('userId') userId: number, @Res() res) {
+        let temp = await this.userService.getIDCardById(userId);
+        return res.sendFile(temp[0].identificationCardPic, {
+            root: './idcard',
+        });
+    }
+
+    @Post('IDCardWithFace/:userId')
+    @UseInterceptors(
+        FileInterceptor('image', {
+            storage: diskStorage({
+                destination: './idcard_with_face',
+                filename: editFileName,
+            }),
+            fileFilter: imageFileFilter,
+        }),
+    )
+    async uploadIDCardWithFace(
+        @UploadedFile() file,
+        @Param('userId') userId: number,
+    ) {
+        return this.userService.uploadIDCardWithFace(userId, file.filename);
+    }
+
+    @Get('IDCardWithFace/:userId')
+    async getIDCardWithFace(@Param('userId') userId: number, @Res() res) {
+        let temp = await this.userService.getIDCardWithFaceById(userId);
+        return res.sendFile(temp[0].identificationCardWithFacePic, {
+            root: './idcard_with_face',
         });
     }
 }

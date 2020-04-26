@@ -8,12 +8,10 @@ import {
     Delete,
 } from '@nestjs/common';
 import { ContractsService } from './contracts.service';
-import {
-    CreateContractDto,
-    UpdateContractDto,
-    AcceptContractDto,
-} from './contracts.dto';
+import { CreateContractDto, UpdateContractDto } from './contracts.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Contracts')
 @Controller('contracts')
 export class ContractsController {
     constructor(private readonly contractService: ContractsService) {}
@@ -36,10 +34,10 @@ export class ContractsController {
     @Patch('/accept/:contractId')
     async acceptContract(
         @Param('contractId') contractId: number,
-        @Body() acceptContractDto: AcceptContractDto,
+        @Body() updateContractDto: UpdateContractDto,
     ) {
-        acceptContractDto.contractId = contractId;
-        return this.contractService.acceptContract(acceptContractDto);
+        updateContractDto.contractId = contractId;
+        return this.contractService.acceptContract(updateContractDto);
     }
 
     @Delete('/deleteByJobId/:jobId')

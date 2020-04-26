@@ -83,6 +83,7 @@ export class VerifyApprovalDto {
 export class BanUserDto {
     user: User;
     isBanned: boolean;
+    banReason?: string;
 }
 
 export class VerifyAdminDto {

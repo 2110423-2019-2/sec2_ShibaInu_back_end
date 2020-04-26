@@ -27,4 +27,7 @@ export class Notification {
     @ManyToOne(type => User)
     @JoinColumn({ name: 'userId' })
     user: User;
+
+    @Column('text', { nullable: true })
+    link: string;
 }

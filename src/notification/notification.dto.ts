@@ -6,4 +6,5 @@ export class CreateNotificationDto {
     createdTime?: Date;
     isRead?: boolean;
     user?: User;
+    link?: string;
 }

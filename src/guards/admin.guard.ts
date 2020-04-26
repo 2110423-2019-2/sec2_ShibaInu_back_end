@@ -4,7 +4,6 @@ import {
     Injectable,
     ForbiddenException,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { Reflector } from '@nestjs/core';
 import { UsersService } from '../users/users.service';
 
