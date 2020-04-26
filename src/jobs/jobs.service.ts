@@ -95,13 +95,13 @@ export class JobsService {
                 data[data.length - 1].push(opts1[i].jobId);
         }
         if (os2) {
-            const opts2 = await this.jobOptSkillRepository.find({where:{skill:os1}});
+            const opts2 = await this.jobOptSkillRepository.find({where:{skill:os2}});
             data.push([]);
             for (let i = 0; i < opts2.length; i++)
                 data[data.length - 1].push(opts2[i].jobId);
         }
         if (os3) {
-            const opts3 = await this.jobOptSkillRepository.find({where:{skill:os1}});
+            const opts3 = await this.jobOptSkillRepository.find({where:{skill:os3}});
             data.push([]);
             for (let i = 0; i < opts3.length; i++)
                 data[data.length - 1].push(opts3[i].jobId);
