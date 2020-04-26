@@ -207,6 +207,9 @@ export class InterestedCategory {
     @ManyToOne(type => User, { primary: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     public user: User;
+
+    @PrimaryColumn('integer')
+    userId: number;
 }
 
 @Entity()
@@ -217,6 +220,9 @@ export class UserSkill {
     @ManyToOne(() => User, { primary: true, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'userId' })
     public user: User;
+
+    @PrimaryColumn('integer')
+    userId: number;
 }
 
 @Entity()

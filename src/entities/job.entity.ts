@@ -92,6 +92,12 @@ export class Job {
     )
     client: User;
 
+    @Column('integer', { default: null })
+    freelancerId: number;
+
+    @Column('varchar', { default: '', length: 100 })
+    freelancerFullname: string;
+
     @Column('integer', {
         default: null,
     })
@@ -150,6 +156,9 @@ export class JobReqSkill {
     })
     @JoinColumn({ name: 'jobId' })
     public job: Job;
+
+    @PrimaryColumn('integer')
+    jobId: number;
 }
 
 @Entity()
@@ -163,4 +172,7 @@ export class JobOptSkill {
     })
     @JoinColumn({ name: 'jobId' })
     public job: Job;
+
+    @PrimaryColumn('integer')
+    jobId: number;
 }

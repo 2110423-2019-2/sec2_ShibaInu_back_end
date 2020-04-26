@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateContractDto, UpdateContractDto } from './contracts.dto';
 import { Contract, ContractStatus } from '../entities/contract.entity';
 import { Job, Status } from '../entities/job.entity';
+import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class ContractsService {
@@ -13,6 +14,9 @@ export class ContractsService {
 
         @InjectRepository(Job)
         private readonly jobRepository: Repository<Job>,
+
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
     ) {}
 
     async getContractById(contractId: number): Promise<Contract> {
@@ -20,7 +24,7 @@ export class ContractsService {
     }
 
     async getContractByJobId(jobIdParam: number): Promise<Contract> {
-        let res: any = await this.contractRepository.findOne({
+        const res: any = await this.contractRepository.findOne({
             where: { jobId: jobIdParam },
         });
         if (!res) throw new BadRequestException('Invalid jobId');
@@ -28,7 +32,9 @@ export class ContractsService {
     }
 
     async createNewContract(createContractDto: CreateContractDto) {
-        let res: any = await this.contractRepository.insert(createContractDto);
+        const res: any = await this.contractRepository.insert(
+            createContractDto,
+        );
         this.jobRepository.update(createContractDto.jobId, {
             contractId: createContractDto.contractId,
         });
@@ -37,25 +43,27 @@ export class ContractsService {
     }
 
     async acceptContract(updateContractDto: UpdateContractDto): Promise<any> {
-        let res: any = null;
-        if (updateContractDto.status == ContractStatus.ACCEPTED)
+        if (updateContractDto.status == ContractStatus.ACCEPTED) {
             updateContractDto.acceptedTime = new Date();
-        res = await this.contractRepository.update(
+            const contract: Contract = await this.contractRepository.findOne(
+                updateContractDto.contractId,
+            );
+            const freelancer: User = await this.userRepository.findOne(
+                contract.freelancerId,
+            );
+            await this.jobRepository.update(contract.jobId, {
+                status: Status.ACCEPTED,
+                acceptedTime: new Date(),
+                freelancerId: freelancer.userId,
+                freelancerFullname:
+                    freelancer.firstName + ' ' + freelancer.lastName,
+            });
+        }
+        const res: any = await this.contractRepository.update(
             updateContractDto.contractId,
             updateContractDto,
         );
         if (!res) throw new BadRequestException('Invalid ContractId');
-        await this.jobRepository.update(
-            (
-                await this.contractRepository.findOne(
-                    updateContractDto.contractId,
-                )
-            ).jobId,
-            {
-                status: Status.ACCEPTED,
-                acceptedTime: new Date(),
-            },
-        );
         return res;
     }
 
@@ -63,8 +71,7 @@ export class ContractsService {
         jobIdParam: number,
         updateContractDto: UpdateContractDto,
     ): Promise<any> {
-        let res: any = null;
-        res = await this.contractRepository.update(
+        const res: any = await this.contractRepository.update(
             await this.contractRepository.findOne({
                 where: { jobId: jobIdParam },
             }),
@@ -75,19 +82,21 @@ export class ContractsService {
     }
 
     async deleteContractByJobId(jobIdParam: number): Promise<any> {
-        let contract: Contract = await this.contractRepository.findOne({
+        const contract: Contract = await this.contractRepository.findOne({
             where: { jobId: jobIdParam },
         });
         if (!contract) throw new BadRequestException('Invalid JobId');
-        let res: any = null;
         if (contract.status != ContractStatus.ACCEPTED) {
             await this.jobRepository.update(
                 await this.jobRepository.findOne(jobIdParam),
                 { contractId: null },
             );
-            res = await this.contractRepository.delete({ jobId: jobIdParam });
+        } else {
+            throw new BadRequestException('Invalid status: ACCEPTED');
         }
-        if (!res) throw new BadRequestException('Invalid status: ACCEPTED');
+        const res: any = await this.contractRepository.delete({
+            jobId: jobIdParam,
+        });
         return res;
     }
 }
