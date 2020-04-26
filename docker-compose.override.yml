@@ -15,7 +15,7 @@ services:
             OMISE_PKEY:
             OMISE_SKEY:
             FACEBOOK_APP_ID:
-            ACEBOOK_APP_SECRET:
+            FACEBOOK_APP_SECRET:
             JWT_SECRET:
         ports:
             - 10000:10000
