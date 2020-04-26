@@ -97,7 +97,6 @@ export class JobsService {
             const opts1 = await this.jobOptSkillRepository.find({
                 where: { skill: os1 },
             });
-            console.log(opts1);
             data.push([]);
             for (let i = 0; i < opts1.length; i++)
                 data[data.length - 1].push(opts1[i].jobId);
