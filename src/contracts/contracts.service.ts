@@ -43,23 +43,21 @@ export class ContractsService {
     }
 
     async acceptContract(updateContractDto: UpdateContractDto): Promise<any> {
-        if (updateContractDto.status == ContractStatus.ACCEPTED){
+        if (updateContractDto.status == ContractStatus.ACCEPTED) {
             updateContractDto.acceptedTime = new Date();
             const contract: Contract = await this.contractRepository.findOne(
-                updateContractDto.contractId
+                updateContractDto.contractId,
             );
             const freelancer: User = await this.userRepository.findOne(
-                contract.freelancerId
+                contract.freelancerId,
             );
-            await this.jobRepository.update(
-                    contract.jobId,
-                {
-                    status: Status.ACCEPTED,
-                    acceptedTime: new Date(),
-                    freelancerId: freelancer.userId,
-                    freelancerFullname: (freelancer.firstName + ' ' + freelancer.lastName)
-                }
-            );
+            await this.jobRepository.update(contract.jobId, {
+                status: Status.ACCEPTED,
+                acceptedTime: new Date(),
+                freelancerId: freelancer.userId,
+                freelancerFullname:
+                    freelancer.firstName + ' ' + freelancer.lastName,
+            });
         }
         const res: any = await this.contractRepository.update(
             updateContractDto.contractId,
