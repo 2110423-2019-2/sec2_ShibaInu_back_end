@@ -70,38 +70,50 @@ export class JobsService {
         let data = [[]];
         for (let i = 0; i < a.length; i++) data[0].push(a[i].jobId);
         if (rs1) {
-            const reqs1 = await this.jobReqSkillRepository.find({where:{skill:rs1}});
+            const reqs1 = await this.jobReqSkillRepository.find({
+                where: { skill: rs1 },
+            });
             data.push([]);
             for (let i = 0; i < reqs1.length; i++)
                 data[data.length - 1].push(reqs1[i].jobId);
         }
         if (rs2) {
-            const reqs2 = await this.jobReqSkillRepository.find({where:{skill:rs2}});
+            const reqs2 = await this.jobReqSkillRepository.find({
+                where: { skill: rs2 },
+            });
             data.push([]);
             for (let i = 0; i < reqs2.length; i++)
                 data[data.length - 1].push(reqs2[i].jobId);
         }
         if (rs3) {
-            const reqs3 = await this.jobReqSkillRepository.find({where:{skill:rs3}});
+            const reqs3 = await this.jobReqSkillRepository.find({
+                where: { skill: rs3 },
+            });
             data.push([]);
             for (let i = 0; i < reqs3.length; i++)
                 data[data.length - 1].push(reqs3[i].jobId);
         }
         if (os1) {
-            const opts1 = await this.jobOptSkillRepository.find({where:{skill:os1}});
+            const opts1 = await this.jobOptSkillRepository.find({
+                where: { skill: os1 },
+            });
             console.log(opts1);
             data.push([]);
             for (let i = 0; i < opts1.length; i++)
                 data[data.length - 1].push(opts1[i].jobId);
         }
         if (os2) {
-            const opts2 = await this.jobOptSkillRepository.find({where:{skill:os2}});
+            const opts2 = await this.jobOptSkillRepository.find({
+                where: { skill: os2 },
+            });
             data.push([]);
             for (let i = 0; i < opts2.length; i++)
                 data[data.length - 1].push(opts2[i].jobId);
         }
         if (os3) {
-            const opts3 = await this.jobOptSkillRepository.find({where:{skill:os3}});
+            const opts3 = await this.jobOptSkillRepository.find({
+                where: { skill: os3 },
+            });
             data.push([]);
             for (let i = 0; i < opts3.length; i++)
                 data[data.length - 1].push(opts3[i].jobId);
