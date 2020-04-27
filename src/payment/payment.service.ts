@@ -94,7 +94,7 @@ export class PaymentService {
 
     async getAllPayment(): Promise<Payment[]> {
         const resp = await this.paymentRepository.find();
-        if (resp.length == 0)
+        if (resp.length === 0)
             throw new BadRequestException('Not found any Payment');
         return resp;
     }
@@ -162,7 +162,7 @@ export class PaymentService {
         );
         const resp = transfers.data;
         resp.forEach(transfer => {
-            if (transfer.paid == false) {
+            if (transfer.paid === false) {
                 let urlTransfersMarkAsPaid =
                     'https://api.omise.co/transfers/' +
                     transfer.id +
@@ -194,7 +194,7 @@ export class PaymentService {
                 type: PaymentTypeEnum.charge,
             },
         });
-        if (resp.length == 0)
+        if (resp.length === 0)
             throw new BadRequestException('Not found any Charge');
         return resp;
     }
@@ -205,7 +205,7 @@ export class PaymentService {
                 type: PaymentTypeEnum.transfer,
             },
         });
-        if (resp.length == 0)
+        if (resp.length === 0)
             throw new BadRequestException('Not found any Transfer');
         return resp;
     }
@@ -216,12 +216,12 @@ export class PaymentService {
                 user: user.id,
             },
         });
-        if (!payment || payment.length == 0)
+        if (!payment || payment.length === 0)
             throw new BadRequestException('Not found any payment');
         let resp = [];
         payment.forEach(payment => {
             let signedAmount;
-            if (payment.type == PaymentTypeEnum.charge)
+            if (payment.type === PaymentTypeEnum.charge)
                 signedAmount = payment.amount;
             else signedAmount = -payment.amount;
             resp.push({
@@ -241,7 +241,7 @@ export class PaymentService {
                 type: PaymentTypeEnum.charge,
             },
         });
-        if (!payment || payment.length == 0)
+        if (!payment || payment.length === 0)
             throw new BadRequestException('Not found any payment charge');
         let resp = [];
         payment.forEach(payment => {
@@ -262,7 +262,7 @@ export class PaymentService {
                 type: PaymentTypeEnum.transfer,
             },
         });
-        if (!payment || payment.length == 0)
+        if (!payment || payment.length === 0)
             throw new BadRequestException('Not found any payment transfer');
 
         let resp = [];

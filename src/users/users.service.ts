@@ -120,7 +120,7 @@ export class UsersService {
         const ret = await this.userRepository.findByIds(userIds, {
             order: sortingMethod,
         });
-        if (ret.length == 0)
+        if (ret.length === 0)
             throw new BadRequestException('Not found any User');
         return ret;
     }
@@ -138,7 +138,7 @@ export class UsersService {
                 password: userNamePasswordDto.password,
             },
         });
-        if (!ret || ret.length == 0)
+        if (!ret || ret.length === 0)
             throw new BadRequestException('Invalid username or password');
         return ret;
     }
@@ -353,13 +353,13 @@ export class UsersService {
 
     async banUser(banUser: BanUserDto): Promise<any> {
         let res: any = null;
-        if ((await this.userRepository.findOne(banUser.user)).isAdmin == true)
+        if ((await this.userRepository.findOne(banUser.user)).isAdmin === true)
             throw new ForbiddenException('Admin ban is prohibited');
         res = await this.userRepository.update(banUser.user, {
             isBanned: banUser.isBanned,
             banReason: banUser.banReason,
         });
-        if (res.raw.affectedRows == 0)
+        if (res.raw.affectedRows === 0)
             throw new BadRequestException('Invalid UserId');
         return res;
     }
@@ -369,7 +369,7 @@ export class UsersService {
         res = await this.userRepository.update(verifyAdminDto.user, {
             isAdmin: verifyAdminDto.isAdmin,
         });
-        if (res.raw.affectedRows == 0)
+        if (res.raw.affectedRows === 0)
             throw new BadRequestException('Invalid UserId');
         return res;
     }

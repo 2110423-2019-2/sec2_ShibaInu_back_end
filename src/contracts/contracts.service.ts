@@ -43,7 +43,7 @@ export class ContractsService {
     }
 
     async acceptContract(updateContractDto: UpdateContractDto): Promise<any> {
-        if (updateContractDto.status == ContractStatus.ACCEPTED) {
+        if (updateContractDto.status === ContractStatus.ACCEPTED) {
             updateContractDto.acceptedTime = new Date();
             const contract: Contract = await this.contractRepository.findOne(
                 updateContractDto.contractId,
