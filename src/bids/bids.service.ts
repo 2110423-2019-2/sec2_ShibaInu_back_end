@@ -26,7 +26,7 @@ export class BidsService {
             where: { userId: userId },
             select: ['jobId'],
         });
-        if (temp.length == 0) {
+        if (temp.length === 0) {
             return [];
         }
         return this.jobRepository.findByIds(temp);
@@ -42,7 +42,7 @@ export class BidsService {
                 userId: userIdParam,
             },
         });
-        if (res.length == 0)
+        if (res.length === 0)
             throw new BadRequestException('Invalid jobId or userId');
         return res[0];
     }
