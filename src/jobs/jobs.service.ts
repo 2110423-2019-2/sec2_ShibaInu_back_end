@@ -220,20 +220,25 @@ export class JobsService {
         freelancerUserId: number,
     ): Promise<Job[]> {
         const userCategory = await this.interestedCategoryRepository.find({
-            where: { user: freelancerUserId },
+            where: { userId: freelancerUserId },
         });
         let categories = [];
         for (let i = 0; i < userCategory.length; i++) {
-            categories.push({
-                catergory: userCategory[i].interestedCategory,
-            });
+            categories.push(userCategory[i].interestedCategory);
         }
-        return getRandom(
-            await this.jobRepository.find({
-                where: categories,
-            }),
-            3,
-        );
+
+        const allOpenJob = await this.jobRepository.find({
+            where: {
+                status: 'open',
+            },
+        });
+
+        let candidateJob = [];
+        allOpenJob.forEach(job => {
+            if (categories.includes(job.catergory)) candidateJob.push(job);
+        });
+
+        return getRandom(candidateJob, 3);
     }
 
     async finishJob(updateJobDto: UpdateJobDto) {
