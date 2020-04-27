@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Report, Message } from '../entities/report.entity';
+import { Report, Message, ReportStatusEnum } from '../entities/report.entity';
 import { Repository } from 'typeorm';
 import { CreateReportDto } from './reports.dto';
 import { CreateMessageDto } from './messages.dto';
@@ -35,9 +35,13 @@ export class ReportsService {
 
     async setReportStatus(reportId: number, status: number) {
         if (status === 0) {
-            return this.reportRepository.update(reportId, { status: 'open' });
+            return this.reportRepository.update(reportId, {
+                status: ReportStatusEnum.OPEN,
+            });
         } else {
-            return this.reportRepository.update(reportId, { status: 'closed' });
+            return this.reportRepository.update(reportId, {
+                status: ReportStatusEnum.CLOSED,
+            });
         }
     }
 
