@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Review } from '../entities/review.entity';
+import { Review, ReviewerRole } from '../entities/review.entity';
 import { CreateReviewDto, EditReviewDto } from './review.dto';
 import { JobsService } from '../jobs/jobs.service';
 import { UsersService } from '../users/users.service';
@@ -49,8 +49,7 @@ export class ReviewService {
         const ret = await this.reviewRepository.find({
             where: {
                 job: jobId,
-                reviewer: await (await this.jobRepository.findOne(jobId)).client
-                    .userId,
+                reviewerRole: ReviewerRole.CLIENT
             },
         });
         if (ret.length == 0)
@@ -62,8 +61,7 @@ export class ReviewService {
         const ret = await this.reviewRepository.find({
             where: {
                 job: jobId,
-                reviewee: await (await this.jobRepository.findOne(jobId)).client
-                    .userId,
+                reviewerRole: ReviewerRole.FREELANCER
             },
         });
         if (ret.length == 0)

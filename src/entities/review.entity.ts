@@ -2,6 +2,11 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { User } from './user.entity';
 import { Job } from './job.entity';
 
+export enum ReviewerRole {
+    CLIENT = 'client',
+    FREELANCER = 'freelancer',
+}
+
 @Entity()
 export class Review {
     @PrimaryGeneratedColumn()
@@ -24,6 +29,9 @@ export class Review {
         user => user.reviews,
     )
     reviewer: User;
+
+    @Column('enum', { enum: ReviewerRole })
+    reviewerRole: ReviewerRole;
 
     @ManyToOne(
         type => Job,
