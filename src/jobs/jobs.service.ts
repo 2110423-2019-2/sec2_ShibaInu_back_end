@@ -224,26 +224,21 @@ export class JobsService {
         });
         let categories = [];
         for (let i = 0; i < userCategory.length; i++) {
-            categories.push(
-                userCategory[i].interestedCategory
-            );
-        }   
+            categories.push(userCategory[i].interestedCategory);
+        }
 
         const allOpenJob = await this.jobRepository.find({
             where: {
-                status: "open"
+                status: 'open',
             },
         });
 
         let candidateJob = [];
         allOpenJob.forEach(job => {
-            if(categories.includes(job.catergory)) candidateJob.push(job);
+            if (categories.includes(job.catergory)) candidateJob.push(job);
         });
 
-        return getRandom(
-            candidateJob,
-            3,
-        );
+        return getRandom(candidateJob, 3);
     }
 
     async finishJob(updateJobDto: UpdateJobDto) {
