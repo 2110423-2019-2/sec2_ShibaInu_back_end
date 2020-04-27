@@ -46,7 +46,7 @@ export class PaymentService {
                     security_code: 123,
                 },
             },
-            function(error, token) {
+            (error, token) => {
                 /* Response. */
             },
         );
@@ -59,7 +59,7 @@ export class PaymentService {
                 capture: true,
                 card: tokens.id,
             },
-            function(err, resp) {
+            (err, resp) => {
                 if (!err) {
                     //Success
                     return resp;
@@ -84,7 +84,7 @@ export class PaymentService {
                     security_code: 123,
                 },
             },
-            function(error, token) {
+            (error, token) => {
                 /* Response. */
             },
         );
@@ -112,7 +112,7 @@ export class PaymentService {
                     security_code: data.security_code,
                 },
             },
-            function(error, token) {
+            (error, token) => {
                 /* Response. */
             },
         );
@@ -140,7 +140,7 @@ export class PaymentService {
                     password: '',
                 },
             },
-            function(error, response, body) {
+            (error, response, body) => {
                 if (error) console.error('error:', error); // Print the error if one occurred
             },
         );
@@ -156,7 +156,7 @@ export class PaymentService {
     async test() {
         const transfers = await this.omise.transfers.list(
             { order: 'reverse_chronological', limit: 100 },
-            function(error, list) {
+            (error, list) => {
                 /* Response. */
             },
         );
@@ -220,7 +220,7 @@ export class PaymentService {
             throw new BadRequestException('Not found any payment');
         let resp = [];
         payment.forEach(payment => {
-            let signedAmount;
+            let signedAmount: number;
             if (payment.type === PaymentTypeEnum.charge)
                 signedAmount = payment.amount;
             else signedAmount = -payment.amount;

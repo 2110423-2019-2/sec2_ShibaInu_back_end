@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateContractDto, UpdateContractDto } from './contracts.dto';
 import { Contract, ContractStatus } from '../entities/contract.entity';
 import { Job, Status } from '../entities/job.entity';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class ContractsService {

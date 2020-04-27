@@ -270,7 +270,7 @@ export class UsersService {
 
     async editUser(editUserDto: EditUserDto) {
         if (editUserDto.interestedCategories) {
-            let interestedCategories = editUserDto.interestedCategories;
+            const interestedCategories = editUserDto.interestedCategories;
             delete editUserDto.interestedCategories;
 
             this.deleteInterestedCategoryOfUserId(editUserDto.userId); //delete
@@ -284,7 +284,7 @@ export class UsersService {
             }
         }
         if (editUserDto.skills) {
-            let skills = editUserDto.skills;
+            const skills = editUserDto.skills;
             delete editUserDto.skills;
 
             this.deleteUserSkillOfUserId(editUserDto.userId); //delete

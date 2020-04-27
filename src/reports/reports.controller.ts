@@ -11,7 +11,7 @@ import {
 import { ReportsService } from './reports.service';
 import { CreateReportDto } from './reports.dto';
 import { CreateMessageDto } from './messages.dto';
-import { AdminGuard } from 'src/guards/admin.guard';
+import { AdminGuard } from '../guards/admin.guard';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
