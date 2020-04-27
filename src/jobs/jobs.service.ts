@@ -219,18 +219,18 @@ export class JobsService {
     async getRecommendJobByFreelancerId(
         freelancerUserId: number,
     ): Promise<Job[]> {
-        const temp = await this.interestedCategoryRepository.find({
+        const userCategory = await this.interestedCategoryRepository.find({
             where: { user: freelancerUserId },
         });
-        let tempArray = [];
-        for (let i = 0; i < temp.length; i++) {
-            tempArray.push({
-                catergory: temp[i].interestedCategory,
+        let categories = [];
+        for (let i = 0; i < userCategory.length; i++) {
+            categories.push({
+                catergory: userCategory[i].interestedCategory,
             });
         }
         return getRandom(
             await this.jobRepository.find({
-                where: tempArray,
+                where: categories,
             }),
             3,
         );
@@ -289,8 +289,7 @@ function getRandom(arr, n) {
     var result = new Array(n),
         len = arr.length,
         taken = new Array(len);
-    if (n > len)
-        throw new RangeError('getRandom: more elements taken than available');
+    if (n > len) return arr;
     while (n--) {
         var x = Math.floor(Math.random() * len);
         result[n] = arr[x in taken ? taken[x] : x];

@@ -49,7 +49,7 @@ export class ReviewService {
         const ret = await this.reviewRepository.find({
             where: {
                 job: jobId,
-                reviewerRole: ReviewerRole.CLIENT
+                reviewerRole: ReviewerRole.CLIENT,
             },
         });
         if (ret.length === 0)
@@ -61,7 +61,7 @@ export class ReviewService {
         const ret = await this.reviewRepository.find({
             where: {
                 job: jobId,
-                reviewerRole: ReviewerRole.FREELANCER
+                reviewerRole: ReviewerRole.FREELANCER,
             },
         });
         if (ret.length === 0)
