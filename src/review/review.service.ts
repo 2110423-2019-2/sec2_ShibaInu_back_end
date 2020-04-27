@@ -5,8 +5,8 @@ import { Review, ReviewerRole } from '../entities/review.entity';
 import { CreateReviewDto, EditReviewDto } from './review.dto';
 import { JobsService } from '../jobs/jobs.service';
 import { UsersService } from '../users/users.service';
-import { Job } from 'src/entities/job.entity';
-import { EditUserDto } from 'src/users/users.dto';
+import { Job } from '../entities/job.entity';
+import { EditUserDto } from '../users/users.dto';
 
 @Injectable()
 export class ReviewService {

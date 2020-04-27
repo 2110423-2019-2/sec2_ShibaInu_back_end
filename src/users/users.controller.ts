@@ -7,7 +7,6 @@ import {
     Patch,
     UseGuards,
     Delete,
-    Req,
     UseInterceptors,
     UploadedFile,
     Res,
@@ -225,7 +224,7 @@ export class UsersController {
 
     @Get('profilePicture/:userId')
     async getProfilePicture(@Param('userId') userId: number, @Res() res) {
-        let temp = await this.userService.getProfilePicById(userId);
+        const temp = await this.userService.getProfilePicById(userId);
         return res.sendFile(temp[0].profilePicture, {
             root: './profile_picture',
         });
@@ -247,7 +246,7 @@ export class UsersController {
 
     @Get('IDCard/:userId')
     async getIDCard(@Param('userId') userId: number, @Res() res) {
-        let temp = await this.userService.getIDCardById(userId);
+        const temp = await this.userService.getIDCardById(userId);
         return res.sendFile(temp[0].identificationCardPic, {
             root: './idcard',
         });
@@ -272,7 +271,7 @@ export class UsersController {
 
     @Get('IDCardWithFace/:userId')
     async getIDCardWithFace(@Param('userId') userId: number, @Res() res) {
-        let temp = await this.userService.getIDCardWithFaceById(userId);
+        const temp = await this.userService.getIDCardWithFaceById(userId);
         return res.sendFile(temp[0].identificationCardWithFacePic, {
             root: './idcard_with_face',
         });
