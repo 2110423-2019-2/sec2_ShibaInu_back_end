@@ -22,7 +22,7 @@ export class ReviewService {
 
     async getAllReviews(): Promise<Review[]> {
         const ret = await this.reviewRepository.find();
-        if (ret.length == 0)
+        if (ret.length === 0)
             throw new BadRequestException('Not found any Review');
         return ret;
     }
@@ -40,7 +40,7 @@ export class ReviewService {
             where: { reviewee: revieweeId },
         });
 
-        if (ret.length == 0)
+        if (ret.length === 0)
             throw new BadRequestException('Not found any Review');
         return ret;
     }
@@ -52,7 +52,7 @@ export class ReviewService {
                 reviewerRole: ReviewerRole.CLIENT
             },
         });
-        if (ret.length == 0)
+        if (ret.length === 0)
             throw new BadRequestException('Not found any Review');
         return ret;
     }
@@ -64,7 +64,7 @@ export class ReviewService {
                 reviewerRole: ReviewerRole.FREELANCER
             },
         });
-        if (ret.length == 0)
+        if (ret.length === 0)
             throw new BadRequestException('Not found any Review');
         return ret;
     }

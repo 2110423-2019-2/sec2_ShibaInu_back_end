@@ -36,7 +36,7 @@ export class ReportsService {
     }
 
     async setReportStatus(reportId: number, status: number) {
-        if (status == 0) {
+        if (status === 0) {
             return this.reportRepository.update(reportId, { status: 'open' });
         } else {
             return this.reportRepository.update(reportId, { status: 'closed' });
