@@ -125,7 +125,10 @@ export class UsersController {
 
     @UseGuards(AuthGuard())
     @Patch('change-password')
-    async changePassword(@LoadUser() user: any, @Body() changePasswordDto: ChangePasswordDto) {
+    async changePassword(
+        @LoadUser() user: any,
+        @Body() changePasswordDto: ChangePasswordDto,
+    ) {
         return this.userService.changePassword(user.id, changePasswordDto);
     }
 

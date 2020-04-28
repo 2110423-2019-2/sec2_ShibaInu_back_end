@@ -262,7 +262,10 @@ export class UsersService {
                 changePasswordDto.newpassword,
                 10,
             );
-            return this.userRepository.update({userId}, {password: hashedPass});
+            return this.userRepository.update(
+                { userId },
+                { password: hashedPass },
+            );
         } else {
             throw new BadRequestException(`Old password is incorrect`);
         }
