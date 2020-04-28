@@ -4,7 +4,7 @@ import { ReportsService } from './reports.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PassportModule } from '@nestjs/passport';
 import { Message, Report } from '../entities/report.entity';
-import { UsersModule } from 'src/users/users.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
     imports: [
