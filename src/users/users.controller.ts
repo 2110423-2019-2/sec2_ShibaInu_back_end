@@ -23,6 +23,7 @@ import {
     VerifyApprovalDto,
     BanUserDto,
     VerifyAdminDto,
+    ChangePasswordDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -120,6 +121,12 @@ export class UsersController {
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {
         return this.userService.createNewUser(createUserDto);
+    }
+
+    @UseGuards(AuthGuard())
+    @Patch('change-password')
+    async changePassword(@LoadUser() user: any, @Body() changePasswordDto: ChangePasswordDto) {
+        return this.userService.changePassword(user.id, changePasswordDto);
     }
 
     @UseGuards(AuthGuard())
