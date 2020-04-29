@@ -1,5 +1,5 @@
 import { User } from '../entities/user.entity';
-import { ReviewerRole } from 'src/entities/review.entity';
+import { ReviewerRole } from '../entities/review.entity';
 
 export class CreateReviewDto {
     description: string;

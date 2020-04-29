@@ -7,7 +7,6 @@ import {
     Patch,
     UseGuards,
     Delete,
-    Req,
     UseInterceptors,
     UploadedFile,
     Res,
@@ -24,6 +23,7 @@ import {
     VerifyApprovalDto,
     BanUserDto,
     VerifyAdminDto,
+    ChangePasswordDto,
 } from './users.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -121,6 +121,15 @@ export class UsersController {
     @Post()
     async createNewUser(@Body() createUserDto: CreateUserDto) {
         return this.userService.createNewUser(createUserDto);
+    }
+
+    @UseGuards(AuthGuard())
+    @Patch('change-password')
+    async changePassword(
+        @LoadUser() user: any,
+        @Body() changePasswordDto: ChangePasswordDto,
+    ) {
+        return this.userService.changePassword(user.id, changePasswordDto);
     }
 
     @UseGuards(AuthGuard())
@@ -225,7 +234,7 @@ export class UsersController {
 
     @Get('profilePicture/:userId')
     async getProfilePicture(@Param('userId') userId: number, @Res() res) {
-        let temp = await this.userService.getProfilePicById(userId);
+        const temp = await this.userService.getProfilePicById(userId);
         return res.sendFile(temp[0].profilePicture, {
             root: './profile_picture',
         });
@@ -247,7 +256,7 @@ export class UsersController {
 
     @Get('IDCard/:userId')
     async getIDCard(@Param('userId') userId: number, @Res() res) {
-        let temp = await this.userService.getIDCardById(userId);
+        const temp = await this.userService.getIDCardById(userId);
         return res.sendFile(temp[0].identificationCardPic, {
             root: './idcard',
         });
@@ -272,7 +281,7 @@ export class UsersController {
 
     @Get('IDCardWithFace/:userId')
     async getIDCardWithFace(@Param('userId') userId: number, @Res() res) {
-        let temp = await this.userService.getIDCardWithFaceById(userId);
+        const temp = await this.userService.getIDCardWithFaceById(userId);
         return res.sendFile(temp[0].identificationCardWithFacePic, {
             root: './idcard_with_face',
         });

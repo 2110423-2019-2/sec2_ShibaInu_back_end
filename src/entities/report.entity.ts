@@ -32,7 +32,7 @@ export class Report {
         enum: TopicTypeEnum,
         default: TopicTypeEnum.OTHER,
     })
-    topicType: string;
+    topicType: TopicTypeEnum;
 
     @Column('text')
     description: string;
@@ -41,7 +41,7 @@ export class Report {
         enum: ReportStatusEnum,
         default: ReportStatusEnum.OPEN,
     })
-    status: string;
+    status: ReportStatusEnum;
 
     @Column('timestamp', { default: () => 'CURRENT_TIMESTAMP' })
     createdTime: Date;

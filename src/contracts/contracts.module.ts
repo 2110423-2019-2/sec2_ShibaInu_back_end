@@ -4,7 +4,7 @@ import { ContractsService } from './contracts.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Contract } from '../entities/contract.entity';
 import { Job } from '../entities/job.entity';
-import { User } from 'src/entities/user.entity';
+import { User } from '../entities/user.entity';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Contract, Job, User])],

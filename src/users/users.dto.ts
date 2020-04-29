@@ -35,6 +35,11 @@ export class CreateUserDto {
     isSNSAccount?: boolean;
 }
 
+export class ChangePasswordDto {
+    oldpassword: string;
+    newpassword: string;
+}
+
 export class EditUserDto {
     userId?: number;
     firstName?: string;
