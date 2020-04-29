@@ -19,6 +19,7 @@ import {
     VerifyApprovalDto,
     BanUserDto,
     VerifyAdminDto,
+    ChangePasswordDto,
 } from './users.dto';
 import bcrypt = require('bcrypt');
 
@@ -248,6 +249,31 @@ export class UsersService {
         }
 
         return this.userRepository.insert(createUserDto);
+    }
+
+    async changePassword(userId: number, changePasswordDto: ChangePasswordDto) {
+        if ((await this.getUserById(userId)).isSNSAccount) {
+            throw new ForbiddenException(
+                `SNS account don't have password, and thus can't change password.`,
+            );
+        }
+        if (
+            await bcrypt.compare(
+                changePasswordDto.oldpassword,
+                (await this.getUserById(userId)).password,
+            )
+        ) {
+            const hashedPass = await bcrypt.hash(
+                changePasswordDto.newpassword,
+                10,
+            );
+            return this.userRepository.update(
+                { userId },
+                { password: hashedPass },
+            );
+        } else {
+            throw new BadRequestException(`Old password is incorrect`);
+        }
     }
 
     async createNewUserInterestedCategory(userId, interestedCategory) {
