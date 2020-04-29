@@ -252,6 +252,9 @@ export class UsersService {
     }
 
     async changePassword(userId: number, changePasswordDto: ChangePasswordDto) {
+        if ((await this.getUserById(userId)).isSNSAccount) {
+            throw new BadRequestException(`SNS account don't have password, and thus can't change password.`)
+        }
         if (
             await bcrypt.compare(
                 changePasswordDto.oldpassword,
