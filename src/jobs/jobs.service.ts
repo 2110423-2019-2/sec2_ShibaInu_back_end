@@ -262,7 +262,7 @@ export class JobsService {
         if (userId != job.client.userId)
             throw new ForbiddenException(`Only job owner can edit this job!`);
         let res: any = null;
-        if (boolean === 0)
+        if (Number(boolean) === 0)
             res = this.jobRepository.update(job, {
                 status: Status.WORKING,
                 url: '',
